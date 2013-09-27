@@ -49,9 +49,10 @@ namespace Tetris
             // Load Assets
             Assets.init(GraphicsDevice);
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
+            Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
 
             //Load test world
-            GameManager.GameWorld = new World(30, 30, new Rectangle(10, 10, 320, 320));
+            GameManager.GameWorld = new World(20, 20, new Rectangle(10, 10, 320, 320));
             GameManager.GameWorld.CurrentShape = new Shape(GameManager.GameWorld);
         }
 

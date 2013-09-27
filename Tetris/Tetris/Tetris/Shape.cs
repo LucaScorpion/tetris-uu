@@ -27,8 +27,41 @@ namespace Tetris
         {
             blocks.Add(point, block);
         }
-        public void Update()
+        public void MoveRight(World world)
         {
+            Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
+
+            foreach (KeyValuePair<Point, Block> pair in blocks)
+            {
+                Point nextPoint = new Point(pair.Key.X + 1, pair.Key.Y);
+                newBlocks.Add(nextPoint, pair.Value);
+                if (world.Blocks.ContainsKey(nextPoint) || nextPoint.X >= world.Columns)
+                {
+                    //Can't move. exit loop
+                    return;
+                }
+            }
+
+            //Replace the blocks
+            blocks = newBlocks;
+        }
+        public void MoveLeft(World world)
+        {
+            Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
+
+            foreach (KeyValuePair<Point, Block> pair in blocks)
+            {
+                Point nextPoint = new Point(pair.Key.X - 1, pair.Key.Y);
+                newBlocks.Add(nextPoint, pair.Value);
+                if (world.Blocks.ContainsKey(nextPoint) || nextPoint.X < 0)
+                {
+                    //Can't move. exit loop
+                    return;
+                }
+            }
+
+            //Replace the blocks
+            blocks = newBlocks;
         }
         public Boolean MoveDown(World world)
         {
@@ -62,10 +95,10 @@ namespace Tetris
         {
             Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
             //Random int for what kind of shape
-            switch (GameManager.Random.Next(0, 5))
+            switch (GameManager.Random.Next(0, 7))
             {
                 case 0:
-                    newBlocks = Long.blocks;
+                    newBlocks = IShape.blocks;
                     break;
                 case 1:
                     newBlocks = ZShape.blocks;
@@ -74,10 +107,16 @@ namespace Tetris
                     newBlocks = SShape.blocks;
                     break;
                 case 3:
-                    newBlocks = Square.blocks;
+                    newBlocks = OShape.blocks;
                     break;
                 case 4:
                     newBlocks = TShape.blocks;
+                    break;
+                case 5:
+                    newBlocks = JShape.blocks;
+                    break;
+                case 6:
+                    newBlocks = LShape.blocks;
                     break;
             }
 
@@ -94,16 +133,15 @@ namespace Tetris
 
         #region Properties
         //Default shapes
-        public static Shape Long
+        public static Shape IShape
         {
             get
             {
                 return new Shape(new Dictionary<Point, Block> {
-            { new Point(0,4),new Block() },
-            { new Point(0,3),new Block() },
-            { new Point(0,2),new Block() },
-            { new Point(0,1),new Block() },
-            { new Point(0,0),new Block() }
+            { new Point(-2,0),new Block() },
+            { new Point(-1,0),new Block() },
+            { new Point(0,0),new Block() },
+            { new Point(1,0),new Block() }
         });
             }
         }
@@ -131,7 +169,7 @@ namespace Tetris
         });
             }
         }
-        public static Shape Square
+        public static Shape OShape
         {
             get
             {
@@ -148,10 +186,34 @@ namespace Tetris
             get
             {
                 return new Shape(new Dictionary<Point, Block> {
+            { new Point(-1,1),new Block() },
+            { new Point(0,1),new Block() },
+            { new Point(1,1),new Block() },
+            { new Point(0,0),new Block() }
+        });
+            }
+        }
+        public static Shape LShape
+        {
+            get
+            {
+                return new Shape(new Dictionary<Point, Block> {
             { new Point(-1,0),new Block() },
             { new Point(0,0),new Block() },
             { new Point(1,0),new Block() },
-            { new Point(0,1),new Block() }
+            { new Point(-1,1),new Block() }
+        });
+            }
+        }
+        public static Shape JShape
+        {
+            get
+            {
+                return new Shape(new Dictionary<Point, Block> {
+            { new Point(-1,0),new Block() },
+            { new Point(0,0),new Block() },
+            { new Point(1,0),new Block() },
+            { new Point(1,1),new Block() }
         });
             }
         }

@@ -14,8 +14,11 @@ namespace Tetris
     public static class Assets
     {
         #region Fields
-        public static Texture2D DummyTexture;
-
+        public struct Textures
+        {
+            public static Texture2D DummyTexture;
+            public static Texture2D Block;
+        }
         public struct Fonts
         {
             public static SpriteFont BasicFont;
@@ -25,8 +28,8 @@ namespace Tetris
         #region Methods
         public static void init(GraphicsDevice g)
         {
-            DummyTexture = new Texture2D(g, 1, 1);
-            DummyTexture.SetData(new Color[] { Color.White });
+            Textures.DummyTexture = new Texture2D(g, 1, 1);
+            Textures.DummyTexture.SetData(new Color[] { Color.White });
         }
         #endregion
     }

@@ -10,7 +10,7 @@ namespace Tetris
     public class Block
     {
         #region Fields
-        Texture2D texture = Assets.DummyTexture;
+        Texture2D texture = Assets.Textures.DummyTexture;
         Color color;
         #endregion
 
@@ -20,7 +20,7 @@ namespace Tetris
         #region Constructors
         public Block()
         {
-            texture = Assets.DummyTexture;
+            texture = Assets.Textures.Block;
             color = Color.White;
         }
         #endregion

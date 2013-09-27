@@ -57,13 +57,16 @@ namespace Tetris
             }
 
             //Move left and right
-
+            if (InputState.isKeyPressed(left))
+                currentShape.MoveLeft(this);
+            if (InputState.isKeyPressed(right))
+                currentShape.MoveRight(this);
 
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             //Draw world bg
-            spriteBatch.Draw(Assets.DummyTexture, rect, Color.LightBlue);
+            spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.LightBlue);
 
             //Draw shape
             foreach (KeyValuePair<Point, Block> pair in currentShape.Blocks)
