@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris", "Tetris\Tetris\Tetris.csproj", "{0D9321BC-9AF9-4043-8DD6-818E99FA8CCC}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TetrisContent", "Tetris\TetrisContent\TetrisContent.contentproj", "{53A8F4F5-4C53-4BC5-A048-8448E5F6A9FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetrisContent", "Tetris\TetrisContent\TetrisContent.contentproj", "{53A8F4F5-4C53-4BC5-A048-8448E5F6A9FF}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
