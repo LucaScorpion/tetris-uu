@@ -18,7 +18,7 @@ namespace Tetris
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        GameManager gameManager = new GameManager();
+        GameManager gameManager;
         Button button = new Button();
 
         public Tetris()
@@ -50,6 +50,9 @@ namespace Tetris
 
             // Load Assets
             Assets.init(GraphicsDevice);
+
+            //Create gameManager
+            gameManager = new GameManager();
         }
 
         /// <summary>
@@ -68,11 +71,8 @@ namespace Tetris
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
-            // TODO: Add your update logic here
+            //update game
+            gameManager.Update();
 
             base.Update(gameTime);
         }
@@ -88,7 +88,9 @@ namespace Tetris
             spriteBatch.Begin();
             button.DrawButton(spriteBatch, 10, 10, new Vector2(0, 0), "Test", Color.White);
             spriteBatch.End();
-            // TODO: Add your drawing code here
+
+            //Draw game
+            gameManager.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }

@@ -90,6 +90,22 @@ namespace Tetris
         {
             get { return longDefaultShape; }
         }
+        public static Shape ZShape
+        {
+            get { return zDefaultShape; }
+        }
+        public static Shape SShape
+        {
+            get { return sDefaultShape; }
+        }
+        public static Shape Square
+        {
+            get { return squareDefaultShape; }
+        }
+        public static Shape TShape
+        {
+            get { return tDefaultShape; }
+        }
         #endregion
     }
 }

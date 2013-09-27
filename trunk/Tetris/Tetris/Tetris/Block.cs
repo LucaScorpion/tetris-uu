@@ -29,7 +29,9 @@ namespace Tetris
         #region Constructors
         public Block()
         {
-
+            rect = new Rectangle();
+            texture = Assets.DummyTexture;
+            color = Color.Red;
         }
         #endregion
 
