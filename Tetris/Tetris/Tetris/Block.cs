@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
 {
-    class Block
+    public class Block
     {
         #region Fields
         Rectangle rect;
