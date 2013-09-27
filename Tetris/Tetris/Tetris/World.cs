@@ -28,7 +28,7 @@ namespace Tetris
 
             if (timeSinceMove >= 1000 * movementSpeed)
             {
-                currentShape.MoveDown();
+                //currentShape.MoveDown();
             }
 
         }
