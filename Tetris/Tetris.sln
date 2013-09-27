@@ -6,6 +6,10 @@ EndProject
 Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TetrisContent", "Tetris\TetrisContent\TetrisContent.contentproj", "{53A8F4F5-4C53-4BC5-A048-8448E5F6A9FF}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
