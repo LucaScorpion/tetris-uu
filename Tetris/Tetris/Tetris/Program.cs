@@ -10,7 +10,7 @@ namespace Tetris
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (Tetris game = new Tetris())
             {
                 game.Run();
             }
