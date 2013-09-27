@@ -35,7 +35,7 @@ namespace Tetris
             //Draw the button
             if (texture == null)
             {
-                s.Draw(Assets.DummyTexture, rect, buttonColor);
+                s.Draw(Assets.Textures.DummyTexture, rect, buttonColor);
             }
             else
             {
