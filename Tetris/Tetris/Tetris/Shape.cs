@@ -12,7 +12,6 @@ namespace Tetris
     {
         #region Fields
         Dictionary<Point,Block> blocks = new Dictionary<Point,Block>();
-
         #endregion
 
         #region Methods
