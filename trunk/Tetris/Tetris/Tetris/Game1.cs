@@ -19,7 +19,6 @@ namespace Tetris
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GameManager gameManager;
-        Button button = new Button();
 
         public Tetris()
         {
@@ -84,10 +83,6 @@ namespace Tetris
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            //Test button
-            spriteBatch.Begin();
-            button.DrawButton(spriteBatch, 10, 10, new Vector2(0, 0), "Test", Color.White);
-            spriteBatch.End();
 
             //Draw game
             gameManager.Draw(spriteBatch);
