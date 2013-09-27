@@ -34,7 +34,7 @@ namespace Tetris
                     AddShape(currentShape);
 
                     //Create new shape
-                    currentShape = Shape.Square;
+                    currentShape = new Shape(this);
                 }
                 timeSinceMove = 0;
             }
@@ -43,18 +43,18 @@ namespace Tetris
         public void Draw(SpriteBatch spriteBatch)
         {
             //Draw world bg
-            spriteBatch.Draw(Assets.DummyTexture, rect, Color.Black);
+            spriteBatch.Draw(Assets.DummyTexture, rect, Color.LightBlue);
 
             //Draw shape
             foreach (KeyValuePair<Point, Block> pair in currentShape.Blocks)
             {
-                spriteBatch.Draw(pair.Value.Texture, CalculateBlockRectangle(pair.Key), Color.White);
+                spriteBatch.Draw(pair.Value.Texture, CalculateBlockRectangle(pair.Key), pair.Value.Color);
             }
 
             //Draw blocks
             foreach (KeyValuePair<Point, Block> pair in blocks)
             {
-                spriteBatch.Draw(pair.Value.Texture, CalculateBlockRectangle(pair.Key), Color.White);
+                spriteBatch.Draw(pair.Value.Texture, CalculateBlockRectangle(pair.Key), pair.Value.Color);
             }
         }
         public void AddBlock(Block block, int x, int y)

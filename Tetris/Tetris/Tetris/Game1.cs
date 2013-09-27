@@ -52,7 +52,7 @@ namespace Tetris
 
             //Load test world
             GameManager.GameWorld = new World(20, 20, new Rectangle(10, 10, 300, 300));
-            GameManager.GameWorld.CurrentShape = Shape.ZShape;
+            GameManager.GameWorld.CurrentShape = new Shape(GameManager.GameWorld);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Tetris
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             //Draw game
             GameManager.Draw(spriteBatch);

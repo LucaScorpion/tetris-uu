@@ -13,6 +13,7 @@ namespace Tetris
         static GameState currentGameState = GameState.StartScreen; //Default gamestate is startscreen
         static World gameWorld;
         static GameTime gameTime;
+        static Random random = new Random(7331);
         #endregion
 
         #region Methods
@@ -61,6 +62,7 @@ namespace Tetris
         #region Properties
         public static World GameWorld { get { return gameWorld; } set { gameWorld = value; } }
         public static GameTime GameTime { get { return gameTime; } }
+        public static Random Random { get { return random; } }
         #endregion
     }
     public enum GameState
