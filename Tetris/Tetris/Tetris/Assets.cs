@@ -15,6 +15,11 @@ namespace Tetris
     {
         #region Fields
         public static Texture2D DummyTexture;
+
+        public struct Fonts
+        {
+            public static SpriteFont BasicFont;
+        }
         #endregion
 
         #region Methods

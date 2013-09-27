@@ -49,6 +49,7 @@ namespace Tetris
 
             // Load Assets
             Assets.init(GraphicsDevice);
+            Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
 
             //Create gameManager
             gameManager = new GameManager();
@@ -83,6 +84,10 @@ namespace Tetris
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin();
+            Button testButton = new Button(spriteBatch, 100, 50, new Vector2(400, 200), Color.Yellow, "Test", Assets.Fonts.BasicFont, Color.DarkGreen);
+            spriteBatch.End();
 
             //Draw game
             gameManager.Draw(spriteBatch);
