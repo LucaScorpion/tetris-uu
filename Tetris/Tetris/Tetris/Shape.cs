@@ -4,48 +4,16 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
     public class Shape
     {
         #region Fields
-        Point location = new Point();
         Dictionary<Point,Block> blocks = new Dictionary<Point,Block>();
         Color color = Color.White;
 
-        //Default shapes
-        static Shape longDefaultShape = new Shape(new Dictionary<Point, Block> {
-            { new Point(0,4),new Block() },
-            { new Point(0,3),new Block() },
-            { new Point(0,2),new Block() },
-            { new Point(0,1),new Block() },
-            { new Point(0,0),new Block() }
-        });
-        static Shape tDefaultShape = new Shape(new Dictionary<Point, Block> {
-            { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(2,0),new Block() },
-            { new Point(1,1),new Block() }
-        });
-        static Shape sDefaultShape = new Shape(new Dictionary<Point, Block> {
-            { new Point(0,1),new Block() },
-            { new Point(1,1),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(2,0),new Block() }
-        });
-        static Shape zDefaultShape = new Shape(new Dictionary<Point, Block> {
-            { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(1,1),new Block() },
-            { new Point(2,1),new Block() }
-        });
-        static Shape squareDefaultShape = new Shape(new Dictionary<Point, Block> {
-            { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(1,1),new Block() },
-            { new Point(0,1),new Block() }
-        });
         #endregion
 
         #region Methods
@@ -68,12 +36,25 @@ namespace Tetris
                 pair.Value.Update();
             }
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public Boolean MoveDown(World world)
         {
+            Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
+
             foreach (KeyValuePair<Point, Block> pair in blocks)
             {
-                spriteBatch.Draw(pair.Value.Texture, GameManager.GameWorld.CalculateBlockRectangle(new Point(location.X + pair.Key.X,location.Y + pair.Key.Y)), color);
+                Point nextPoint = new Point(pair.Key.X,pair.Key.Y + 1);
+                newBlocks.Add(nextPoint, pair.Value);
+                if(world.Blocks.ContainsKey(nextPoint) || nextPoint.Y >= world.Rows)
+                {
+                    //Can't move. exit loop
+                    return false;
+                }
             }
+
+            //Replace the blocks
+            blocks = newBlocks;
+
+            return true;
         }
         #endregion
 
@@ -83,31 +64,70 @@ namespace Tetris
         {
             blocks = points;
         }
-        public Shape()
-        {
-        }
         #endregion
 
         #region Properties
+        //Default shapes
         public static Shape Long
         {
-            get { return longDefaultShape; }
+            get
+            {
+                return new Shape(new Dictionary<Point, Block> {
+            { new Point(0,4),new Block() },
+            { new Point(0,3),new Block() },
+            { new Point(0,2),new Block() },
+            { new Point(0,1),new Block() },
+            { new Point(0,0),new Block() }
+        });
+            }
         }
         public static Shape ZShape
         {
-            get { return zDefaultShape; }
+            get
+            {
+                return new Shape(new Dictionary<Point, Block> {
+            { new Point(0,0),new Block() },
+            { new Point(1,0),new Block() },
+            { new Point(1,1),new Block() },
+            { new Point(2,1),new Block() }
+        });
+            }
         }
         public static Shape SShape
         {
-            get { return sDefaultShape; }
+            get
+            {
+                return new Shape(new Dictionary<Point, Block> {
+            { new Point(0,1),new Block() },
+            { new Point(1,1),new Block() },
+            { new Point(1,0),new Block() },
+            { new Point(2,0),new Block() }
+        });
+            }
         }
         public static Shape Square
         {
-            get { return squareDefaultShape; }
+            get
+            {
+                return new Shape(new Dictionary<Point, Block> {
+            { new Point(0,0),new Block() },
+            { new Point(1,0),new Block() },
+            { new Point(1,1),new Block() },
+            { new Point(0,1),new Block() }
+        });
+            }
         }
         public static Shape TShape
         {
-            get { return tDefaultShape; }
+            get
+            {
+                return new Shape(new Dictionary<Point, Block> {
+            { new Point(0,0),new Block() },
+            { new Point(1,0),new Block() },
+            { new Point(2,0),new Block() },
+            { new Point(1,1),new Block() }
+        });
+            }
         }
         public Dictionary<Point, Block> Blocks { get { return blocks; } }
         #endregion

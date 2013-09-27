@@ -52,7 +52,7 @@ namespace Tetris
 
             //Load test world
             GameManager.GameWorld = new World(20, 20, new Rectangle(10, 10, 300, 300));
-            GameManager.GameWorld.AddShape(Shape.ZShape, new Point(0, 0));
+            GameManager.GameWorld.CurrentShape = Shape.ZShape;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Tetris
         {
             //update game
             GameManager.Update(gameTime);
-            
+
             base.Update(gameTime);
         }
 
