@@ -7,21 +7,45 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
 {
-    class Button
+    public class Button
     {
         #region Fields
+        Rectangle rect;
+        Color buttonColor;
+        String text;
+        SpriteFont font;
+        Color textColor;
         #endregion
 
         #region Methods
+        //Handle mouseclicks on the button
+        public void Update()
+        {
+            if (InputState.leftClick())
+            {
+                if (InputState.currentMouse.X > rect.Left && InputState.currentMouse.X < rect.Right && InputState.currentMouse.Y > rect.Top && InputState.currentMouse.Y < rect.Bottom)
+                {
+
+                }
+            }
+        }
+        public void Draw(SpriteBatch s)
+        {
+            //Draw the button
+            s.Draw(Assets.DummyTexture, rect, buttonColor);
+            //Draw the text on the button
+            s.DrawString(font, text, new Vector2((int)(rect.Width / 2 - font.MeasureString(text).X / 2) + rect.Left, (int)(rect.Height / 2 - font.MeasureString(text).Y / 2) + rect.Top), textColor);
+        }
         #endregion
 
         #region Constructors
-        public Button(SpriteBatch s, int width, int height, Vector2 position, Color buttonColor, String text, SpriteFont font, Color textColor)
+        public Button(Rectangle rect, Color buttonColor, String text, SpriteFont font, Color textColor)
         {
-            //Draw the button
-            s.Draw(Assets.DummyTexture, new Rectangle((int)position.X, (int)position.Y, width, height), buttonColor);
-            //Draw the text on the button
-            s.DrawString(font, text, new Vector2((int)(width / 2 - font.MeasureString(text).X / 2) + position.X, (int)(height / 2 - font.MeasureString(text).Y / 2) + position.Y), textColor);
+            this.rect = rect;
+            this.buttonColor = buttonColor;
+            this.text = text;
+            this.font = font;
+            this.textColor = textColor;
         }
         #endregion
 

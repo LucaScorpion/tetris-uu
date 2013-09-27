@@ -23,6 +23,8 @@ namespace Tetris
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+            Button testButton = new Button(new Rectangle(400, 200, 100, 50), Color.White, "Button", Assets.Fonts.BasicFont, Color.Black);
         }
 
         /// <summary>
@@ -33,7 +35,6 @@ namespace Tetris
         /// </summary>
         protected override void Initialize()
         {
-
             base.Initialize();
         }
 
@@ -73,7 +74,7 @@ namespace Tetris
         {
             //update game
             GameManager.Update();
-
+            
             base.Update(gameTime);
         }
 
@@ -86,7 +87,7 @@ namespace Tetris
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            Button testButton = new Button(spriteBatch, 100, 50, new Vector2(400, 200), Color.Yellow, "Test", Assets.Fonts.BasicFont, Color.DarkGreen);
+            
             spriteBatch.End();
 
             //Draw game
