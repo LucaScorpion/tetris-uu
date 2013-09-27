@@ -51,7 +51,7 @@ namespace Tetris
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
 
             //Load test world
-            GameManager.GameWorld = new World(20, 20, new Rectangle(10, 10, 300, 300));
+            GameManager.GameWorld = new World(30, 30, new Rectangle(10, 10, 320, 320));
             GameManager.GameWorld.CurrentShape = new Shape(GameManager.GameWorld);
         }
 

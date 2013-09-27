@@ -4,12 +4,18 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
     public class World
     {
         #region Fields
+        //Controls
+        Keys down = Keys.Down;
+        Keys left = Keys.Left;
+        Keys right = Keys.Right;
+
         Dictionary<Point, Block> blocks = new Dictionary<Point, Block>();
         Shape currentShape;
 
@@ -19,13 +25,24 @@ namespace Tetris
 
         int timeSinceMove = 0;
         int movementSpeed = 5; //in blocks per seccond
+        int moveDownBoost = 7; //Factor of speedboost when pressing down
         #endregion
 
+        
         #region Methods
         public void Update()
         {
-            timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
+            //Check if moving down with boost
+            if (InputState.isKeyDown(down))
+            {
+                timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds * moveDownBoost;
+            }
+            else
+            {
+                timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
+            }
 
+            //Move down when needed
             if (timeSinceMove >= 1000 / movementSpeed)
             {
                 if (!currentShape.MoveDown(this))
@@ -38,6 +55,9 @@ namespace Tetris
                 }
                 timeSinceMove = 0;
             }
+
+            //Move left and right
+
 
         }
         public void Draw(SpriteBatch spriteBatch)

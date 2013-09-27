@@ -19,6 +19,9 @@ namespace Tetris
         #region Methods
         public static void Update(GameTime newGameTime)
         {
+            //Update input
+            InputState.update();
+
             gameTime = newGameTime;
 
             switch (currentGameState)
