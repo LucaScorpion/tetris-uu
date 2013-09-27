@@ -7,16 +7,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
 {
-    public class GameManager
+    static public class GameManager
     {
         #region Fields
-        GameState currentGameState = GameState.StartScreen; //Default gamestate is startscreen
+        static GameState currentGameState = GameState.StartScreen; //Default gamestate is startscreen
 
-        World gameWorld;
+        static World gameWorld;
         #endregion
 
         #region Methods
-        public void Update()
+        public static void Update()
         {
             switch (currentGameState)
             {
@@ -35,7 +35,7 @@ namespace Tetris
                     break;
             }
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
             switch (currentGameState)
             {
@@ -56,15 +56,8 @@ namespace Tetris
         }
         #endregion
 
-        #region Constructors
-        public GameManager()
-        {
-            gameWorld = new World(5, 5, new Rectangle(10, 10, 300, 300));
-            gameWorld.AddBlock(new Block(), new Point(2, 2));
-        }
-        #endregion
-
         #region Properties
+        public static World GameWorld { get { return gameWorld; } set { gameWorld = value; } }
         #endregion
     }
     public enum GameState
