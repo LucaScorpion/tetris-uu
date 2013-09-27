@@ -13,7 +13,6 @@ namespace Tetris
         static GameState currentGameState = GameState.StartScreen; //Default gamestate is startscreen
         static World gameWorld;
         static GameTime gameTime;
-        static Button testButton = new Button(new Rectangle(400, 200, 100, 50), Color.White, "Button", Assets.Fonts.BasicFont, Color.Black);
         #endregion
 
         #region Methods
@@ -25,7 +24,6 @@ namespace Tetris
             {
                 case GameState.Playing:
                     gameWorld.Update();
-                    testButton.Update();
                     break;
                 case GameState.Menu:
                     break;
@@ -39,15 +37,14 @@ namespace Tetris
                     break;
             }
         }
-        public static void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch s)
         {
             switch (currentGameState)
             {
                 case GameState.Playing:
-                    spriteBatch.Begin();
-                    gameWorld.Draw(spriteBatch);
-                    testButton.Draw(spriteBatch);
-                    spriteBatch.End();
+                    s.Begin();
+                    gameWorld.Draw(s);
+                    s.End();
                     break;
                 case GameState.Menu:
                     break;
