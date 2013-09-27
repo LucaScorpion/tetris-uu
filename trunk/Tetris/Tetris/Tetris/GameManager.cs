@@ -11,9 +11,9 @@ namespace Tetris
     {
         #region Fields
         static GameState currentGameState = GameState.StartScreen; //Default gamestate is startscreen
-
         static World gameWorld;
         static GameTime gameTime;
+        static Button testButton = new Button(new Rectangle(400, 200, 100, 50), Color.White, "Button", Assets.Fonts.BasicFont, Color.Black);
         #endregion
 
         #region Methods
@@ -25,6 +25,7 @@ namespace Tetris
             {
                 case GameState.Playing:
                     gameWorld.Update();
+                    testButton.Update();
                     break;
                 case GameState.Menu:
                     break;
@@ -45,6 +46,7 @@ namespace Tetris
                 case GameState.Playing:
                     spriteBatch.Begin();
                     gameWorld.Draw(spriteBatch);
+                    testButton.Draw(spriteBatch);
                     spriteBatch.End();
                     break;
                 case GameState.Menu:
@@ -61,7 +63,7 @@ namespace Tetris
 
         #region Properties
         public static World GameWorld { get { return gameWorld; } set { gameWorld = value; } }
-        public static GameTime GameTime { get { return GameTime; } }
+        public static GameTime GameTime { get { return gameTime; } }
         #endregion
     }
     public enum GameState
