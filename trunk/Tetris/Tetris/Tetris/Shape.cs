@@ -12,7 +12,6 @@ namespace Tetris
     {
         #region Fields
         Dictionary<Point,Block> blocks = new Dictionary<Point,Block>();
-        Color color = Color.White;
 
         #endregion
 
@@ -31,10 +30,6 @@ namespace Tetris
         }
         public void Update()
         {
-            foreach (KeyValuePair<Point, Block> pair in blocks)
-            {
-                pair.Value.Update();
-            }
         }
         public Boolean MoveDown(World world)
         {
@@ -64,6 +59,38 @@ namespace Tetris
         {
             blocks = points;
         }
+        public Shape(World world)
+        {
+            Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
+            //Random int for what kind of shape
+            switch (GameManager.Random.Next(0, 5))
+            {
+                case 0:
+                    newBlocks = Long.blocks;
+                    break;
+                case 1:
+                    newBlocks = ZShape.blocks;
+                    break;
+                case 2:
+                    newBlocks = SShape.blocks;
+                    break;
+                case 3:
+                    newBlocks = Square.blocks;
+                    break;
+                case 4:
+                    newBlocks = TShape.blocks;
+                    break;
+            }
+
+            //Move to center and add blocks
+            foreach (KeyValuePair<Point, Block> pair in newBlocks)
+            {
+                blocks.Add(new Point(pair.Key.X + world.Columns / 2, pair.Key.Y), pair.Value);
+            }
+
+            //Random Color
+            this.Color = new Color(255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2));
+        }
         #endregion
 
         #region Properties
@@ -86,10 +113,10 @@ namespace Tetris
             get
             {
                 return new Shape(new Dictionary<Point, Block> {
+            { new Point(-1,0),new Block() },
             { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(1,1),new Block() },
-            { new Point(2,1),new Block() }
+            { new Point(0,1),new Block() },
+            { new Point(1,1),new Block() }
         });
             }
         }
@@ -98,10 +125,10 @@ namespace Tetris
             get
             {
                 return new Shape(new Dictionary<Point, Block> {
+            { new Point(-1,1),new Block() },
             { new Point(0,1),new Block() },
-            { new Point(1,1),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(2,0),new Block() }
+            { new Point(0,0),new Block() },
+            { new Point(1,0),new Block() }
         });
             }
         }
@@ -122,14 +149,25 @@ namespace Tetris
             get
             {
                 return new Shape(new Dictionary<Point, Block> {
+            { new Point(-1,0),new Block() },
             { new Point(0,0),new Block() },
             { new Point(1,0),new Block() },
-            { new Point(2,0),new Block() },
-            { new Point(1,1),new Block() }
+            { new Point(0,1),new Block() }
         });
             }
         }
         public Dictionary<Point, Block> Blocks { get { return blocks; } }
+        public Color Color
+        {
+            get { return Color.Black; }
+            set
+            {
+                foreach (KeyValuePair<Point, Block> pair in blocks)
+                {
+                    pair.Value.Color = value;
+                }
+            }
+        }
         #endregion
     }
 }

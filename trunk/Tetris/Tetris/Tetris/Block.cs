@@ -15,22 +15,23 @@ namespace Tetris
         #endregion
 
         #region Methods
-        public void Update()
-        {
-
-        }
         #endregion
 
         #region Constructors
         public Block()
         {
             texture = Assets.DummyTexture;
-            color = Color.Red;
+            color = Color.White;
         }
         #endregion
 
         #region Properties
         public Texture2D Texture { get { return texture; } }
+        public Color Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
         #endregion
     }
 }
