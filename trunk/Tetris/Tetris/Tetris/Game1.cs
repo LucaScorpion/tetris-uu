@@ -51,9 +51,12 @@ namespace Tetris
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
             Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
 
-            //Load test world
-            GameManager.GameWorld = new World(20, 20, new Rectangle(10, 10, 320, 320));
-            GameManager.GameWorld.CurrentShape = new Shape(GameManager.GameWorld);
+            //Load test worlds
+            GameManager.GameWorld.Add(new World(new Rectangle(20, 30, 260, 420), 10));
+            GameManager.GameWorld.Add(new World(new Rectangle(300, 25, 130, 210), 5));
+            GameManager.GameWorld.Add(new World(new Rectangle(300, 245, 130, 210), 5));
+            GameManager.GameWorld.Add(new World(new Rectangle(450, 245, 130, 210), 5));
+            GameManager.GameWorld.Add(new World(new Rectangle(450, 25, 130, 210), 5));
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace Tetris
     {
         #region Fields
         static GameState currentGameState = GameState.StartScreen; //Default gamestate is startscreen
-        static World gameWorld;
+        static List<World> gameWorld = new List<World>();
         static GameTime gameTime;
         static Random random = new Random(7331);
         #endregion
@@ -27,7 +27,10 @@ namespace Tetris
             switch (currentGameState)
             {
                 case GameState.Playing:
-                    gameWorld.Update();
+                    foreach (World w in gameWorld)
+                    {
+                        w.Update();
+                    }
                     break;
                 case GameState.Menu:
                     break;
@@ -47,7 +50,10 @@ namespace Tetris
             {
                 case GameState.Playing:
                     s.Begin();
-                    gameWorld.Draw(s);
+                    foreach (World w in gameWorld)
+                    {
+                        w.Draw(s);
+                    }
                     s.End();
                     break;
                 case GameState.Menu:
@@ -63,7 +69,7 @@ namespace Tetris
         #endregion
 
         #region Properties
-        public static World GameWorld { get { return gameWorld; } set { gameWorld = value; } }
+        public static List<World> GameWorld { get { return gameWorld; } set { gameWorld = value; } }
         public static GameTime GameTime { get { return gameTime; } }
         public static Random Random { get { return random; } }
         #endregion

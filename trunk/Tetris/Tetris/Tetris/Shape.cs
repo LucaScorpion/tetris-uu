@@ -11,221 +11,112 @@ namespace Tetris
     public class Shape
     {
         #region Fields
-        Dictionary<Point,Block> blocks = new Dictionary<Point,Block>();
+        Block[,] grid;
+        Point location;
+        Vector2 gridCenter;
         #endregion
 
         #region Methods
-        public void AddBlock(Block block, int x, int y)
+        public void Draw(SpriteBatch spriteBatch, World world)
         {
-            blocks.Add(new Point(x, y), block);
-        }
-        public void AddBlock(Block block, Vector2 pos)
-        {
-            blocks.Add(new Point((int)pos.X, (int)pos.Y), block);
-        }
-        public void AddBlock(Block block, Point point)
-        {
-            blocks.Add(point, block);
-        }
-        public void MoveRight(World world)
-        {
-            Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
-
-            foreach (KeyValuePair<Point, Block> pair in blocks)
+            for (int y = 0; y < grid.GetLength(0); y++)
             {
-                Point nextPoint = new Point(pair.Key.X + 1, pair.Key.Y);
-                newBlocks.Add(nextPoint, pair.Value);
-                if (world.Blocks.ContainsKey(nextPoint) || nextPoint.X >= world.Columns)
+                for (int x = 0; x < grid.GetLength(1); x++)
                 {
-                    //Can't move. exit loop
-                    return;
+                    if (grid[y, x] != null)
+                    {
+                        spriteBatch.Draw(grid[y, x].Texture, world.CalculateBlockRectangle(GetWorldLocation(x, y)), grid[y, x].Color);
+                    }
                 }
             }
-
-            //Replace the blocks
-            blocks = newBlocks;
         }
-        public void MoveLeft(World world)
+        Point GetWorldLocation(int x, int y)
         {
-            Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
-
-            foreach (KeyValuePair<Point, Block> pair in blocks)
-            {
-                Point nextPoint = new Point(pair.Key.X - 1, pair.Key.Y);
-                newBlocks.Add(nextPoint, pair.Value);
-                if (world.Blocks.ContainsKey(nextPoint) || nextPoint.X < 0)
-                {
-                    //Can't move. exit loop
-                    return;
-                }
-            }
-
-            //Replace the blocks
-            blocks = newBlocks;
-        }
-        public Boolean MoveDown(World world)
-        {
-            Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
-
-            foreach (KeyValuePair<Point, Block> pair in blocks)
-            {
-                Point nextPoint = new Point(pair.Key.X,pair.Key.Y + 1);
-                newBlocks.Add(nextPoint, pair.Value);
-                if(world.Blocks.ContainsKey(nextPoint) || nextPoint.Y >= world.Rows)
-                {
-                    //Can't move. exit loop
-                    return false;
-                }
-            }
-
-            //Replace the blocks
-            blocks = newBlocks;
-
-            return true;
+            return new Point((int)(x - (int)gridCenter.X + location.X), (int)(y - (int)gridCenter.Y + location.Y));
         }
         #endregion
 
         #region Constructors
-
-        public Shape(Dictionary<Point, Block> points)
-        {
-            blocks = points;
-        }
         public Shape(World world)
         {
-            Dictionary<Point, Block> newBlocks = new Dictionary<Point, Block>();
-            //Random int for what kind of shape
+            //Select random shape
             switch (GameManager.Random.Next(0, 7))
             {
                 case 0:
-                    newBlocks = IShape.blocks;
+                    grid = IShape;
                     break;
                 case 1:
-                    newBlocks = ZShape.blocks;
+                    grid = LShape;
                     break;
                 case 2:
-                    newBlocks = SShape.blocks;
+                    grid = JShape;
                     break;
                 case 3:
-                    newBlocks = OShape.blocks;
+                    grid = ZShape;
                     break;
                 case 4:
-                    newBlocks = TShape.blocks;
+                    grid = SShape;
                     break;
                 case 5:
-                    newBlocks = JShape.blocks;
+                    grid = TShape;
                     break;
                 case 6:
-                    newBlocks = LShape.blocks;
+                    grid = OShape;
                     break;
             }
 
-            //Move to center and add blocks
-            foreach (KeyValuePair<Point, Block> pair in newBlocks)
-            {
-                blocks.Add(new Point(pair.Key.X + world.Columns / 2, pair.Key.Y), pair.Value);
-            }
+            
+            gridCenter = new Vector2(grid.GetLength(1), grid.GetLength(0)) / 2;
+            location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
 
             //Random Color
-            this.Color = new Color(255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2));
+            Color = new Color(255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2));
         }
         #endregion
 
         #region Properties
         //Default shapes
-        public static Shape IShape
+        public static Block[,] IShape
         {
-            get
-            {
-                return new Shape(new Dictionary<Point, Block> {
-            { new Point(-2,0),new Block() },
-            { new Point(-1,0),new Block() },
-            { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() }
-        });
-            }
+            get { return new Block[4, 4] { { null, null, null, null }, { new Block(), new Block(), new Block(), new Block() }, { null, null, null, null }, { null, null, null, null } }; }
         }
-        public static Shape ZShape
+        public static Block[,] LShape
         {
-            get
-            {
-                return new Shape(new Dictionary<Point, Block> {
-            { new Point(-1,0),new Block() },
-            { new Point(0,0),new Block() },
-            { new Point(0,1),new Block() },
-            { new Point(1,1),new Block() }
-        });
-            }
+            get { return new Block[3, 3] { { null, null, new Block() }, { new Block(), new Block(), new Block() }, { null, null, null } }; }
         }
-        public static Shape SShape
+        public static Block[,] JShape
         {
-            get
-            {
-                return new Shape(new Dictionary<Point, Block> {
-            { new Point(-1,1),new Block() },
-            { new Point(0,1),new Block() },
-            { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() }
-        });
-            }
+            get { return new Block[3, 3] { { new Block(), null, null }, { new Block(), new Block(), new Block() }, { null, null, null } }; }
         }
-        public static Shape OShape
+        public static Block[,] ZShape
         {
-            get
-            {
-                return new Shape(new Dictionary<Point, Block> {
-            { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(1,1),new Block() },
-            { new Point(0,1),new Block() }
-        });
-            }
+            get { return new Block[3, 3] { { new Block(), new Block(), null }, { null, new Block(), new Block() }, { null, null, null } }; }
         }
-        public static Shape TShape
+        public static Block[,] SShape
         {
-            get
-            {
-                return new Shape(new Dictionary<Point, Block> {
-            { new Point(-1,1),new Block() },
-            { new Point(0,1),new Block() },
-            { new Point(1,1),new Block() },
-            { new Point(0,0),new Block() }
-        });
-            }
+            get { return new Block[3, 3] { { null, new Block(), new Block() }, { new Block(), new Block(), null }, { null, null, null } }; }
         }
-        public static Shape LShape
+        public static Block[,] TShape
         {
-            get
-            {
-                return new Shape(new Dictionary<Point, Block> {
-            { new Point(-1,0),new Block() },
-            { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(-1,1),new Block() }
-        });
-            }
+            get { return new Block[3, 3] { { null, new Block(), null }, { new Block(), new Block(), new Block() }, { null, null, null } }; }
         }
-        public static Shape JShape
+        public static Block[,] OShape
         {
-            get
-            {
-                return new Shape(new Dictionary<Point, Block> {
-            { new Point(-1,0),new Block() },
-            { new Point(0,0),new Block() },
-            { new Point(1,0),new Block() },
-            { new Point(1,1),new Block() }
-        });
-            }
+            get { return new Block[2, 2] { { new Block(), new Block() }, { new Block(), new Block() } }; }
         }
-        public Dictionary<Point, Block> Blocks { get { return blocks; } }
+
+        //Properties
         public Color Color
         {
-            get { return Color.Black; }
+            get { return Color.White; }
             set
             {
-                foreach (KeyValuePair<Point, Block> pair in blocks)
+                foreach (Block b in grid)
                 {
-                    pair.Value.Color = value;
+                    if (b != null)
+                    {
+                        b.Color = value;
+                    }
                 }
             }
         }

@@ -15,6 +15,10 @@ namespace Tetris
         #endregion
 
         #region Methods
+        public void Draw(SpriteBatch spriteBatch, Rectangle rect)
+        {
+            spriteBatch.Draw(texture, rect, color);
+        }
         #endregion
 
         #region Constructors
