@@ -111,6 +111,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets.cs" />
+    <Compile Include="Block.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="InputState.cs" />
