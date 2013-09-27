@@ -49,13 +49,6 @@ namespace Tetris
         #endregion
 
         #region Methods
-        public Shape(Dictionary<Point,Block> points)
-        {
-            blocks = points;
-        }
-        public Shape()
-        {
-        }
         public void AddBlock(Block block, int x, int y)
         {
             blocks.Add(new Point(x, y), block);
@@ -85,6 +78,14 @@ namespace Tetris
         #endregion
 
         #region Constructors
+
+        public Shape(Dictionary<Point, Block> points)
+        {
+            blocks = points;
+        }
+        public Shape()
+        {
+        }
         #endregion
 
         #region Properties
