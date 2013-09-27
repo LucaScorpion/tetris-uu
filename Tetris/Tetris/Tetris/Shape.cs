@@ -10,7 +10,9 @@ namespace Tetris
     public class Shape
     {
         #region Fields
+        Point location = new Point();
         Dictionary<Point,Block> blocks = new Dictionary<Point,Block>();
+        Color color = Color.White;
 
         //Default shapes
         static Shape longDefaultShape = new Shape(new Dictionary<Point, Block> {
@@ -26,13 +28,13 @@ namespace Tetris
             { new Point(2,0),new Block() },
             { new Point(1,1),new Block() }
         });
-        static Shape zDefaultShape = new Shape(new Dictionary<Point, Block> {
+        static Shape sDefaultShape = new Shape(new Dictionary<Point, Block> {
             { new Point(0,1),new Block() },
             { new Point(1,1),new Block() },
             { new Point(1,0),new Block() },
             { new Point(2,0),new Block() }
         });
-        static Shape sDefaultShape = new Shape(new Dictionary<Point, Block> {
+        static Shape zDefaultShape = new Shape(new Dictionary<Point, Block> {
             { new Point(0,0),new Block() },
             { new Point(1,0),new Block() },
             { new Point(1,1),new Block() },
@@ -77,7 +79,7 @@ namespace Tetris
         {
             foreach (KeyValuePair<Point, Block> pair in blocks)
             {
-                pair.Value.Draw(spriteBatch);
+                spriteBatch.Draw(pair.Value.Texture, GameManager.GameWorld.CalculateBlockRectangle(new Point(location.X + pair.Key.X,location.Y + pair.Key.Y)), color);
             }
         }
         #endregion
@@ -106,6 +108,7 @@ namespace Tetris
         {
             get { return tDefaultShape; }
         }
+        public Dictionary<Point, Block> Blocks { get { return blocks; } }
         #endregion
     }
 }

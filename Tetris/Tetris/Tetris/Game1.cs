@@ -14,13 +14,12 @@ namespace Tetris
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Tetris : Microsoft.Xna.Framework.Game
+    public class TetrisGame : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        GameManager gameManager;
 
-        public Tetris()
+        public TetrisGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -51,8 +50,9 @@ namespace Tetris
             Assets.init(GraphicsDevice);
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
 
-            //Create gameManager
-            gameManager = new GameManager();
+            //Load test world
+            GameManager.GameWorld = new World(20, 20, new Rectangle(10, 10, 300, 300));
+            GameManager.GameWorld.AddShape(Shape.ZShape, new Point(0, 0));
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Tetris
         protected override void Update(GameTime gameTime)
         {
             //update game
-            gameManager.Update();
+            GameManager.Update();
 
             base.Update(gameTime);
         }
@@ -90,7 +90,7 @@ namespace Tetris
             spriteBatch.End();
 
             //Draw game
-            gameManager.Draw(spriteBatch);
+            GameManager.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }

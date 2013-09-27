@@ -15,6 +15,7 @@ namespace Tetris
 
         int rows, columns;
         Rectangle rect = new Rectangle();
+        int borderOffset = 10;
 
         #endregion
 
@@ -30,7 +31,7 @@ namespace Tetris
             //Draw blocks
             foreach (KeyValuePair<Point, Block> pair in blocks)
             {
-                pair.Value.Draw(spriteBatch);
+                spriteBatch.Draw(pair.Value.Texture, CalculateBlockRectangle(pair.Key), Color.White);
             }
         }
         public void AddBlock(Block block, int x, int y)
@@ -44,6 +45,17 @@ namespace Tetris
         public void AddBlock(Block block, Point point)
         {
             blocks.Add(point, block);
+        }
+        public void AddShape(Shape shape, Point point)
+        {
+            foreach(KeyValuePair<Point,Block> b in shape.Blocks)
+            {
+                blocks.Add(new Point(b.Key.X + point.X,b.Key.Y + point.Y), b.Value);
+            }
+        }
+        public Rectangle CalculateBlockRectangle(Point point)
+        {
+            return new Rectangle((int)(point.X * (rect.Width - 2 * borderOffset) / columns) + rect.X + borderOffset, (int)(point.Y * (rect.Height - 2 * borderOffset) / rows) + rect.Y + borderOffset, (int)((rect.Width - 2 * borderOffset) / columns), (int)((rect.Height - 2 * borderOffset) / rows));
         }
         #endregion
 
