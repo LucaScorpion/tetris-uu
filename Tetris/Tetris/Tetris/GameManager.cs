@@ -13,11 +13,14 @@ namespace Tetris
         static GameState currentGameState = GameState.StartScreen; //Default gamestate is startscreen
 
         static World gameWorld;
+        static GameTime gameTime;
         #endregion
 
         #region Methods
-        public static void Update()
+        public static void Update(GameTime newGameTime)
         {
+            gameTime = newGameTime;
+
             switch (currentGameState)
             {
                 case GameState.Playing:
@@ -58,6 +61,7 @@ namespace Tetris
 
         #region Properties
         public static World GameWorld { get { return gameWorld; } set { gameWorld = value; } }
+        public static GameTime GameTime { get { return GameTime; } }
         #endregion
     }
     public enum GameState

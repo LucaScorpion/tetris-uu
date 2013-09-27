@@ -17,11 +17,20 @@ namespace Tetris
         Rectangle rect = new Rectangle();
         int borderOffset = 10;
 
+        int timeSinceMove = 0;
+        int movementSpeed = 1; //in blocks per seccond
         #endregion
 
         #region Methods
         public void Update()
         {
+            timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
+
+            if (timeSinceMove >= 1000 * movementSpeed)
+            {
+                currentShape.MoveDown();
+            }
+
         }
         public void Draw(SpriteBatch spriteBatch)
         {
