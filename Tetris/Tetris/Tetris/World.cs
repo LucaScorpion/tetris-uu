@@ -19,19 +19,24 @@ namespace Tetris
 
         Rectangle rect = new Rectangle();
         int borderOffset = 10;
+
+        bool isAlive = true;
         #endregion
 
         
         #region Methods
         public void Update()
         {
-            if (currentShape == null)
+            if (isAlive)
             {
-                currentShape = new Shape(this, controlMode);
-            }
+                if (currentShape == null)
+                {
+                    currentShape = new Shape(this, controlMode);
+                }
 
-            //Update shape
-            currentShape.Update(this);
+                //Update shape
+                currentShape.Update(this);
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -50,8 +55,16 @@ namespace Tetris
                 }
             }
 
-            //Draw shape
-            currentShape.Draw(spriteBatch, this);
+            //Dark grey overlay
+            if (!isAlive)
+            {
+                spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.Black * .6f);
+            }
+            else
+            {
+                //Draw shape
+                currentShape.Draw(spriteBatch, this);
+            }
 
 
         }
@@ -66,6 +79,10 @@ namespace Tetris
         public void AddBlock(Block block, Point location)
         {
             grid[location.Y, location.X] = block;
+        }
+        public void Kill()
+        {
+            isAlive = false;
         }
         #endregion
 

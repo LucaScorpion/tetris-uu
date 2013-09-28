@@ -216,6 +216,12 @@ namespace Tetris
 
             //Random Color
             Color = new Color(255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2));
+
+            //If can't spawn. kill world
+            if (!CanMove(new Point(0, 0), world))
+            {
+                world.Kill();
+            }
         }
         #endregion
 
