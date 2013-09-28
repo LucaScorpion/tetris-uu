@@ -27,13 +27,13 @@ namespace Tetris
         #region Methods
         public void Update()
         {
+            if (currentShape == null)
+            {
+                currentShape = new Shape(this, controlMode);
+            }
+
             if (isAlive)
             {
-                if (currentShape == null)
-                {
-                    currentShape = new Shape(this, controlMode);
-                }
-
                 //Update shape
                 currentShape.Update(this);
             }
@@ -60,11 +60,8 @@ namespace Tetris
             {
                 spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.Black * .6f);
             }
-            else
-            {
-                //Draw shape
-                currentShape.Draw(spriteBatch, this);
-            }
+            //Draw shape
+            currentShape.Draw(spriteBatch, this);
 
 
         }
