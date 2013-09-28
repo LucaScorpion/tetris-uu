@@ -23,6 +23,7 @@ namespace Tetris
         Keys down = Keys.Down;
         Keys left = Keys.Left;
         Keys right = Keys.Right;
+        Keys rotate = Keys.Up;
         #endregion
 
         #region Methods
@@ -56,6 +57,14 @@ namespace Tetris
                     {
                         location.X += 1;
                     }
+                }
+
+                //Rotate
+                if (InputState.isKeyPressed(rotate))
+                {
+                    RotateLeft(world);
+                    //Infinity lock
+                    timeSinceMove = 0;
                 }
             }
 
@@ -144,6 +153,31 @@ namespace Tetris
             }
             return true;
         }
+        void RotateLeft(World world)
+        {
+            Block[,] newGrid = new Block[grid.GetLength(0), grid.GetLength(1)];
+
+            for (int y = 0; y < grid.GetLength(0); y++)
+            {
+                for (int x = 0; x < grid.GetLength(1); x++)
+                {
+                     newGrid[(int)(gridCenter.Y + gridCenter.X - x), (int)(gridCenter.X - gridCenter.Y + y)] = grid[y, x];
+                }
+            }
+            if(CanMove(new Point(0,0),world))
+            {
+                //Wallkick
+                if (location.X < gridCenter.X)
+                {
+                    location.X += 1;
+                }
+                else if (location.X >= world.Columns - gridCenter.X)
+                {
+                    location.X -= 1;
+                }
+                grid = newGrid;
+            }
+        }
         #endregion
 
         #region Constructors
@@ -176,7 +210,7 @@ namespace Tetris
             }
 
             
-            gridCenter = new Vector2(grid.GetLength(1), grid.GetLength(0)) / 2;
+            gridCenter = new Vector2(grid.GetLength(1) - 1, grid.GetLength(0) - 1) / 2;
             location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
             this.controlMode = controlMode;
 
