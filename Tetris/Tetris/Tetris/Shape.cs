@@ -44,7 +44,7 @@ namespace Tetris
                 //Move left
                 if (InputState.isKeyPressed(left))
                 {
-                    if (CanMove(new Point(-1, 0), world))
+                    if (CanMove(new Point(-1, 0), world, grid))
                     {
                         location.X -= 1;
                     }
@@ -53,7 +53,7 @@ namespace Tetris
                 //Move right
                 if (InputState.isKeyPressed(right))
                 {
-                    if (CanMove(new Point(1, 0), world))
+                    if (CanMove(new Point(1, 0), world, grid))
                     {
                         location.X += 1;
                     }
@@ -71,7 +71,7 @@ namespace Tetris
             //Move down
             if (timeSinceMove >= 1000 / moveSpeedDown)
             {
-                if (CanMove(new Point(0, 1), world))
+                if (CanMove(new Point(0, 1), world, grid))
                 {
                     location.Y += 1;
                 }
@@ -86,13 +86,15 @@ namespace Tetris
         }
         public void Draw(SpriteBatch spriteBatch, World world)
         {
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int y = 0; y < grid.GetLength(1); y++)
             {
-                for (int x = 0; x < grid.GetLength(1); x++)
+                for (int x = 0; x < grid.GetLength(0); x++)
                 {
-                    if (grid[y, x] != null)
+                    if (grid[x, y] != null)
                     {
-                        spriteBatch.Draw(grid[y, x].Texture, world.CalculateBlockRectangle(GetWorldLocation(x, y)), grid[y, x].Color);
+                        Rectangle blockRect = world.CalculateBlockRectangle(GetWorldLocation(x, y));
+
+                        spriteBatch.Draw(grid[x, y].Texture, blockRect, grid[x, y].Color);
                     }
                 }
             }
@@ -103,24 +105,28 @@ namespace Tetris
         }
         void MoveToWorld(World world)
         {
+            //Move shape to world
             for (int y = 0; y < grid.GetLength(0); y++)
             {
                 for (int x = 0; x < grid.GetLength(1); x++)
                 {
-                    if (grid[y, x] != null)
+                    if (grid[x, y] != null)
                     {
-                        world.AddBlock(grid[y, x], GetWorldLocation(x, y));
+                        world.AddBlock(grid[x, y], GetWorldLocation(x, y));
                     }
                 }
             }
+
+            //destroy all full rows
+            world.DestroyFullRows();
         }
-        bool CanMove(Point direction, World world)
+        bool CanMove(Point direction, World world, Block[,] grid)
         {
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int y = 0; y < grid.GetLength(1); y++)
             {
-                for (int x = 0; x < grid.GetLength(1); x++)
+                for (int x = 0; x < grid.GetLength(0); x++)
                 {
-                    if (grid[y, x] != null)
+                    if (grid[x, y] != null)
                     {
                         //This check if this block from the grid can move down on the world grid.
                         Point worldLocation = GetWorldLocation(x, y);
@@ -143,7 +149,7 @@ namespace Tetris
                         }
 
                         //Check collision with world blocks
-                        if (world.Grid[worldLocation.Y + direction.Y, worldLocation.X + direction.X] != null)
+                        if (world.Grid[worldLocation.X + direction.X, worldLocation.Y + direction.Y] != null)
                         {
                             //There is a block here!
                             return false;
@@ -157,25 +163,37 @@ namespace Tetris
         {
             Block[,] newGrid = new Block[grid.GetLength(0), grid.GetLength(1)];
 
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int y = 0; y < grid.GetLength(1); y++)
             {
-                for (int x = 0; x < grid.GetLength(1); x++)
+                for (int x = 0; x < grid.GetLength(0); x++)
                 {
-                     newGrid[(int)(gridCenter.Y + gridCenter.X - x), (int)(gridCenter.X - gridCenter.Y + y)] = grid[y, x];
+                    newGrid[(int)(gridCenter.Y - y + gridCenter.X), (int)(x - gridCenter.X + gridCenter.Y)] = grid[x,y];
                 }
             }
-            if(CanMove(new Point(0,0),world))
+            //Check if rotation is possible
+            if (CanMove(Point.Zero, world, newGrid))
             {
-                //Wallkick
-                if (location.X < gridCenter.X)
-                {
-                    location.X += 1;
-                }
-                else if (location.X >= world.Columns - gridCenter.X)
-                {
-                    location.X -= 1;
-                }
                 grid = newGrid;
+            }
+            else
+            {
+                //Check for wallkick
+                if (location.X - gridCenter.X <= 0)
+                {
+                    //Is kicking the left wall
+                    location.X = (int)gridCenter.X;
+                }
+                else if (location.X + gridCenter.X >= world.Columns)
+                {
+                    //Is kicking the right wall
+                    location.X = world.Columns - (int)gridCenter.X - 1;
+                }
+
+                //Check again
+                if (CanMove(Point.Zero, world, newGrid))
+                {
+                    grid = newGrid;
+                }
             }
         }
         #endregion
@@ -184,7 +202,7 @@ namespace Tetris
         public Shape(World world, ControlMode controlMode)
         {
             //Select random shape
-            switch (GameManager.Random.Next(0, 7))
+            switch (GameManager.Random.Next(0, 1))
             {
                 case 0:
                     grid = IShape;
@@ -210,7 +228,7 @@ namespace Tetris
             }
 
             
-            gridCenter = new Vector2(grid.GetLength(1) - 1, grid.GetLength(0) - 1) / 2;
+            gridCenter = new Vector2(grid.GetLength(0) - 1, grid.GetLength(1) - 1) / 2;
             location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
             this.controlMode = controlMode;
 
@@ -218,7 +236,7 @@ namespace Tetris
             Color = new Color(255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2));
 
             //If can't spawn. kill world
-            if (!CanMove(new Point(0, 0), world))
+            if (!CanMove(new Point(0, 0), world, grid))
             {
                 world.Kill();
             }
@@ -229,27 +247,27 @@ namespace Tetris
         //Default shapes
         public static Block[,] IShape
         {
-            get { return new Block[4, 4] { { null, null, null, null }, { new Block(), new Block(), new Block(), new Block() }, { null, null, null, null }, { null, null, null, null } }; }
+            get { return new Block[4, 4] { { null, new Block(), null, null }, { null, new Block(), null, null }, { null, new Block(), null, null }, { null, new Block(), null, null } }; }
         }
         public static Block[,] LShape
         {
-            get { return new Block[3, 3] { { null, null, new Block() }, { new Block(), new Block(), new Block() }, { null, null, null } }; }
+            get { return new Block[3, 3] { { null, new Block(), new Block() }, { null, new Block(), null }, { null, new Block(), null } }; }
         }
         public static Block[,] JShape
         {
-            get { return new Block[3, 3] { { new Block(), null, null }, { new Block(), new Block(), new Block() }, { null, null, null } }; }
+            get { return new Block[3, 3] { { null, new Block(), null }, { null, new Block(), null }, { null, new Block(), new Block() } }; }
         }
         public static Block[,] ZShape
         {
-            get { return new Block[3, 3] { { new Block(), new Block(), null }, { null, new Block(), new Block() }, { null, null, null } }; }
+            get { return new Block[3, 3] { { null, new Block(), null }, { null, new Block(), new Block() }, { null, null, new Block() } }; }
         }
         public static Block[,] SShape
         {
-            get { return new Block[3, 3] { { null, new Block(), new Block() }, { new Block(), new Block(), null }, { null, null, null } }; }
+            get { return new Block[3, 3] { { null, null, new Block() }, { null, new Block(), new Block() }, { null, new Block(), null } }; }
         }
         public static Block[,] TShape
         {
-            get { return new Block[3, 3] { { null, new Block(), null }, { new Block(), new Block(), new Block() }, { null, null, null } }; }
+            get { return new Block[3, 3] { { null, new Block(), null }, { null, new Block(), new Block() }, { null, new Block(), null } }; }
         }
         public static Block[,] OShape
         {
