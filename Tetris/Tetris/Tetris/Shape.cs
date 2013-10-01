@@ -18,6 +18,7 @@ namespace Tetris
         int moveSpeedDown = 4; //In blocks per sec
         int moveSpeedBoost = 7; //Factor of speed boost when boosting down
         ControlMode controlMode = ControlMode.AI;
+        bool mute = true;
 
         //Controls
         Keys down = Keys.Down;
@@ -79,7 +80,11 @@ namespace Tetris
                 {
                     //Can't move down. 
                     MoveToWorld(world);
-                    world.CurrentShape = new Shape(world, controlMode);
+                    world.CurrentShape = new Shape(world, controlMode, mute);
+                    
+                    //Play lock sound
+                    if(!mute)
+                        Assets.Audio.LockSound.Play();
                 }
                 timeSinceMove = 0;
             }
@@ -199,7 +204,7 @@ namespace Tetris
         #endregion
 
         #region Constructors
-        public Shape(World world, ControlMode controlMode)
+        public Shape(World world, ControlMode controlMode, bool mute)
         {
             //Select random shape
             switch (GameManager.Random.Next(0, 1))
@@ -234,6 +239,8 @@ namespace Tetris
 
             //Random Color
             Color = new Color(255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2));
+
+            this.mute = mute;
 
             //If can't spawn. kill world
             if (!CanMove(new Point(0, 0), world, grid))
