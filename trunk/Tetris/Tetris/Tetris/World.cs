@@ -12,7 +12,7 @@ namespace Tetris
     {
         #region Fields
         static int rows = 20, columns = 12;
-        Block[,] grid = new Block[rows, columns];
+        Block[,] grid = new Block[columns, rows];
 
         Shape currentShape;
         ControlMode controlMode;
@@ -48,9 +48,9 @@ namespace Tetris
             {
                 for (int x = 0; x < columns; x++)
                 {
-                    if (grid[y, x] != null)
+                    if (grid[x, y] != null)
                     {
-                        grid[y, x].Draw(spriteBatch, CalculateBlockRectangle(x, y));
+                        grid[x, y].Draw(spriteBatch, CalculateBlockRectangle(x, y));
                     }
                 }
             }
@@ -65,6 +65,50 @@ namespace Tetris
 
 
         }
+        List<int> GetFullRows()
+        {
+            List<int> fullRows = new List<int>();
+            for (int y = rows - 1; y >= 0; y--)
+            {
+                bool fullRow = true;
+                for (int x = columns - 1; x >= 0 && fullRow; x--)
+                {
+                    if (grid[x, y] == null)
+                    {
+                        fullRow = false;
+                    }
+                }
+                if (fullRow)
+                {
+                    fullRows.Add(y);
+                }
+            }
+
+            return fullRows;
+        }
+        public void DestroyFullRows()
+        {
+            //Get all full rows
+            List<int> fullRows = GetFullRows();
+
+            //Destroy them and move down all blocks above them
+            for (int i = 0; i < fullRows.Count(); i++)
+            {
+                for (int y = fullRows[i] + i; y > 0; y--)
+                {
+                    for (int x = 0; x < columns; x++)
+                    {
+                        grid[x, y] = grid[x, y - 1];
+                    }
+                }
+            }
+
+            //Remove row 0
+            for (int x = 0; x < columns; x++)
+            {
+                grid[x, 0] = null;
+            }
+        }
         public Rectangle CalculateBlockRectangle(int x, int y)
         {
             return new Rectangle(rect.X + borderOffset + x * (rect.Width - 2 * borderOffset) / columns, rect.Y + borderOffset + y * (rect.Height - 2 * borderOffset) / rows, (rect.Width - 2 * borderOffset) / columns, (rect.Height - 2 * borderOffset) / rows);
@@ -75,7 +119,7 @@ namespace Tetris
         }
         public void AddBlock(Block block, Point location)
         {
-            grid[location.Y, location.X] = block;
+            grid[location.X, location.Y] = block;
         }
         public void Kill()
         {
