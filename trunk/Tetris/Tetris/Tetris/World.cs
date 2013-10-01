@@ -21,6 +21,7 @@ namespace Tetris
         int borderOffset = 10;
 
         bool isAlive = true;
+        bool muteShape = true;
         #endregion
 
         
@@ -29,7 +30,7 @@ namespace Tetris
         {
             if (currentShape == null)
             {
-                currentShape = new Shape(this, controlMode);
+                currentShape = new Shape(this, controlMode, muteShape);
             }
 
             if (isAlive)
@@ -128,11 +129,12 @@ namespace Tetris
         #endregion
 
         #region Constructors
-        public World(Rectangle rect, int offset, ControlMode controlMode)
+        public World(Rectangle rect, int offset, ControlMode controlMode, bool muteShape = true)
         {
             this.rect = rect;
             this.borderOffset = offset;
             this.controlMode = controlMode;
+            this.muteShape = muteShape;
         }
         #endregion
 

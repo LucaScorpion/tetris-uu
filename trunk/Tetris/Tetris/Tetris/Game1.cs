@@ -50,9 +50,10 @@ namespace Tetris
             Assets.init(GraphicsDevice);
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
             Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
+            Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
 
             //Load test worlds
-            GameManager.GameWorld.Add(new World(new Rectangle(20, 30, 260, 420), 10, ControlMode.Player));
+            GameManager.GameWorld.Add(new World(new Rectangle(20, 30, 260, 420), 10, ControlMode.Player,false));
             GameManager.GameWorld.Add(new World(new Rectangle(300, 25, 130, 210), 5, ControlMode.AI));
             GameManager.GameWorld.Add(new World(new Rectangle(300, 245, 130, 210), 5, ControlMode.AI));
             GameManager.GameWorld.Add(new World(new Rectangle(450, 245, 130, 210), 5, ControlMode.AI));

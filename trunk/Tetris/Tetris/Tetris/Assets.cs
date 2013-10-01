@@ -23,6 +23,10 @@ namespace Tetris
         {
             public static SpriteFont BasicFont;
         }
+        public struct Audio
+        {
+            public static SoundEffect LockSound;
+        }
         #endregion
 
         #region Methods
