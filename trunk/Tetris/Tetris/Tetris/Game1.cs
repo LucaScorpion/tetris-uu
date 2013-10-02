@@ -52,7 +52,7 @@ namespace Tetris
             Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
 
-            GameManager.MainMenu.AddButton(new Button(new Rectangle(350, 340, 100, 50), Color.White, Color.LightBlue, "Exit game", Assets.Fonts.BasicFont, Color.Black, this.Exit));
+            GameManager.MainMenu.AddButton(new Button(new Rectangle(350, 340, 120, 50), Color.White, Color.LightBlue, "Exit game", Assets.Fonts.BasicFont, Color.Black, this.Exit));
         }
 
         /// <summary>

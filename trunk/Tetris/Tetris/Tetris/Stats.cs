@@ -48,11 +48,11 @@ namespace Tetris
         public static void Draw(SpriteBatch s)
         {
             //Draw the text
-            s.DrawString(Assets.Fonts.BasicFont, "Lines cleared:", new Vector2(300, Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y), Color.White);
-            s.DrawString(Assets.Fonts.BasicFont, "Total score:", new Vector2(300, Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y * 3), Color.White);
+            s.DrawString(Assets.Fonts.BasicFont, "Lines cleared:", new Vector2(300, 30), Color.White);
+            s.DrawString(Assets.Fonts.BasicFont, "Total score:", new Vector2(300, 30 + Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y * 2), Color.White);
             //Draw the numbers
-            s.DrawString(Assets.Fonts.BasicFont, linesCleared.ToString(), new Vector2(500, Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y), Color.White);
-            s.DrawString(Assets.Fonts.BasicFont, score.ToString(), new Vector2(500, Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y * 3), Color.White);
+            s.DrawString(Assets.Fonts.BasicFont, linesCleared.ToString(), new Vector2(500, 30), Color.White);
+            s.DrawString(Assets.Fonts.BasicFont, score.ToString(), new Vector2(500, 30 + Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y * 2), Color.White);
         }
         #endregion
 
