@@ -43,28 +43,26 @@ namespace Tetris
         {
             //Draw bg
             spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.LightBlue);
-
-            //Draw all blocks
-            for (int y = 0; y < rows; y++)
+            //If the game is paused, only draw the background and not the blocks
+            if (GameManager.CurrentGameState != GameState.Paused)
             {
-                for (int x = 0; x < columns; x++)
+                //Draw all blocks
+                for (int y = 0; y < rows; y++)
                 {
-                    if (grid[x, y] != null)
+                    for (int x = 0; x < columns; x++)
                     {
-                        grid[x, y].Draw(spriteBatch, CalculateBlockRectangle(x, y));
+                        if (grid[x, y] != null)
+                        {
+                            grid[x, y].Draw(spriteBatch, CalculateBlockRectangle(x, y));
+                        }
                     }
                 }
+                //Draw shape
+                currentShape.Draw(spriteBatch, this);
             }
-
-            //Dark grey overlay
+            //Dark grey overlay when player is dead
             if (!isAlive)
-            {
                 spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.Black * .6f);
-            }
-            //Draw shape
-            currentShape.Draw(spriteBatch, this);
-
-
         }
         List<int> GetFullRows()
         {
