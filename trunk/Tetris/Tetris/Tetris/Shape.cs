@@ -24,18 +24,19 @@ namespace Tetris
         Keys down = Keys.Down;
         Keys left = Keys.Left;
         Keys right = Keys.Right;
-        Keys rotate = Keys.Up;
+        Keys rotate = Keys.C;
+        Keys drop = Keys.Up;
         #endregion
 
         #region Methods
         public void Update(World world)
         {
-            //add time
+            //Add time
             timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
 
             if (controlMode == ControlMode.Player)
             {
-                //add time
+                //Add time
                 if (InputState.isKeyDown(down))
                 {
                     //Complete boost for keypress
@@ -78,15 +79,31 @@ namespace Tetris
                 }
                 else
                 {
-                    //Can't move down. 
+                    //Can't move down
                     MoveToWorld(world);
                     world.CurrentShape = new Shape(world, controlMode, mute);
-                    
+
                     //Play lock sound
-                    if(!mute)
+                    if (!mute)
                         Assets.Audio.LockSound.Play();
                 }
                 timeSinceMove = 0;
+            }
+
+            //Hard drop
+            if (InputState.isKeyPressed(drop))
+            {
+                while (CanMove(new Point(0, 1), world, grid))
+                {
+                    location.Y += 1;
+                }
+                //Move shape to world 
+                MoveToWorld(world);
+                world.CurrentShape = new Shape(world, controlMode, mute);
+
+                //Play lock sound
+                if (!mute)
+                    Assets.Audio.LockSound.Play();
             }
         }
         public void Draw(SpriteBatch spriteBatch, World world)
