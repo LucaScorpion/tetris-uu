@@ -12,6 +12,8 @@ namespace Tetris
         #region Fields
         static int linesCleared;
         static int score;
+        static int multiplier = 1;
+        static int maxMultiplier = 3;
         #endregion
 
         #region Methods
@@ -26,23 +28,28 @@ namespace Tetris
             linesCleared += fullRows;
             while (fullRows >= 4)
             {
-                score += 100;
+                score += 100 * multiplier;
                 fullRows -= 4;
+                if (multiplier <= maxMultiplier)
+                    multiplier++;
             }
             if (fullRows == 3)
             {
                 score += 60;
                 fullRows -= 3;
+                multiplier = 1;
             }
             if (fullRows == 2)
             {
                 score += 30;
                 fullRows -= 2;
+                multiplier = 1;
             }
             if (fullRows == 1)
             {
                 score += 10;
                 fullRows -= 1;
+                multiplier = 1;
             }
         }
         public static void Draw(SpriteBatch s)

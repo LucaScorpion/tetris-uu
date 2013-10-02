@@ -73,16 +73,11 @@ namespace Tetris
                 for (int x = columns - 1; x >= 0 && fullRow; x--)
                 {
                     if (grid[x, y] == null)
-                    {
                         fullRow = false;
-                    }
                 }
                 if (fullRow)
-                {
                     fullRows.Add(y);
-                }
             }
-
             return fullRows;
         }
         public void DestroyFullRows()
@@ -99,17 +94,13 @@ namespace Tetris
                 for (int y = fullRows[i] + i; y > 0; y--)
                 {
                     for (int x = 0; x < columns; x++)
-                    {
                         grid[x, y] = grid[x, y - 1];
-                    }
                 }
             }
 
             //Remove row 0
             for (int x = 0; x < columns; x++)
-            {
                 grid[x, 0] = null;
-            }
         }
         public Rectangle CalculateBlockRectangle(int x, int y)
         {
