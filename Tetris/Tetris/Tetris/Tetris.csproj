@@ -121,6 +121,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Shape.cs" />
+    <Compile Include="Stats.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

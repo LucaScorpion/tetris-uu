@@ -60,6 +60,10 @@ namespace Tetris
                     {
                         w.Draw(s);
                     }
+                    if (currentGameMode == GameMode.Singleplayer)
+                    {
+                        Stats.Draw(s);
+                    }
                     break;
                 case GameState.Menu:
                     mainMenu.Draw(s);
@@ -77,6 +81,8 @@ namespace Tetris
         {
             //Set gamemode
             currentGameMode = GameMode.Singleplayer;
+            //Clear stats
+            Stats.ClearStats();
             //Load world
             GameManager.GameWorld.Add(new World(new Rectangle(20, 30, 260, 420), 10, ControlMode.Player, false));
             //Change gamestate

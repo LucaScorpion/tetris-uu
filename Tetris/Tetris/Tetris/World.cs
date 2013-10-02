@@ -92,6 +92,9 @@ namespace Tetris
             //Get all full rows
             List<int> fullRows = GetFullRows();
 
+            //Calculate score in Stats
+            Stats.CalculateScore(fullRows.Count());
+
             //Destroy them and move down all blocks above them
             for (int i = 0; i < fullRows.Count(); i++)
             {
