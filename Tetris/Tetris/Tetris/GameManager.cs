@@ -13,8 +13,10 @@ namespace Tetris
         static GameState currentGameState = GameState.StartScreen; //Default gamestate is startscreen
         static List<World> gameWorld = new List<World>();
         static GameTime gameTime;
-        static Random random = new Random(7331);
-        static Button button = new Button(new Rectangle(0, 0, 100, 50), Color.White, Color.LightBlue, "Start game", Assets.Fonts.BasicFont, Color.Black, Clicked);
+        static Random random = new Random(1337);
+        static Menu mainMenu = new Menu(new List<Button>() {
+            new Button(new Rectangle(0, 0, 100, 50), Color.White, Color.LightBlue, "Start game", Assets.Fonts.BasicFont, Color.Black, StartPlaying)
+        });
         #endregion
 
         #region Methods
@@ -34,11 +36,12 @@ namespace Tetris
                     }
                     break;
                 case GameState.Menu:
+                    mainMenu.Update();
                     break;
                 case GameState.Paused:
                     break;
                 case GameState.StartScreen:
-                    button.Update();
+                    currentGameState = GameState.Menu;
                     break;
                 case GameState.GameOver:
                     break;
@@ -56,18 +59,18 @@ namespace Tetris
                     }
                     break;
                 case GameState.Menu:
+                    mainMenu.Draw(s);
                     break;
                 case GameState.Paused:
                     break;
                 case GameState.StartScreen:
-                    button.Draw(s);
                     break;
                 case GameState.GameOver:
                     break;
             }
             s.End();
         }
-        static void Clicked()
+        static void StartPlaying()
         {
             currentGameState = GameState.Playing;
         }
