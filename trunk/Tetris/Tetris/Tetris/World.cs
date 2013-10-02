@@ -135,6 +135,8 @@ namespace Tetris
             this.borderOffset = offset;
             this.controlMode = controlMode;
             this.muteShape = muteShape;
+
+            this.currentShape = new Shape(this, controlMode, muteShape);
         }
         #endregion
 
