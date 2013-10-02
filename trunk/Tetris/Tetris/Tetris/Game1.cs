@@ -58,6 +58,8 @@ namespace Tetris
             GameManager.GameWorld.Add(new World(new Rectangle(300, 245, 130, 210), 5, ControlMode.AI));
             GameManager.GameWorld.Add(new World(new Rectangle(450, 245, 130, 210), 5, ControlMode.AI));
             GameManager.GameWorld.Add(new World(new Rectangle(450, 25, 130, 210), 5, ControlMode.AI));
+
+            GameManager.MainMenu.AddButton(new Button(new Rectangle(350, 270, 100, 50), Color.White, Color.LightBlue, "Exit game", Assets.Fonts.BasicFont, Color.Black, this.Exit));
         }
 
         /// <summary>

@@ -15,7 +15,8 @@ namespace Tetris
         static GameTime gameTime;
         static Random random = new Random(1337);
         static Menu mainMenu = new Menu(new List<Button>() {
-            new Button(new Rectangle(0, 0, 100, 50), Color.White, Color.LightBlue, "Start game", Assets.Fonts.BasicFont, Color.Black, StartPlaying)
+            new Button(new Rectangle(350, 200, 100, 50), Color.White, Color.LightBlue, "Start game", Assets.Fonts.BasicFont, Color.Black, StartPlaying)
+            //Exit game button is added in Game1
         });
         #endregion
 
@@ -73,13 +74,14 @@ namespace Tetris
         static void StartPlaying()
         {
             currentGameState = GameState.Playing;
-        }
+        }            
         #endregion
 
         #region Properties
         public static List<World> GameWorld { get { return gameWorld; } set { gameWorld = value; } }
         public static GameTime GameTime { get { return gameTime; } }
         public static Random Random { get { return random; } }
+        public static Menu MainMenu { get { return mainMenu; } }
         #endregion
     }
     public enum GameState
