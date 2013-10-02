@@ -14,6 +14,7 @@ namespace Tetris
         static List<World> gameWorld = new List<World>();
         static GameTime gameTime;
         static Random random = new Random(7331);
+        static Button button = new Button(new Rectangle(0, 0, 100, 50), Color.White, Color.LightBlue, "Start game", Assets.Fonts.BasicFont, Color.Black, Clicked);
         #endregion
 
         #region Methods
@@ -37,8 +38,7 @@ namespace Tetris
                 case GameState.Paused:
                     break;
                 case GameState.StartScreen:
-                    //There is no startscreen yet, so set gamestate to playing
-                    currentGameState = GameState.Playing;
+                    button.Update();
                     break;
                 case GameState.GameOver:
                     break;
@@ -46,25 +46,30 @@ namespace Tetris
         }
         public static void Draw(SpriteBatch s)
         {
+            s.Begin();
             switch (currentGameState)
             {
                 case GameState.Playing:
-                    s.Begin();
                     foreach (World w in gameWorld)
                     {
                         w.Draw(s);
                     }
-                    s.End();
                     break;
                 case GameState.Menu:
                     break;
                 case GameState.Paused:
                     break;
                 case GameState.StartScreen:
+                    button.Draw(s);
                     break;
                 case GameState.GameOver:
                     break;
             }
+            s.End();
+        }
+        static void Clicked()
+        {
+            currentGameState = GameState.Playing;
         }
         #endregion
 
