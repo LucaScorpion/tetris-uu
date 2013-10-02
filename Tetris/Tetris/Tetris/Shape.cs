@@ -207,7 +207,7 @@ namespace Tetris
         public Shape(World world, ControlMode controlMode, bool mute)
         {
             //Select random shape
-            switch (GameManager.Random.Next(0, 1))
+            switch (GameManager.Random.Next(0, 7))
             {
                 case 0:
                     grid = IShape;
