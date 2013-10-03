@@ -34,6 +34,9 @@ namespace Tetris
             //Update input
             InputState.update();
 
+            //Update particles
+            ParticleManager.update();
+
             gameTime = newGameTime;
 
             switch (currentGameState)
@@ -64,10 +67,16 @@ namespace Tetris
         }
         public static void Draw(SpriteBatch s)
         {
+            //Draw particles
+            s.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+            ParticleManager.draw(s);
+            s.End();
+
             s.Begin();
             switch (currentGameState)
             {
                 case GameState.Playing:
+                    
                     //Draw world
                     foreach (World w in gameWorld)
                         w.Draw(s);
@@ -102,7 +111,7 @@ namespace Tetris
             //Clear stats
             Stats.ClearStats();
             //Load world
-            GameWorld.Add(new World(new Rectangle(20, 30, 260, 420), 10, ControlMode.Player, false));
+            GameWorld.Add(new World(new Rectangle(50, 70, 236, 380), 10, ControlMode.Player, false));
             //Change gamestate
             currentGameState = GameState.Playing;
         }
@@ -111,11 +120,11 @@ namespace Tetris
             //Set gamemode
             currentGameMode = GameMode.Multiplayer;
             //Load test worlds
-            GameWorld.Add(new World(new Rectangle(20, 30, 260, 420), 10, ControlMode.Player, false));
-            GameWorld.Add(new World(new Rectangle(300, 25, 130, 210), 5, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(300, 245, 130, 210), 5, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(450, 245, 130, 210), 5, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(450, 25, 130, 210), 5, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(50, 70, 236, 380), 10, ControlMode.Player, false));
+            GameWorld.Add(new World(new Rectangle(400, 25, 130, 210), 5, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(400, 245, 130, 210), 5, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(550, 245, 130, 210), 5, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(550, 25, 130, 210), 5, ControlMode.AI));
             //Change gamestate
             currentGameState = GameState.Playing;
         }

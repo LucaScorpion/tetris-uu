@@ -18,6 +18,7 @@ namespace Tetris
         {
             public static Texture2D DummyTexture;
             public static Texture2D Block;
+            public static Texture2D Particle;
         }
         public struct Fonts
         {
