@@ -22,6 +22,9 @@ namespace Tetris
 
         bool isAlive = true;
         bool muteShape = true;
+
+        Emitter comboEmitter;
+        Emitter epicComboEmitter;
         #endregion
 
         
@@ -38,11 +41,16 @@ namespace Tetris
                 //Update shape
                 currentShape.Update(this);
             }
+
+            //if Epic Combo
+            //epicComboEmitter.Shoot();
+            //else if Combo
+            //comboEmitter.Shoot();
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             //Draw bg
-            spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.LightBlue);
+            spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.White * 0.7f);
             //If the game is paused, only draw the background and not the blocks
             if (GameManager.CurrentGameState != GameState.Paused)
             {
@@ -117,6 +125,8 @@ namespace Tetris
         public void Kill()
         {
             isAlive = false;
+            comboEmitter.Pause();
+            epicComboEmitter.Pause();
         }
         #endregion
 
@@ -129,6 +139,12 @@ namespace Tetris
             this.muteShape = muteShape;
 
             this.currentShape = new Shape(this, controlMode, muteShape);
+
+            this.comboEmitter = new Emitter(rect.Width/100f, 0f, Color.Orange * 0.6f, Color.Red, 20, 1, new RandomSpawnSpeed(Vector2.Zero,Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width,rect.Height), new Vector2(0,-rect.Width/1500f));
+            this.comboEmitter.Position = new Vector2(rect.Center.X, rect.Center.Y);
+
+            this.epicComboEmitter = new Emitter(rect.Width / 90f, 0f, Color.Orange * 0.5f, Color.Blue, 20, 1.5f, new RandomSpawnSpeed(Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width, rect.Height), new Vector2(0, -rect.Width / 1500f));
+            this.epicComboEmitter.Position = new Vector2(rect.Center.X, rect.Center.Y);
         }
         #endregion
 

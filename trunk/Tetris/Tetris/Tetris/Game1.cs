@@ -50,6 +50,7 @@ namespace Tetris
             Assets.init(GraphicsDevice);
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
             Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
+            Assets.Textures.Particle = Content.Load<Texture2D>("Textures/Particle");
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
 
             GameManager.MainMenu.AddButton(new Button(new Rectangle(350, 340, 120, 50), Color.White, Color.LightBlue, "Exit game", Assets.Fonts.BasicFont, Color.Black, this.Exit));

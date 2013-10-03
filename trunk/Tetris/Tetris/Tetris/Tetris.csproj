@@ -117,6 +117,11 @@
     <Compile Include="GameManager.cs" />
     <Compile Include="InputState.cs" />
     <Compile Include="Menu.cs" />
+    <Compile Include="ParticleSystem\Emitter.cs" />
+    <Compile Include="ParticleSystem\Particle.cs" />
+    <Compile Include="ParticleSystem\ParticleManager.cs" />
+    <Compile Include="ParticleSystem\SpawnShape.cs" />
+    <Compile Include="ParticleSystem\SpawnSpeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
