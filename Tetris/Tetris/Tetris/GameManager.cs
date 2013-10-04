@@ -21,21 +21,29 @@ namespace Tetris
         static Menu pausedMenu = new Menu(new List<Button>());
         public static SpriteBatch BGParticleSB;
         public static SpriteBatch FGParticleSB;
+        static Emitter menuEmitter;
         #endregion
 
         #region Methods
         public static void Init(Action quit)
         {
             mainMenu = new Menu(new List<Button>() {
-            new Button(new Rectangle(350, 200, 120, 50), Color.White, Color.LightBlue, "Singleplayer", Assets.Fonts.BasicFont, Color.Black, StartSP),
-            new Button(new Rectangle(350, 270, 120, 50), Color.White, Color.LightBlue, "Multiplayer", Assets.Fonts.BasicFont, Color.Black, StartMP),
-            new Button(new Rectangle(350, 340, 120, 50), Color.White, Color.LightBlue, "Exit game", Assets.Fonts.BasicFont, Color.Black, quit)
+            new Button(new Rectangle(180, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Singleplayer", Assets.Fonts.BasicFont, Color.White, StartSP),
+            new Button(new Rectangle(330, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Multiplayer", Assets.Fonts.BasicFont, Color.White, StartMP),
+            new Button(new Rectangle(490, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Exit game", Assets.Fonts.BasicFont, Color.White, quit)
             //Exit game button is added in Game1
         });
             pausedMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(60, 80, 180, 50), Color.White, Color.LightBlue, "Continue", Assets.Fonts.BasicFont, Color.Black, Continue),
             new Button(new Rectangle(60, 150, 180, 50), Color.White, Color.LightBlue, "Back to main menu", Assets.Fonts.BasicFont, Color.Black, ToMenu)
         });
+            //Create the menu emitter
+            List<ParticleModifier> p = new List<ParticleModifier>();
+            p.Add(new GravityModifier(new Vector2(0, -0.07f)));
+            p.Add(new RandomSpeedModifier(new Vector2(0.1f, 0.1f)));
+            menuEmitter = new Emitter(2, 0.5f, Color.Orange * 0.6f, Color.Red * 0.7f, 20, 1, new RandomSpawnSpeed(Vector2.Zero, Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(800, 0), p);
+            menuEmitter.ForcePosition(new Vector2(400, 500));
+            menuEmitter.Start();
         }
         public static void Update(GameTime newGameTime)
         {
@@ -55,6 +63,7 @@ namespace Tetris
                         currentGameState = GameState.Paused;
                     break;
                 case GameState.Menu:
+                    menuEmitter.Update();
                     mainMenu.Update();
                     break;
                 case GameState.Paused:
@@ -84,6 +93,8 @@ namespace Tetris
                         w.Draw(s);
                     break;
                 case GameState.Menu:
+                    s.Draw(Assets.Textures.MenuBG, new Rectangle(0, 0, Assets.Textures.MenuBG.Width, Assets.Textures.MenuBG.Height), Color.White);
+                    menuEmitter.Draw(FGParticleSB);
                     mainMenu.Draw(s);
                     break;
                 case GameState.Paused:
