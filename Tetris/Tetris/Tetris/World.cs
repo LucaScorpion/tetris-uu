@@ -117,7 +117,7 @@ namespace Tetris
                         grid[x, y] = grid[x, y - 1];
                 }
                 //Explode graphic
-                explosionEmitter.ForcePosition(new Vector2(rect.Center.X, CalculateBlockRectangle(new Point(0, i)).Center.Y));
+                explosionEmitter.ForcePosition(new Vector2(rect.Center.X, CalculateBlockRectangle(new Point(0, fullRows[i])).Center.Y));
                 explosionEmitter.Shoot();
             }
 
@@ -168,14 +168,14 @@ namespace Tetris
             List<ParticleModifier> ep = new List<ParticleModifier>();
             p.Add(new RandomSpeedModifier(new Vector2(2, 1)));
             explosionEmitter = new Emitter(
-                0f,
-                7f,
-                Color.Orange * 0.8f,
-                Color.Red * 0.1f,
-                80,
-                0.5f,
+                1f,
+                1f,
+                Color.Blue,
+                Color.Red,
+                24,
+                2f,
                 new RandomSpawnSpeed(new Vector2(12, 2)),
-                Assets.Textures.Particle,
+                Assets.Textures.Block,
                 new RectangleSpawnShape(80, 0),
                 ep
             );
