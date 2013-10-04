@@ -23,6 +23,7 @@ namespace Tetris
         float ttl = 30; //Amount of ms to live
         float lifeTime = 0; //The age of the particle in ms
         List<ParticleModifier> modifiers = new List<ParticleModifier>();
+        float rotation = 0;
         #endregion
 
         #region Methods
@@ -46,7 +47,7 @@ namespace Tetris
             {
                 //Draw particle
                 float size = MathHelper.Lerp(beginSize, endSize, lifeTime / ttl);
-                s.Draw(texture, new Vector2(position.X - size * texture.Width / 2, position.Y - size * texture.Height / 2), null, Color.Lerp(beginColor, endColor, lifeTime / ttl), 0f, Vector2.Zero, size, SpriteEffects.None, 0);
+                s.Draw(texture, position, null, Color.Lerp(beginColor, endColor, lifeTime / ttl), rotation, new Vector2(texture.Width,texture.Height) / 2 , size, SpriteEffects.None, 0);
             }
         }
         public void SetSpeed(Vector2 speed)

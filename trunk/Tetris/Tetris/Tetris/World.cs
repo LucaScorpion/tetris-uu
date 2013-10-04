@@ -49,10 +49,14 @@ namespace Tetris
                 currentShape.Update(this);
             }
 
-            //if Epic Combo
-            //epicComboEmitter.Shoot();
-            //else if Combo
-            comboEmitter.Shoot();
+            if (stats.Combo == 2)
+            {
+                comboEmitter.Shoot();
+            }
+            else if (stats.Combo > 2)
+            {
+                epicComboEmitter.Shoot();
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
