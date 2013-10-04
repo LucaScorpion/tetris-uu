@@ -119,7 +119,7 @@
     <Compile Include="Menu.cs" />
     <Compile Include="ParticleSystem\Emitter.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />
-    <Compile Include="ParticleSystem\ParticleManager.cs" />
+    <Compile Include="ParticleSystem\ParticleModifier.cs" />
     <Compile Include="ParticleSystem\SpawnShape.cs" />
     <Compile Include="ParticleSystem\SpawnSpeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

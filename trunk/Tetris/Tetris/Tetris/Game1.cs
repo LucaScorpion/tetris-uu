@@ -54,6 +54,10 @@ namespace Tetris
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
 
             GameManager.MainMenu.AddButton(new Button(new Rectangle(350, 340, 120, 50), Color.White, Color.LightBlue, "Exit game", Assets.Fonts.BasicFont, Color.Black, this.Exit));
+            GameManager.BGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
+            GameManager.FGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
+
+            GameManager.Init();
         }
 
         /// <summary>
