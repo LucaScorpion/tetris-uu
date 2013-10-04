@@ -116,8 +116,6 @@ namespace Tetris
         }
         public void DestroyFullRows()
         {
-            //create new shape
-            this.currentShape = new Shape(this, controlMode);
 
             //Get all full rows
             List<int> fullRows = GetFullRows();
@@ -146,8 +144,6 @@ namespace Tetris
                 for (int x = 0; x < columns; x++)
                     grid[x, 0] = null;
 
-                //Change combo
-                stats.Combo++;
 
                 //Calculate the score
                 stats.CalculateScore(fullRows.Count());
@@ -163,7 +159,7 @@ namespace Tetris
                 switch (fullRows.Count)
                 {
                     case 0:
-                        Assets.Audio.LockSound.Play();
+                        //Assets.Audio.LockSound.Play();
                         break;
                     case 1:
                         Assets.Audio.Single.Play();
