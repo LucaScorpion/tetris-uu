@@ -228,24 +228,31 @@ namespace Tetris
             {
                 case 0:
                     grid = IShape;
+                    Color = Color.Red;
                     break;
                 case 1:
                     grid = LShape;
+                    Color = Color.Blue;
                     break;
                 case 2:
                     grid = JShape;
+                    Color = Color.Yellow;
                     break;
                 case 3:
                     grid = ZShape;
+                    Color = Color.Green;
                     break;
                 case 4:
                     grid = SShape;
+                    Color = Color.Purple;
                     break;
                 case 5:
                     grid = TShape;
+                    Color = Color.Orange;
                     break;
                 case 6:
                     grid = OShape;
+                    Color = Color.White;
                     break;
             }
 
@@ -253,9 +260,6 @@ namespace Tetris
             gridCenter = new Vector2(grid.GetLength(0) - 1, grid.GetLength(1) - 1) / 2;
             location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
             this.controlMode = controlMode;
-
-            //Random Color
-            Color = new Color(255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2), 255 * GameManager.Random.Next(0, 2));
 
             this.mute = mute;
 

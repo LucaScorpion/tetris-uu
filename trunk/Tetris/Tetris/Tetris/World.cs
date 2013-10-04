@@ -52,7 +52,7 @@ namespace Tetris
             //if Epic Combo
             //epicComboEmitter.Shoot();
             //else if Combo
-            //comboEmitter.Shoot();
+            comboEmitter.Shoot();
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -81,7 +81,7 @@ namespace Tetris
             //Draw stats
             stats.Draw(spriteBatch);
 
-            explosionEmitter.Draw(GameManager.FGParticleSB);
+            explosionEmitter.Draw(spriteBatch);
             comboEmitter.Draw(GameManager.BGParticleSB);
             epicComboEmitter.Draw(GameManager.BGParticleSB);
         }
@@ -110,15 +110,21 @@ namespace Tetris
             //Destroy them and move down all blocks above them
             for (int i = 0; i < fullRows.Count(); i++)
             {
+                //Explode graphic
+                for (int x = 0; x < columns; x++)
+                {
+                    Rectangle blockRect = CalculateBlockRectangle(new Point(x, fullRows[i]));
+                    explosionEmitter.ForcePosition(new Vector2(blockRect.Center.X, blockRect.Center.Y));
+                    explosionEmitter.SetColor(grid[x, fullRows[i] + i].Color);
+                    explosionEmitter.Shoot();
+                }
+
                 //move down grid
                 for (int y = fullRows[i] + i; y > 0; y--)
                 {
                     for (int x = 0; x < columns; x++)
                         grid[x, y] = grid[x, y - 1];
                 }
-                //Explode graphic
-                explosionEmitter.ForcePosition(new Vector2(rect.Center.X, CalculateBlockRectangle(new Point(0, fullRows[i])).Center.Y));
-                explosionEmitter.Shoot();
             }
 
             //Remove row 0
@@ -165,18 +171,21 @@ namespace Tetris
             this.epicComboEmitter = new Emitter(rect.Width / 90f, 0f, Color.Orange * 0.5f, Color.Blue, 20, 1.5f, new RandomSpawnSpeed(Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width, rect.Height), p);
             this.epicComboEmitter.Position = new Vector2(rect.Center.X, rect.Center.Y);
 
+
+            //Get rect of one block for size
+            Rectangle blockRect = CalculateBlockRectangle(0,0);
             List<ParticleModifier> ep = new List<ParticleModifier>();
-            p.Add(new RandomSpeedModifier(new Vector2(2, 1)));
+            ep.Add(new GravityModifier(new Vector2(0, 0.3f)));
             explosionEmitter = new Emitter(
-                1f,
-                1f,
-                Color.Blue,
+                (float)blockRect.Width / (float)Assets.Textures.Block.Width,
+                (float)blockRect.Width / (float)Assets.Textures.Block.Width,
                 Color.Red,
-                24,
+                Color.Red,
+                1,
                 2f,
-                new RandomSpawnSpeed(new Vector2(12, 2)),
+                new RandomSpawnSpeed(new Vector2(12, -rect.Width / 30), new Vector2(-12, -rect.Width / 50)),
                 Assets.Textures.Block,
-                new RectangleSpawnShape(80, 0),
+                new RectangleSpawnShape(0, 0),
                 ep
             );
         }

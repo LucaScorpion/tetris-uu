@@ -113,6 +113,11 @@ namespace Tetris
             previousPosition = pos;
             position = pos;
         }
+        public void SetColor(Color c)
+        {
+            beginColor = c;
+            endColor = c;
+        }
         #endregion
 
         #region Constructors
