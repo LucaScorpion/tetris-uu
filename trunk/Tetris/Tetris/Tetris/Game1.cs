@@ -59,11 +59,17 @@ namespace Tetris
             Assets.Audio.Double = Content.Load<SoundEffect>("Audio/Double");
             Assets.Audio.Triple = Content.Load<SoundEffect>("Audio/Triple");
             Assets.Audio.Tetris = Content.Load<SoundEffect>("Audio/Tetris");
+            Assets.Audio.Music = Content.Load<Song>("Audio/Music");
 
             GameManager.BGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
             GameManager.FGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
 
             GameManager.Init(this.Exit);
+
+            //Start music
+            MediaPlayer.Volume = 0.7f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(Assets.Audio.Music);
         }
 
         /// <summary>

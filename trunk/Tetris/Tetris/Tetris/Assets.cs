@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Tetris
 {
@@ -32,6 +33,7 @@ namespace Tetris
             public static SoundEffect Double;
             public static SoundEffect Triple;
             public static SoundEffect Tetris;
+            public static Song Music;
         }
         #endregion
 
