@@ -24,11 +24,12 @@ namespace Tetris
         #endregion
 
         #region Methods
-        public static void Init()
+        public static void Init(Action quit)
         {
             mainMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(350, 200, 120, 50), Color.White, Color.LightBlue, "Singleplayer", Assets.Fonts.BasicFont, Color.Black, StartSP),
-            new Button(new Rectangle(350, 270, 120, 50), Color.White, Color.LightBlue, "Multiplayer", Assets.Fonts.BasicFont, Color.Black, StartMP)
+            new Button(new Rectangle(350, 270, 120, 50), Color.White, Color.LightBlue, "Multiplayer", Assets.Fonts.BasicFont, Color.Black, StartMP),
+            new Button(new Rectangle(350, 340, 120, 50), Color.White, Color.LightBlue, "Exit game", Assets.Fonts.BasicFont, Color.Black, quit)
             //Exit game button is added in Game1
         });
             pausedMenu = new Menu(new List<Button>() {
