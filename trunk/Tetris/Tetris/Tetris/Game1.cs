@@ -53,6 +53,7 @@ namespace Tetris
             Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
             Assets.Textures.Particle = Content.Load<Texture2D>("Textures/Particle");
             Assets.Textures.WorldBG = Content.Load<Texture2D>("Textures/WorldBG");
+            Assets.Textures.MenuBG = Content.Load<Texture2D>("Textures/Background");
 
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
             Assets.Audio.Single = Content.Load<SoundEffect>("Audio/Single");
