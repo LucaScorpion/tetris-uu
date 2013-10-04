@@ -92,6 +92,7 @@ namespace Tetris
         public int Combo
         {
             get { return multiplier; }
+            set { multiplier = value; }
         }
         #endregion
     }

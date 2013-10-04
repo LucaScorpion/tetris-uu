@@ -21,11 +21,12 @@ namespace Tetris
         int borderOffset = 10;
 
         bool isAlive = true;
-        bool muteShape = true;
+        bool mute = true;
 
         Emitter comboEmitter;
         Emitter epicComboEmitter;
         Emitter explosionEmitter;
+        Emitter tetrisEmitter;
 
         Stats stats;
         #endregion
@@ -37,31 +38,35 @@ namespace Tetris
             comboEmitter.Update();
             epicComboEmitter.Update();
             explosionEmitter.Update();
+            tetrisEmitter.Update();
 
             if (currentShape == null)
             {
-                currentShape = new Shape(this, controlMode, muteShape);
+                currentShape = new Shape(this, controlMode);
+                stats.Combo = 1;
             }
 
             if (isAlive)
             {
                 //Update shape
                 currentShape.Update(this);
+
+                if (stats.Combo >= 1)
+                {
+                    comboEmitter.Shoot();
+                }
+                if (stats.Combo >= 2)
+                {
+                    epicComboEmitter.Shoot();
+                }
             }
 
-            if (stats.Combo == 2)
-            {
-                comboEmitter.Shoot();
-            }
-            else if (stats.Combo > 2)
-            {
-                epicComboEmitter.Shoot();
-            }
+            
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             //Draw bg
-            spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.White * 0.7f);
+            spriteBatch.Draw(Assets.Textures.WorldBG, rect, Color.White);
             //If the game is paused, only draw the background and not the blocks
             if (GameManager.CurrentGameState != GameState.Paused)
             {
@@ -77,7 +82,10 @@ namespace Tetris
                     }
                 }
                 //Draw shape
-                currentShape.Draw(spriteBatch, this);
+                if (currentShape != null)
+                {
+                    currentShape.Draw(spriteBatch, this);
+                }
             }
             //Dark grey overlay when player is dead
             if (!isAlive)
@@ -88,6 +96,7 @@ namespace Tetris
             explosionEmitter.Draw(spriteBatch);
             comboEmitter.Draw(GameManager.BGParticleSB);
             epicComboEmitter.Draw(GameManager.BGParticleSB);
+            tetrisEmitter.Draw(GameManager.BGParticleSB);
         }
         List<int> GetFullRows()
         {
@@ -107,10 +116,11 @@ namespace Tetris
         }
         public void DestroyFullRows()
         {
+            //create new shape
+            this.currentShape = new Shape(this, controlMode);
+
             //Get all full rows
             List<int> fullRows = GetFullRows();
-            //Calculate the score
-            stats.CalculateScore(fullRows.Count());
             //Destroy them and move down all blocks above them
             for (int i = 0; i < fullRows.Count(); i++)
             {
@@ -130,10 +140,45 @@ namespace Tetris
                         grid[x, y] = grid[x, y - 1];
                 }
             }
+            if (fullRows.Count() > 0)
+            {
+                //Remove row 0
+                for (int x = 0; x < columns; x++)
+                    grid[x, 0] = null;
 
-            //Remove row 0
-            for (int x = 0; x < columns; x++)
-                grid[x, 0] = null;
+                //Change combo
+                stats.Combo++;
+
+                //Calculate the score
+                stats.CalculateScore(fullRows.Count());
+                //create new shape
+                this.currentShape = new Shape(this, controlMode);
+
+            }
+
+            
+            if (!mute)
+            {
+                //Play sound
+                switch (fullRows.Count)
+                {
+                    case 0:
+                        Assets.Audio.LockSound.Play();
+                        break;
+                    case 1:
+                        Assets.Audio.Single.Play();
+                        break;
+                    case 2:
+                        Assets.Audio.Double.Play();
+                        break;
+                    case 3:
+                        Assets.Audio.Triple.Play();
+                        break;
+                    case 4:
+                        Assets.Audio.Tetris.Play();
+                        break;
+                }
+            }
         }
         public Rectangle CalculateBlockRectangle(int x, int y)
         {
@@ -161,10 +206,11 @@ namespace Tetris
             this.rect = rect;
             this.borderOffset = offset;
             this.controlMode = controlMode;
-            this.muteShape = muteShape;
+            this.mute = muteShape;
 
-            this.currentShape = new Shape(this, controlMode, muteShape);
+            this.currentShape = new Shape(this, controlMode);
 
+            //Combo emitters
             List<ParticleModifier> p = new List<ParticleModifier>();
             p.Add(new GravityModifier(new Vector2(0, -0.5f)));
             p.Add(new RandomSpeedModifier(new Vector2(0.1f, 0.1f)));
@@ -192,6 +238,10 @@ namespace Tetris
                 ep
             );
             stats = new Stats(Assets.Fonts.BasicFont, Color.White, rect);
+
+            //Tetris emitter
+            tetrisEmitter = new Emitter(rect.Width / 100f, 0f, Color.Red * 0.4f, Color.Blue, 100, 0.5f, new RandomSpawnSpeed(new Vector2(-30,-9), new Vector2(30,-4)), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width, 0), new List<ParticleModifier>());
+            tetrisEmitter.Position = new Vector2(rect.Center.X, rect.Bottom);
         }
         #endregion
 
