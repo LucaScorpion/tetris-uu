@@ -49,9 +49,16 @@ namespace Tetris
             // Load Assets
             Assets.init(GraphicsDevice);
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
+
             Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
             Assets.Textures.Particle = Content.Load<Texture2D>("Textures/Particle");
+            Assets.Textures.WorldBG = Content.Load<Texture2D>("Textures/WorldBG");
+
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
+            Assets.Audio.Single = Content.Load<SoundEffect>("Audio/Single");
+            Assets.Audio.Double = Content.Load<SoundEffect>("Audio/Double");
+            Assets.Audio.Triple = Content.Load<SoundEffect>("Audio/Triple");
+            Assets.Audio.Tetris = Content.Load<SoundEffect>("Audio/Tetris");
 
             GameManager.BGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
             GameManager.FGParticleSB = new SpriteBatch(graphics.GraphicsDevice);

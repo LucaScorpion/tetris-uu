@@ -19,6 +19,7 @@ namespace Tetris
             public static Texture2D DummyTexture;
             public static Texture2D Block;
             public static Texture2D Particle;
+            public static Texture2D WorldBG;
         }
         public struct Fonts
         {
@@ -27,6 +28,10 @@ namespace Tetris
         public struct Audio
         {
             public static SoundEffect LockSound;
+            public static SoundEffect Single;
+            public static SoundEffect Double;
+            public static SoundEffect Triple;
+            public static SoundEffect Tetris;
         }
         #endregion
 

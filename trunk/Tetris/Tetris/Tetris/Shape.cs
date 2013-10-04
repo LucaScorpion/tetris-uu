@@ -18,7 +18,6 @@ namespace Tetris
         int moveSpeedDown = 4; //In blocks per sec
         int moveSpeedBoost = 7; //Factor of speed boost when boosting down
         ControlMode controlMode = ControlMode.AI;
-        bool mute = true;
 
         //Controls
         Keys down = Keys.Down;
@@ -68,6 +67,16 @@ namespace Tetris
                     //Infinity lock
                     timeSinceMove = 0;
                 }
+                //Hard drop
+                if (InputState.isKeyPressed(drop))
+                {
+                    while (CanMove(new Point(0, 1), world, grid))
+                    {
+                        location.Y += 1;
+                    }
+                    //Move shape to world 
+                    MoveToWorld(world);
+                }
             }
 
             //Move down
@@ -81,29 +90,8 @@ namespace Tetris
                 {
                     //Can't move down
                     MoveToWorld(world);
-                    world.CurrentShape = new Shape(world, controlMode, mute);
-
-                    //Play lock sound
-                    if (!mute)
-                        Assets.Audio.LockSound.Play();
                 }
                 timeSinceMove = 0;
-            }
-
-            //Hard drop
-            if (InputState.isKeyPressed(drop))
-            {
-                while (CanMove(new Point(0, 1), world, grid))
-                {
-                    location.Y += 1;
-                }
-                //Move shape to world 
-                MoveToWorld(world);
-                world.CurrentShape = null;
-
-                //Play lock sound
-                if (!mute)
-                    Assets.Audio.LockSound.Play();
             }
         }
         public void Draw(SpriteBatch spriteBatch, World world)
@@ -138,7 +126,7 @@ namespace Tetris
                     }
                 }
             }
-
+            world.CurrentShape = null;
             //destroy all full rows
             world.DestroyFullRows();
         }
@@ -221,7 +209,7 @@ namespace Tetris
         #endregion
 
         #region Constructors
-        public Shape(World world, ControlMode controlMode, bool mute)
+        public Shape(World world, ControlMode controlMode)
         {
             //Select random shape
             switch (GameManager.Random.Next(0, 7))
@@ -260,8 +248,6 @@ namespace Tetris
             gridCenter = new Vector2(grid.GetLength(0) - 1, grid.GetLength(1) - 1) / 2;
             location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
             this.controlMode = controlMode;
-
-            this.mute = mute;
 
             //If can't spawn. kill world
             if (!CanMove(new Point(0, 0), world, grid))

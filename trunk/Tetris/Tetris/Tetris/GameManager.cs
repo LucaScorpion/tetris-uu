@@ -104,23 +104,27 @@ namespace Tetris
         }
         static void StartSP()
         {
+            gameWorld = new List<World>();
+
             //Set gamemode
             currentGameMode = GameMode.Singleplayer;
             //Load world
-            GameWorld.Add(new World(new Rectangle(50, 70, 236, 380), 10, ControlMode.Player, false));
+            GameWorld.Add(new World(new Rectangle(50, 70, 216, 360), 0, ControlMode.Player, false));
             //Change gamestate
             currentGameState = GameState.Playing;
         }
         static void StartMP()
         {
+            gameWorld = new List<World>();
+
             //Set gamemode
             currentGameMode = GameMode.Multiplayer;
             //Load test worlds
-            GameWorld.Add(new World(new Rectangle(50, 70, 236, 380), 10, ControlMode.Player, false));
-            GameWorld.Add(new World(new Rectangle(400, 25, 130, 210), 5, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(400, 245, 130, 210), 5, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(550, 245, 130, 210), 5, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(550, 25, 130, 210), 5, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(50, 70, 216, 360), 0, ControlMode.Player, false));
+            GameWorld.Add(new World(new Rectangle(400, 25, 110, 190), 0, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(400, 245, 110, 190), 0, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(550, 245, 110, 190), 0, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(550, 25, 110, 190), 0, ControlMode.AI));
             //Change gamestate
             currentGameState = GameState.Playing;
         }
