@@ -99,7 +99,7 @@ namespace Tetris
                 }
                 //Move shape to world 
                 MoveToWorld(world);
-                world.CurrentShape = new Shape(world, controlMode, mute);
+                world.CurrentShape = null;
 
                 //Play lock sound
                 if (!mute)
