@@ -213,7 +213,10 @@ namespace Tetris
             this.comboEmitter = new Emitter(rect.Width / 100f, 0f, Color.Orange * 0.6f, Color.Red, 20, 1, new RandomSpawnSpeed(Vector2.Zero, Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width, rect.Height), p);
             this.comboEmitter.Position = new Vector2(rect.Center.X, rect.Center.Y);
 
-            this.epicComboEmitter = new Emitter(rect.Width / 90f, 0f, Color.Orange * 0.5f, Color.Blue, 20, 1.5f, new RandomSpawnSpeed(Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width, rect.Height), p);
+            List<ParticleModifier> cp = new List<ParticleModifier>();
+            cp.Add(new GravityModifier(new Vector2(0, -0.5f)));
+            cp.Add(new RandomSpeedModifier(new Vector2(1f, 1f)));
+            this.epicComboEmitter = new Emitter(rect.Width / 90f, 0f, Color.Orange * 0.5f, Color.Blue, 20, 1.5f, new RandomSpawnSpeed(Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width, rect.Height), cp);
             this.epicComboEmitter.Position = new Vector2(rect.Center.X, rect.Center.Y);
 
 
