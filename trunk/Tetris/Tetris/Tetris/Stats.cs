@@ -69,12 +69,13 @@ namespace Tetris
             }
             if (GameManager.CurrentGameMode == GameMode.Multiplayer)
             {
-                //Draw the text
-                s.DrawString(font, "Score:", new Vector2(worldRect.X, worldRect.Y - font.MeasureString("Score:x").Y), textColor);
-                s.DrawString(font, "x", new Vector2(worldRect.X + worldRect.Width / 2, worldRect.Y - font.MeasureString("Score:x").Y), textColor);
+                Vector2 stringSize = font.MeasureString("Score");
+                //Draw bg
+                s.Draw(Assets.Textures.DummyTexture, new Rectangle(worldRect.Left, worldRect.Top - (int)stringSize.Y * 2, worldRect.Width, (int)stringSize.Y * 2), Color.Black);
                 //Draw the score
-                s.DrawString(font, score.ToString(), new Vector2(worldRect.X + font.MeasureString("Score: ").X, worldRect.Y - font.MeasureString("Score:x").Y), textColor);
-                s.DrawString(font, multiplier.ToString(), new Vector2(worldRect.X + worldRect.Width / 2  + font.MeasureString("x").X, worldRect.Y - font.MeasureString("Score:x").Y), textColor);
+                s.DrawString(font, "Score", new Vector2(worldRect.X + worldRect.Width / 2 - stringSize.X / 2, worldRect.Y - stringSize.Y * 2), textColor);
+                s.DrawString(font, score.ToString(), new Vector2(worldRect.X + 5, worldRect.Y - stringSize.Y), textColor);
+                s.DrawString(font, multiplier.ToString(), new Vector2(worldRect.Right  - font.MeasureString("xX").X - 5, worldRect.Y - stringSize.Y), textColor);
             }
         }
         #endregion
