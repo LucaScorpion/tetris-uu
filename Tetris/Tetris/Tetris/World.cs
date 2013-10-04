@@ -27,7 +27,7 @@ namespace Tetris
         Emitter epicComboEmitter;
         Emitter explosionEmitter;
 
-        Stats stats = new Stats(Assets.Fonts.BasicFont, Color.White);
+        Stats stats;
         #endregion
         
         #region Methods
@@ -165,11 +165,10 @@ namespace Tetris
 
             this.currentShape = new Shape(this, controlMode, muteShape);
 
-
             List<ParticleModifier> p = new List<ParticleModifier>();
-            p.Add(new GravityModifier(new Vector2(0,-0.5f)));
+            p.Add(new GravityModifier(new Vector2(0, -0.5f)));
             p.Add(new RandomSpeedModifier(new Vector2(0.1f, 0.1f)));
-            this.comboEmitter = new Emitter(rect.Width/100f, 0f, Color.Orange * 0.6f, Color.Red, 20, 1, new RandomSpawnSpeed(Vector2.Zero,Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width,rect.Height), p);
+            this.comboEmitter = new Emitter(rect.Width / 100f, 0f, Color.Orange * 0.6f, Color.Red, 20, 1, new RandomSpawnSpeed(Vector2.Zero, Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width, rect.Height), p);
             this.comboEmitter.Position = new Vector2(rect.Center.X, rect.Center.Y);
 
             this.epicComboEmitter = new Emitter(rect.Width / 90f, 0f, Color.Orange * 0.5f, Color.Blue, 20, 1.5f, new RandomSpawnSpeed(Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(rect.Width, rect.Height), p);
@@ -192,6 +191,7 @@ namespace Tetris
                 new RectangleSpawnShape(0, 0),
                 ep
             );
+            stats = new Stats(Assets.Fonts.BasicFont, Color.White, rect);
         }
         #endregion
 
