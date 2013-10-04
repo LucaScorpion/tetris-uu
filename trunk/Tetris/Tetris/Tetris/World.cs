@@ -26,8 +26,9 @@ namespace Tetris
         Emitter comboEmitter;
         Emitter epicComboEmitter;
         Emitter explosionEmitter;
-        #endregion
 
+        Stats stats = new Stats(Assets.Fonts.BasicFont, Color.White);
+        #endregion
         
         #region Methods
         public void Update()
@@ -77,7 +78,8 @@ namespace Tetris
             //Dark grey overlay when player is dead
             if (!isAlive)
                 spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.Black * .6f);
-
+            //Draw stats
+            stats.Draw(spriteBatch);
 
             explosionEmitter.Draw(GameManager.FGParticleSB);
             comboEmitter.Draw(GameManager.BGParticleSB);
@@ -103,10 +105,8 @@ namespace Tetris
         {
             //Get all full rows
             List<int> fullRows = GetFullRows();
-
-            //Calculate score in Stats
-            Stats.CalculateScore(fullRows.Count());
-
+            //Calculate the score
+            stats.CalculateScore(fullRows.Count());
             //Destroy them and move down all blocks above them
             for (int i = 0; i < fullRows.Count(); i++)
             {

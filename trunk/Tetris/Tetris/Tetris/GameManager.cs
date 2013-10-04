@@ -82,9 +82,6 @@ namespace Tetris
                     //Draw world
                     foreach (World w in gameWorld)
                         w.Draw(s);
-                    //Draw stats
-                    if (currentGameMode == GameMode.Singleplayer)
-                        Stats.Draw(s);
                     break;
                 case GameState.Menu:
                     mainMenu.Draw(s);
@@ -93,9 +90,6 @@ namespace Tetris
                     //Draw world
                     foreach (World w in gameWorld)
                         w.Draw(s);
-                    //Draw stats
-                    if (currentGameMode == GameMode.Singleplayer)
-                        Stats.Draw(s);
                     //Draw menu
                     pausedMenu.Draw(s);
                     break;
@@ -112,8 +106,6 @@ namespace Tetris
         {
             //Set gamemode
             currentGameMode = GameMode.Singleplayer;
-            //Clear stats
-            Stats.ClearStats();
             //Load world
             GameWorld.Add(new World(new Rectangle(50, 70, 236, 380), 10, ControlMode.Player, false));
             //Change gamestate
@@ -150,6 +142,7 @@ namespace Tetris
         public static Random Random { get { return random; } }
         public static Menu MainMenu { get { return mainMenu; } }
         public static GameState CurrentGameState { get { return currentGameState; } }
+        public static GameMode CurrentGameMode { get { return currentGameMode; } }
         #endregion
     }
     public enum GameState

@@ -7,23 +7,26 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
 {
-    class Stats
+    public class Stats
     {
         #region Fields
-        static int linesCleared;
-        static int score;
-        static int multiplier = 1;
-        static int maxMultiplier = 3;
+        int linesCleared;
+        int score;
+        int multiplier = 1;
+        int maxMultiplier = 3;
+        Vector2 positionSP = new Vector2(340, 70);
+        SpriteFont font;
+        Color textColor;
         #endregion
 
         #region Methods
-        public static void ClearStats()
+        public void ClearStats()
         {
             //Clears all stats
             linesCleared = 0;
             score = 0;
         }
-        public static void CalculateScore(int fullRows)
+        public void CalculateScore(int fullRows)
         {
             linesCleared += fullRows;
             while (fullRows >= 4)
@@ -52,21 +55,33 @@ namespace Tetris
                 multiplier = 1;
             }
         }
-        public static void Draw(SpriteBatch s)
+        public void Draw(SpriteBatch s)
         {
-            //Draw the text
-            s.DrawString(Assets.Fonts.BasicFont, "Lines cleared:", new Vector2(300, 30), Color.White);
-            s.DrawString(Assets.Fonts.BasicFont, "Total score:", new Vector2(300, 30 + Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y * 2), Color.White);
-            //Draw the numbers
-            s.DrawString(Assets.Fonts.BasicFont, linesCleared.ToString(), new Vector2(500, 30), Color.White);
-            s.DrawString(Assets.Fonts.BasicFont, score.ToString(), new Vector2(500, 30 + Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y * 2), Color.White);
+            if (GameManager.CurrentGameMode == GameMode.Singleplayer)
+            {
+                //Draw the text
+                s.DrawString(font, "Lines cleared:", positionSP, textColor);
+                s.DrawString(font, "Total score:", positionSP + new Vector2(0, Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y * 2), textColor);
+                //Draw the numbers
+                s.DrawString(font, linesCleared.ToString(), positionSP + new Vector2(200, 0), textColor);
+                s.DrawString(font, score.ToString(), positionSP + new Vector2(200, Assets.Fonts.BasicFont.MeasureString("Lines cleared").Y * 2), textColor);
+            }
         }
         #endregion
 
         #region Constructors
+        public Stats(SpriteFont font, Color textColor)
+        {
+            this.font = font;
+            this.textColor = textColor;
+        }
         #endregion
 
         #region Properties
+        public int Combo
+        {
+            get { return multiplier; }
+        }
         #endregion
     }
 }
