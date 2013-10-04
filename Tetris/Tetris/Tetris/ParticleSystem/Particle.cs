@@ -22,7 +22,7 @@ namespace Tetris
         Color endColor; //Color on death. (Fades from begin to end color)
         float ttl = 30; //Amount of ms to live
         float lifeTime = 0; //The age of the particle in ms
-        Vector2 gravity;
+        List<ParticleModifier> modifiers = new List<ParticleModifier>();
         #endregion
 
         #region Methods
@@ -31,12 +31,11 @@ namespace Tetris
             //Change Lifetime
             lifeTime += GameManager.GameTime.ElapsedGameTime.Milliseconds;
 
-            //Gravity
-            speed += gravity;
-
-            //Random speed change
-            float speedChange = 0.3f;
-            speed += new Vector2((float)(GameManager.Random.NextDouble() - 0.5) * speedChange, (float)(GameManager.Random.NextDouble() - 0.5) * speedChange);
+            //Apply all modifiers
+            foreach (ParticleModifier m in modifiers)
+            {
+                m.Update(this);
+            }
 
             //Move particle
             position += speed;
@@ -57,7 +56,7 @@ namespace Tetris
         #endregion
 
         #region Constructors
-        public Particle(float ttl, Vector2 position, float beginSize, float endSize, Color beginColor, Color endColor, Texture2D texture, Vector2 gravity)
+        public Particle(float ttl, Vector2 position, float beginSize, float endSize, Color beginColor, Color endColor, Texture2D texture, List<ParticleModifier> mods)
         {
             this.position = position;
             this.beginSize = beginSize;
@@ -67,13 +66,22 @@ namespace Tetris
             this.endColor = endColor;
             this.texture = texture;
             this.ttl = ttl * 1000;
-            this.gravity = gravity;
+
+            if (mods == null)
+            {
+                this.modifiers = new List<ParticleModifier>();
+            }
+            else
+            {
+                this.modifiers = mods;
+            }
         }
         #endregion
 
         #region Properties
         public bool isAlive { get { if (ttl > lifeTime) { return true; } else { return false; } } }
         public Vector2 Position { get { return position; } set { position = value; } }
+        public Vector2 Speed { get { return speed; } set { speed = value; } }
         #endregion
     }
 }

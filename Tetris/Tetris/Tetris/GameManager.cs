@@ -17,25 +17,29 @@ namespace Tetris
         static GameTime gameTime;
         static Keys pauseKey = Keys.Escape;
         static Random random = new Random(1337);
-        static Menu mainMenu = new Menu(new List<Button>() {
+        static Menu mainMenu = new Menu(new List<Button>());
+        static Menu pausedMenu = new Menu(new List<Button>());
+        public static SpriteBatch BGParticleSB;
+        public static SpriteBatch FGParticleSB;
+        #endregion
+
+        #region Methods
+        public static void Init()
+        {
+            mainMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(350, 200, 120, 50), Color.White, Color.LightBlue, "Singleplayer", Assets.Fonts.BasicFont, Color.Black, StartSP),
             new Button(new Rectangle(350, 270, 120, 50), Color.White, Color.LightBlue, "Multiplayer", Assets.Fonts.BasicFont, Color.Black, StartMP)
             //Exit game button is added in Game1
         });
-        static Menu pausedMenu = new Menu(new List<Button>() {
+            pausedMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(60, 80, 180, 50), Color.White, Color.LightBlue, "Continue", Assets.Fonts.BasicFont, Color.Black, Continue),
             new Button(new Rectangle(60, 150, 180, 50), Color.White, Color.LightBlue, "Back to main menu", Assets.Fonts.BasicFont, Color.Black, ToMenu)
         });
-        #endregion
-
-        #region Methods
+        }
         public static void Update(GameTime newGameTime)
         {
             //Update input
             InputState.update();
-
-            //Update particles
-            ParticleManager.update();
 
             gameTime = newGameTime;
 
@@ -67,12 +71,9 @@ namespace Tetris
         }
         public static void Draw(SpriteBatch s)
         {
-            //Draw particles
-            s.Begin(SpriteSortMode.Deferred, BlendState.Additive);
-            ParticleManager.draw(s);
-            s.End();
-
             s.Begin();
+            BGParticleSB.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+            FGParticleSB.Begin(SpriteSortMode.Deferred, BlendState.Additive);
             switch (currentGameState)
             {
                 case GameState.Playing:
@@ -102,7 +103,9 @@ namespace Tetris
                 case GameState.GameOver:
                     break;
             }
+            BGParticleSB.End();
             s.End();
+            FGParticleSB.End();
         }
         static void StartSP()
         {
