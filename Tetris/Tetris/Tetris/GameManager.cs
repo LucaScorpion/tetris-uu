@@ -34,8 +34,8 @@ namespace Tetris
             //Exit game button is added in Game1
         });
             pausedMenu = new Menu(new List<Button>() {
-            new Button(new Rectangle(60, 80, 180, 50), Color.White, Color.LightBlue, "Continue", Assets.Fonts.BasicFont, Color.Black, Continue),
-            new Button(new Rectangle(60, 150, 180, 50), Color.White, Color.LightBlue, "Back to main menu", Assets.Fonts.BasicFont, Color.Black, ToMenu)
+            new Button(new Rectangle(60, 80, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Continue", Assets.Fonts.BasicFont, Color.White, Continue),
+            new Button(new Rectangle(60, 150, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
         });
             //Create the menu emitter
             List<ParticleModifier> p = new List<ParticleModifier>();
