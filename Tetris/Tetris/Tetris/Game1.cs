@@ -18,6 +18,8 @@ namespace Tetris
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SoundEffectInstance loop;
+        SoundEffectInstance intro;
 
         public TetrisGame()
         {
@@ -60,7 +62,8 @@ namespace Tetris
             Assets.Audio.Double = Content.Load<SoundEffect>("Audio/Double");
             Assets.Audio.Triple = Content.Load<SoundEffect>("Audio/Triple");
             Assets.Audio.Tetris = Content.Load<SoundEffect>("Audio/Tetris");
-            Assets.Audio.Music = Content.Load<Song>("Audio/Music");
+            Assets.Audio.Intro = Content.Load<SoundEffect>("Audio/Intro");
+            Assets.Audio.Loop = Content.Load<SoundEffect>("Audio/Loop");
 
             GameManager.BGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
             GameManager.FGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
@@ -68,9 +71,11 @@ namespace Tetris
             GameManager.Init(this.Exit);
 
             //Start music
-            MediaPlayer.Volume = 0.7f;
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(Assets.Audio.Music);
+            intro = Assets.Audio.Intro.CreateInstance();
+            intro.Play();
+
+            loop = Assets.Audio.Loop.CreateInstance();
+            loop.IsLooped = true;
         }
 
         /// <summary>
@@ -89,6 +94,10 @@ namespace Tetris
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (gameTime.TotalGameTime >= Assets.Audio.Intro.Duration && loop.State == SoundState.Stopped)
+            {
+                loop.Play();
+            }
             //update game
             GameManager.Update(gameTime);
 
