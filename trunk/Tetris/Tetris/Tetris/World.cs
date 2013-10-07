@@ -253,6 +253,8 @@ namespace Tetris
         public int Rows { get { return rows; } set { if (value > 0) { rows = value; } } }
         public int Columns { get { return columns; } set { if (value > 0) { columns = value; } } }
         public Block[,] Grid { get { return grid; } }
+        public bool IsAlive { get { return isAlive; } }
+        public ControlMode CurrentControlMode { get { return controlMode; } }
         #endregion
     }
 }

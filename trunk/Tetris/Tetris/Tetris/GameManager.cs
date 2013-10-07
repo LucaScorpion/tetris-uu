@@ -19,6 +19,7 @@ namespace Tetris
         static Random random = new Random(1337);
         static Menu mainMenu = new Menu(new List<Button>());
         static Menu pausedMenu = new Menu(new List<Button>());
+        static Menu gameOverMenu = new Menu(new List<Button>());
         public static SpriteBatch BGParticleSB;
         public static SpriteBatch FGParticleSB;
         static Emitter menuEmitter;
@@ -35,6 +36,9 @@ namespace Tetris
         });
             pausedMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(60, 80, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Continue", Assets.Fonts.BasicFont, Color.White, Continue),
+            new Button(new Rectangle(60, 150, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
+        });
+            gameOverMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(60, 150, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
         });
             //Create the menu emitter
@@ -57,7 +61,19 @@ namespace Tetris
                 case GameState.Playing:
                     //Update world
                     foreach (World w in gameWorld)
+                    {
                         w.Update();
+                        //For singleplayer: if player is dead, game over
+                        if (currentGameMode == GameMode.Singleplayer)
+                            if (!w.IsAlive)
+                                currentGameState = GameState.GameOver;
+                        //For multiplayer: if all human players are dead, game over
+                        if (currentGameMode == GameMode.Multiplayer)
+                        {
+                            if (w.CurrentControlMode == ControlMode.Player && !w.IsAlive)
+                                currentGameState = GameState.GameOver;
+                        }
+                    }
                     //Pause game if esc is pressed
                     if (InputState.isKeyPressed(pauseKey))
                         currentGameState = GameState.Paused;
@@ -76,6 +92,9 @@ namespace Tetris
                     currentGameState = GameState.Menu;
                     break;
                 case GameState.GameOver:
+                    foreach (World w in gameWorld)
+                        w.Update();
+                    gameOverMenu.Update();
                     break;
             }
         }
@@ -107,6 +126,9 @@ namespace Tetris
                 case GameState.StartScreen:
                     break;
                 case GameState.GameOver:
+                    foreach (World w in gameWorld)
+                        w.Draw(s);
+                    gameOverMenu.Draw(s);
                     break;
             }
             BGParticleSB.End();
