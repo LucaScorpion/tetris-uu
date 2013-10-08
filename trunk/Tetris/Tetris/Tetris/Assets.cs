@@ -26,6 +26,7 @@ namespace Tetris
         public struct Fonts
         {
             public static SpriteFont BasicFont;
+            public static SpriteFont SmallerFont;
         }
         public struct Audio
         {

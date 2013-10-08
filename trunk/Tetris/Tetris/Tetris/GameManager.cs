@@ -23,6 +23,13 @@ namespace Tetris
         public static SpriteBatch BGParticleSB;
         public static SpriteBatch FGParticleSB;
         static Emitter menuEmitter;
+        //Achievements
+        static Achievement triple = new Achievement("Triple!", "Cleared 3 rows", "at once", Assets.Textures.Block, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+        static Achievement tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once", Assets.Textures.Particle, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+        static List<Achievement> achievementList = new List<Achievement>() {
+            triple,
+            tetris
+        };
         #endregion
 
         #region Methods
@@ -49,6 +56,7 @@ namespace Tetris
             menuEmitter.ForcePosition(new Vector2(400, 500));
             menuEmitter.Start();
         }
+
         public static void Update(GameTime newGameTime)
         {
             //Update input
@@ -74,6 +82,13 @@ namespace Tetris
                                 currentGameState = GameState.GameOver;
                         }
                     }
+
+                    //Update achievements
+                    foreach (Achievement a in achievementList)
+                        a.Update();
+                    //Test achievement:
+                    //tetris.GetAchievement();
+
                     //Pause game if esc is pressed
                     if (InputState.isKeyPressed(pauseKey))
                         currentGameState = GameState.Paused;
@@ -106,10 +121,12 @@ namespace Tetris
             switch (currentGameState)
             {
                 case GameState.Playing:
-                    
                     //Draw world
                     foreach (World w in gameWorld)
                         w.Draw(s);
+                    //Draw achievements
+                    foreach (Achievement a in achievementList)
+                        a.Draw(s);
                     break;
                 case GameState.Menu:
                     s.Draw(Assets.Textures.MenuBG, new Rectangle(0, 0, Assets.Textures.MenuBG.Width, Assets.Textures.MenuBG.Height), Color.White);
