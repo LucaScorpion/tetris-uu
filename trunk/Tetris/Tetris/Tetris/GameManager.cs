@@ -24,12 +24,9 @@ namespace Tetris
         public static SpriteBatch FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
-        static Achievement triple = new Achievement("Triple!", "Cleared 3 rows", "at once", Assets.Textures.Block, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-        static Achievement tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once", Assets.Textures.Particle, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-        static List<Achievement> achievementList = new List<Achievement>() {
-            triple,
-            tetris
-        };
+        static Achievement triple;
+        static Achievement tetris;
+        static List<Achievement> achievementList = new List<Achievement>();
         #endregion
 
         #region Methods
@@ -55,6 +52,13 @@ namespace Tetris
             menuEmitter = new Emitter(2, 0.5f, Color.Orange * 0.6f, Color.Red * 0.7f, 20, 1, new RandomSpawnSpeed(Vector2.Zero, Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(800, 0), p);
             menuEmitter.ForcePosition(new Vector2(400, 500));
             menuEmitter.Start();
+
+            //Create achievements
+            tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once", Assets.Textures.Particle, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            triple = new Achievement("Triple!", "Cleared 3 rows", "at once", Assets.Textures.Block, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+
+            achievementList.Add(tetris);
+            achievementList.Add(triple);
         }
 
         public static void Update(GameTime newGameTime)
@@ -87,7 +91,7 @@ namespace Tetris
                     foreach (Achievement a in achievementList)
                         a.Update();
                     //Test achievement:
-                    //tetris.GetAchievement();
+                    tetris.GetAchievement();
 
                     //Pause game if esc is pressed
                     if (InputState.isKeyPressed(pauseKey))
