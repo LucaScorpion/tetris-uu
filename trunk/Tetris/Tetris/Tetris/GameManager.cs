@@ -29,8 +29,8 @@ namespace Tetris
         public static void Init(Action quit)
         {
             mainMenu = new Menu(new List<Button>() {
-            new Button(new Rectangle(180, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Singleplayer", Assets.Fonts.BasicFont, Color.White, StartSP),
-            new Button(new Rectangle(330, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Multiplayer", Assets.Fonts.BasicFont, Color.White, StartMP),
+            new Button(new Rectangle(180, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Endless", Assets.Fonts.BasicFont, Color.White, StartSP),
+            new Button(new Rectangle(330, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Battle mode", Assets.Fonts.BasicFont, Color.White, StartMP),
             new Button(new Rectangle(490, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Exit game", Assets.Fonts.BasicFont, Color.White, quit)
             //Exit game button is added in Game1
         });
