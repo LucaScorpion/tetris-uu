@@ -51,6 +51,7 @@ namespace Tetris
             // Load Assets
             Assets.init(GraphicsDevice);
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
+            Assets.Fonts.SmallerFont = Content.Load<SpriteFont>("Fonts/smallerFont");
 
             Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
             Assets.Textures.Particle = Content.Load<Texture2D>("Textures/Particle");
@@ -69,6 +70,9 @@ namespace Tetris
             GameManager.FGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
 
             GameManager.Init(this.Exit);
+
+            //Initialise the achiement class
+            Achievement.Initialise(GraphicsDevice);
 
             //Start music
             intro = Assets.Audio.Intro.CreateInstance();
