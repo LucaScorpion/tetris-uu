@@ -103,8 +103,8 @@ namespace Tetris
                 s.DrawString(titleFont, name, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y), textColor);
                 //Description
                 s.DrawString(descFont, line1, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y), textColor);
-                s.DrawString(descFont, line2, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(line1).Y), textColor);
-                s.DrawString(descFont, line3, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(line2).Y), textColor);
+                s.DrawString(descFont, line2, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y), textColor);
+                s.DrawString(descFont, line3, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y + descFont.MeasureString(line2).Y), textColor);
             }
         }
         #endregion

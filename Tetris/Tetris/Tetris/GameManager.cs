@@ -90,8 +90,6 @@ namespace Tetris
                     //Update achievements
                     foreach (Achievement a in achievementList)
                         a.Update();
-                    //Test achievement:
-                    tetris.GetAchievement();
 
                     //Pause game if esc is pressed
                     if (InputState.isKeyPressed(pauseKey))
