@@ -190,7 +190,8 @@ namespace Tetris
             currentGameMode = GameMode.Multiplayer;
             //Load test worlds
             GameWorld.Add(new World(new Rectangle(50, 70, 216, 360), 0, ControlMode.Player, false));
-            GameWorld.Add(new World(new Rectangle(400, 25, 110, 190), 0, ControlMode.AI));
+            World AIWorld = new World(new Rectangle(400, 25, 110, 190), 0, ControlMode.AI);
+            GameWorld.Add(AIWorld);
             /*GameWorld.Add(new World(new Rectangle(400, 245, 110, 190), 0, ControlMode.AI));
             GameWorld.Add(new World(new Rectangle(550, 245, 110, 190), 0, ControlMode.AI));
             GameWorld.Add(new World(new Rectangle(550, 25, 110, 190), 0, ControlMode.AI));*/

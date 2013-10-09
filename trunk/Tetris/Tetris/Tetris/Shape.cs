@@ -21,6 +21,7 @@ namespace Tetris
         Tuple<int, int> moves;
         int xMoves;
         int rotations;
+        public bool AIthought = false;
 
         //Controls
         Keys down = Keys.Down;
@@ -86,13 +87,20 @@ namespace Tetris
             //Controlled by AI
             if (controlMode == ControlMode.AI)
             {
-                moves = AI.Think(world);
-                xMoves = moves.Item1;
-                rotations = moves.Item2;
+                //If the AI hasn't thought yet, think
+                if (!AIthought)
+                {
+                    moves = AI.Think(world, this);
+                    xMoves = moves.Item1;
+                    rotations = moves.Item2;
+                    AIthought = true;
+                }
+                //Move horizontally
                 if (CanMove(new Point(xMoves, 0), world, grid))
                 {
                     location.X += 1;
                 }
+                //Rotate
                 while (rotations > 0)
                 {
                     RotateLeft(world);
@@ -327,6 +335,7 @@ namespace Tetris
             }
         }
         public ControlMode ControlMode { get { return controlMode; } set { controlMode = value; } }
+        public Block[,] Grid { get { return grid; } }
         #endregion
     }
     public enum ControlMode

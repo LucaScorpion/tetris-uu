@@ -14,13 +14,12 @@ namespace Tetris
         static int rotations;
         static int lastScore;
         static int bestScore = 0;
-        static GhostShape ghostShape;
         #endregion
 
         #region Methods
-        public static Tuple<int, int> Think(World world)
+        public static Tuple<int, int> Think(World world, Shape shape)
         {
-            GhostShape ghostShape = new GhostShape(world);
+            GhostShape ghostShape = new GhostShape(world, shape);
             gridWidth = world.Columns;
             gridHeight = world.Rows;
             for (int xCheck = 0; xCheck <= gridWidth; xCheck++)

@@ -12,6 +12,7 @@ namespace Tetris
     {
         #region Fields
         World world;
+        Shape shape;
         Block[,] grid;
         Point location;
         Vector2 gridCenter;
@@ -27,8 +28,6 @@ namespace Tetris
         #region Methods
         public void Update(World world)
         {
-            this.world = world;
-            
             //Add time
             timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
 
@@ -53,6 +52,7 @@ namespace Tetris
         {
             Rotate(rotations);
             MoveRight(xMoves);
+            HardDrop();
             MoveToWorld(world);
             filledRows = world.GetFilledRows();
             emptyRows = world.GetEmptyRows();
@@ -64,7 +64,7 @@ namespace Tetris
         //Move right
         void MoveRight(int xMoves)
         {
-            while (CanMove(new Point(xMoves, 0), world, grid))
+            while (CanMove(new Point(1, 0), world, grid) && xMoves > 0)
             {
                 location.X += 1;
                 xMoves--;
@@ -128,7 +128,7 @@ namespace Tetris
                 {
                     if (grid[x, y] != null)
                     {
-                        //world.(grid[x, y], GetWorldLocation(x, y));
+                        world.RemoveBlock(grid[x, y], GetWorldLocation(x, y));
                     }
                 }
             }
@@ -193,13 +193,15 @@ namespace Tetris
         #endregion
 
         #region Constructors
-        public GhostShape(World world)
+        public GhostShape(World world, Shape shape)
         {
+            this.world = world;
+            this.shape = shape;
+            this.grid = shape.Grid;
             gridCenter = new Vector2(grid.GetLength(0) - 1, grid.GetLength(1) - 1) / 2;
             location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
-
             //If can't spawn. kill world
-            if (!CanMove(new Point(0, 0), world, grid))
+            if (!CanMove(new Point(0, 0), world, shape.Grid))
             {
                 world.Kill();
             }
