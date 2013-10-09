@@ -32,6 +32,8 @@ namespace Tetris
 
         static string scoreFile = "stats.mesave";
         static string achievesFile = "achievements.mesave";
+
+        public static World AIWorld;
         #endregion
 
         #region Methods
@@ -190,7 +192,7 @@ namespace Tetris
             currentGameMode = GameMode.Multiplayer;
             //Load test worlds
             GameWorld.Add(new World(new Rectangle(50, 70, 216, 360), 0, ControlMode.Player, false));
-            World AIWorld = new World(new Rectangle(400, 25, 110, 190), 0, ControlMode.AI);
+            AIWorld = new World(new Rectangle(400, 70, 216, 360), 0, ControlMode.AI);
             GameWorld.Add(AIWorld);
             /*GameWorld.Add(new World(new Rectangle(400, 245, 110, 190), 0, ControlMode.AI));
             GameWorld.Add(new World(new Rectangle(550, 245, 110, 190), 0, ControlMode.AI));
