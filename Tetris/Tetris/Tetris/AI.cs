@@ -22,7 +22,7 @@ namespace Tetris
             GhostShape ghostShape = new GhostShape(world, shape);
             gridWidth = world.Columns;
             gridHeight = world.Rows;
-            for (int xCheck = 0; xCheck <= gridWidth; xCheck++)
+            for (int xCheck = -(gridWidth / 2); xCheck <= gridWidth / 2; xCheck++)
             {
                 for (int rotCheck = 0; rotCheck <= 3; rotCheck++)
                 {
