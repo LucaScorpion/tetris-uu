@@ -8,99 +8,29 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
-    public class Shape
+    public class GhostShape
     {
         #region Fields
+        World world;
         Block[,] grid;
         Point location;
         Vector2 gridCenter;
         int timeSinceMove = 0;
         int moveSpeedDown = 4; //In blocks per sec
-        int moveSpeedBoost = 7; //Factor of speed boost when boosting down
-        ControlMode controlMode = ControlMode.AI;
-        Tuple<int, int> moves;
-        int xMoves;
-        int rotations;
-
-        //Controls
-        Keys down = Keys.Down;
-        Keys left = Keys.Left;
-        Keys right = Keys.Right;
-        Keys rotate = Keys.C;
-        Keys drop = Keys.Up;
+        int emptyRows;
+        int emptyRowsWeight = 1;
+        int filledRows;
+        int filledRowsWeight = 2;
+        int score;
         #endregion
 
         #region Methods
         public void Update(World world)
         {
+            this.world = world;
+            
             //Add time
             timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
-
-            //Controlled by player
-            if (controlMode == ControlMode.Player)
-            {
-                //Add time
-                if (InputState.isKeyDown(down))
-                {
-                    //Complete boost for keypress
-                    timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds * (moveSpeedBoost - 1);
-                }
-
-                //Move left
-                if (InputState.isKeyPressed(left))
-                {
-                    if (CanMove(new Point(-1, 0), world, grid))
-                    {
-                        location.X -= 1;
-                    }
-                }
-
-                //Move right
-                if (InputState.isKeyPressed(right))
-                {
-                    if (CanMove(new Point(1, 0), world, grid))
-                    {
-                        location.X += 1;
-                    }
-                }
-
-                //Rotate
-                if (InputState.isKeyPressed(rotate))
-                {
-                    RotateLeft(world);
-                    //Infinity lock
-                    timeSinceMove = 0;
-                }
-                //Hard drop
-                if (InputState.isKeyPressed(drop))
-                {
-                    while (CanMove(new Point(0, 1), world, grid))
-                    {
-                        location.Y += 1;
-                    }
-                    //Move shape to world 
-                    MoveToWorld(world);
-                }
-            }
-
-            //Controlled by AI
-            if (controlMode == ControlMode.AI)
-            {
-                moves = AI.Think(grid.GetLength(0), grid.GetLength(1));
-                xMoves = moves.Item1;
-                rotations = moves.Item2;
-                if (CanMove(new Point(xMoves, 0), world, grid))
-                {
-                    location.X += 1;
-                }
-                while (rotations > 0)
-                {
-                    RotateLeft(world);
-                    //Infinity lock
-                    timeSinceMove = 0;
-                    rotations--;
-                }
-            }
 
             //Move down
             if (timeSinceMove >= 1000 / moveSpeedDown)
@@ -117,6 +47,45 @@ namespace Tetris
                 timeSinceMove = 0;
             }
         }
+        
+        //Calculate score (called by AI.cs)
+        public int CalculateScore(int xMoves, int rotations)
+        {
+            MoveRight(xMoves);
+            Rotate(rotations);
+            MoveToWorld(world);
+            filledRows = world.GetFilledRows();
+            emptyRows = world.GetEmptyRows();
+            score = filledRowsWeight * filledRows + emptyRowsWeight * emptyRows;
+            return score;
+        }
+
+        //Movements used by CalculateScore
+        //Move right
+        void MoveRight(int xMoves)
+        {
+            while (CanMove(new Point(xMoves, 0), world, grid))
+            {
+                location.X += 1;
+                xMoves--;
+            }
+        }
+        //Rotate
+        void Rotate(int rotations)
+        {
+            RotateLeft(world);
+            //Infinity lock
+            timeSinceMove = 0;
+        }
+        //Hard drop
+        void HardDrop()
+        {
+            while (CanMove(new Point(0, 1), world, grid))
+            {
+                location.Y += 1;
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch, World world)
         {
             for (int y = 0; y < grid.GetLength(1); y++)
@@ -149,9 +118,6 @@ namespace Tetris
                     }
                 }
             }
-            world.CurrentShape = null;
-            //destroy all full rows
-            world.DestroyFullRows();
         }
         bool CanMove(Point direction, World world, Block[,] grid)
         {
@@ -200,7 +166,7 @@ namespace Tetris
             {
                 for (int x = 0; x < grid.GetLength(0); x++)
                 {
-                    newGrid[(int)(gridCenter.Y - y + gridCenter.X), (int)(x - gridCenter.X + gridCenter.Y)] = grid[x,y];
+                    newGrid[(int)(gridCenter.Y - y + gridCenter.X), (int)(x - gridCenter.X + gridCenter.Y)] = grid[x, y];
                 }
             }
             //Check if rotation is possible
@@ -232,45 +198,10 @@ namespace Tetris
         #endregion
 
         #region Constructors
-        public Shape(World world, ControlMode controlMode)
+        public GhostShape(World world)
         {
-            //Select random shape
-            switch (GameManager.Random.Next(0, 7))
-            {
-                case 0:
-                    grid = IShape;
-                    Color = Color.Red;
-                    break;
-                case 1:
-                    grid = LShape;
-                    Color = Color.Blue;
-                    break;
-                case 2:
-                    grid = JShape;
-                    Color = Color.Yellow;
-                    break;
-                case 3:
-                    grid = ZShape;
-                    Color = Color.Green;
-                    break;
-                case 4:
-                    grid = SShape;
-                    Color = Color.Purple;
-                    break;
-                case 5:
-                    grid = TShape;
-                    Color = Color.Orange;
-                    break;
-                case 6:
-                    grid = OShape;
-                    Color = Color.White;
-                    break;
-            }
-
-            
             gridCenter = new Vector2(grid.GetLength(0) - 1, grid.GetLength(1) - 1) / 2;
             location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
-            this.controlMode = controlMode;
 
             //If can't spawn. kill world
             if (!CanMove(new Point(0, 0), world, grid))
@@ -326,11 +257,6 @@ namespace Tetris
                 }
             }
         }
-        public ControlMode ControlMode { get { return controlMode; } set { controlMode = value; } }
         #endregion
-    }
-    public enum ControlMode
-    {
-        Player, AI
     }
 }

@@ -38,7 +38,6 @@ namespace Tetris
             new Button(new Rectangle(180, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Endless", Assets.Fonts.BasicFont, Color.White, StartSP),
             new Button(new Rectangle(330, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Battle mode", Assets.Fonts.BasicFont, Color.White, StartMP),
             new Button(new Rectangle(490, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Exit game", Assets.Fonts.BasicFont, Color.White, quit)
-            //Exit game button is added in Game1
         });
             pausedMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(60, 80, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Continue", Assets.Fonts.BasicFont, Color.White, Continue),
@@ -96,7 +95,6 @@ namespace Tetris
                     //Update achievements
                     foreach (Achievement a in achievementList)
                         a.Update();
-                    tetris.GetAchievement();
 
                     //Pause game if esc is pressed
                     if (InputState.isKeyPressed(pauseKey))
@@ -181,9 +179,9 @@ namespace Tetris
             //Load test worlds
             GameWorld.Add(new World(new Rectangle(50, 70, 216, 360), 0, ControlMode.Player, false));
             GameWorld.Add(new World(new Rectangle(400, 25, 110, 190), 0, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(400, 245, 110, 190), 0, ControlMode.AI));
+            /*GameWorld.Add(new World(new Rectangle(400, 245, 110, 190), 0, ControlMode.AI));
             GameWorld.Add(new World(new Rectangle(550, 245, 110, 190), 0, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(550, 25, 110, 190), 0, ControlMode.AI));
+            GameWorld.Add(new World(new Rectangle(550, 25, 110, 190), 0, ControlMode.AI));*/
             //Change gamestate
             currentGameState = GameState.Playing;
         }
