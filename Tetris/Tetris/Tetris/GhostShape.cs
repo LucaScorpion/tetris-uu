@@ -51,8 +51,8 @@ namespace Tetris
         //Calculate score (called by AI.cs)
         public int CalculateScore(int xMoves, int rotations)
         {
-            MoveRight(xMoves);
             Rotate(rotations);
+            MoveRight(xMoves);
             MoveToWorld(world);
             filledRows = world.GetFilledRows();
             emptyRows = world.GetEmptyRows();
@@ -119,6 +119,21 @@ namespace Tetris
                 }
             }
         }
+        void RemoveFromWorld(World world)
+        {
+            //Remove the shape from the world
+            for (int y = 0; y < grid.GetLength(0); y++)
+            {
+                for (int x = 0; x < grid.GetLength(1); x++)
+                {
+                    if (grid[x, y] != null)
+                    {
+                        //world.(grid[x, y], GetWorldLocation(x, y));
+                    }
+                }
+            }
+        }
+
         bool CanMove(Point direction, World world, Block[,] grid)
         {
             for (int y = 0; y < grid.GetLength(1); y++)
@@ -173,26 +188,6 @@ namespace Tetris
             if (CanMove(Point.Zero, world, newGrid))
             {
                 grid = newGrid;
-            }
-            else
-            {
-                //Check for wallkick
-                if (location.X - gridCenter.X <= 0)
-                {
-                    //Is kicking the left wall
-                    location.X = (int)gridCenter.X;
-                }
-                else if (location.X + gridCenter.X >= world.Columns)
-                {
-                    //Is kicking the right wall
-                    location.X = world.Columns - (int)gridCenter.X - 1;
-                }
-
-                //Check again
-                if (CanMove(Point.Zero, world, newGrid))
-                {
-                    grid = newGrid;
-                }
             }
         }
         #endregion
