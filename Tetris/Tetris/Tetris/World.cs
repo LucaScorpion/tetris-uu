@@ -213,6 +213,10 @@ namespace Tetris
         {
             grid[location.X, location.Y] = block;
         }
+        public void RemoveBlock(Block block, Point location)
+        {
+            grid[location.X, location.Y] = null;
+        }
         public void Kill()
         {
             isAlive = false;
