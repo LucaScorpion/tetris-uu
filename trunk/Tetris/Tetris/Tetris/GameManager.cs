@@ -24,8 +24,10 @@ namespace Tetris
         public static SpriteBatch FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
-        static Achievement triple;
-        static Achievement tetris;
+        public static Achievement tetris;
+        public static Achievement triple;
+        public static Achievement doublec;
+        public static Achievement single;
         static List<Achievement> achievementList = new List<Achievement>();
         #endregion
 
@@ -54,11 +56,15 @@ namespace Tetris
             menuEmitter.Start();
 
             //Create achievements
-            tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once", Assets.Textures.Particle, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            triple = new Achievement("Triple!", "Cleared 3 rows", "at once", Assets.Textures.Block, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once", Assets.Textures.Wow, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            triple = new Achievement("Triple!", "Cleared 3 rows", "at once", Assets.Textures.CloseEnough, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            doublec = new Achievement("Double", "Cleared 2 rows", "at once", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            single = new Achievement("Single...", "Cleared 1 row", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
 
             achievementList.Add(tetris);
             achievementList.Add(triple);
+            achievementList.Add(doublec);
+            achievementList.Add(single);
         }
 
         public static void Update(GameTime newGameTime)
@@ -90,6 +96,7 @@ namespace Tetris
                     //Update achievements
                     foreach (Achievement a in achievementList)
                         a.Update();
+                    tetris.GetAchievement();
 
                     //Pause game if esc is pressed
                     if (InputState.isKeyPressed(pauseKey))

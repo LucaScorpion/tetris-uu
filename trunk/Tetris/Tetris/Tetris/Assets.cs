@@ -22,6 +22,10 @@ namespace Tetris
             public static Texture2D Particle;
             public static Texture2D WorldBG;
             public static Texture2D MenuBG;
+            public static Texture2D FreddieMercury;
+            public static Texture2D CloseEnough;
+            public static Texture2D ItsSomething;
+            public static Texture2D Wow;
         }
         public struct Fonts
         {
