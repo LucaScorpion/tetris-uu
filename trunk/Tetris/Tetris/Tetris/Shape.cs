@@ -86,7 +86,7 @@ namespace Tetris
             //Controlled by AI
             if (controlMode == ControlMode.AI)
             {
-                moves = AI.Think(grid.GetLength(0), grid.GetLength(1));
+                moves = AI.Think(world);
                 xMoves = moves.Item1;
                 rotations = moves.Item2;
                 if (CanMove(new Point(xMoves, 0), world, grid))

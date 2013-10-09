@@ -8,6 +8,8 @@ namespace Tetris
     public static class AI
     {
         #region Fields
+        static int gridWidth;
+        static int gridHeight;
         static int xMoves;
         static int rotations;
         static int lastScore;
@@ -19,6 +21,8 @@ namespace Tetris
         public static Tuple<int, int> Think(World world)
         {
             GhostShape ghostShape = new GhostShape(world);
+            gridWidth = world.Columns;
+            gridHeight = world.Rows;
             for (int xCheck = 0; xCheck <= gridWidth; xCheck++)
             {
                 for (int rotCheck = 0; rotCheck <= 3; rotCheck++)
