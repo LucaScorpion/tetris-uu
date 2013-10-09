@@ -10,10 +10,10 @@ namespace Tetris
         #region Fields
         static int gridWidth;
         static int gridHeight;
+        static int lastScore;
+        static int bestScore;
         static int xMoves;
         static int rotations;
-        static int lastScore;
-        static int bestScore = 0;
         #endregion
 
         #region Methods
@@ -22,6 +22,11 @@ namespace Tetris
             GhostShape ghostShape = new GhostShape(world, shape);
             gridWidth = world.Columns;
             gridHeight = world.Rows;
+            lastScore = 0;
+            bestScore = 0;
+            xMoves = 0;
+            rotations = 0;
+
             for (int xCheck = -(gridWidth / 2); xCheck <= gridWidth / 2; xCheck++)
             {
                 for (int rotCheck = 0; rotCheck <= 3; rotCheck++)
@@ -33,6 +38,7 @@ namespace Tetris
                         xMoves = xCheck;
                         rotations = rotCheck;
                     }
+                    lastScore = 0;
                 }
             }
             var moves = Tuple.Create(xMoves, rotations);

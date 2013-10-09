@@ -21,7 +21,7 @@ namespace Tetris
         Tuple<int, int> moves;
         int xMoves;
         int rotations;
-        public bool AIthought = false;
+        bool AIthought = false;
 
         //Controls
         Keys down = Keys.Down;
@@ -96,16 +96,26 @@ namespace Tetris
                     AIthought = true;
                 }
                 //Move horizontally
-                if (CanMove(new Point(xMoves, 0), world, grid))
+                if (xMoves > 0)
                 {
-                    location.X += 1;
+                    if (CanMove(new Point(1, 0), world, grid))
+                    {
+                        location.X++;
+                    }
+                    xMoves--;
+                }
+                if (xMoves < 0)
+                {
+                    if (CanMove(new Point(-1, 0), world, grid))
+                    {
+                        location.X--;
+                    }
+                    xMoves++;
                 }
                 //Rotate
-                while (rotations > 0)
+                if (rotations > 0)
                 {
                     RotateLeft(world);
-                    //Infinity lock
-                    timeSinceMove = 0;
                     rotations--;
                 }
             }
@@ -121,6 +131,9 @@ namespace Tetris
                 {
                     //Can't move down
                     MoveToWorld(world);
+                    //Reset AI
+                    if (controlMode == ControlMode.AI)
+                        AIthought = false;
                 }
                 timeSinceMove = 0;
             }
