@@ -182,7 +182,8 @@ namespace Tetris
         #endregion
 
         #region Properties
-        public bool Achieved { get { return got; } }
+        public bool Achieved { get { return got; } set { got = value; } }
+        public string Name { get { return name; } }
         #endregion
     }
 }

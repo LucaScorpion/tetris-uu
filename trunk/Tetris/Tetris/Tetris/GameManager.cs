@@ -29,6 +29,9 @@ namespace Tetris
         public static Achievement doublec;
         public static Achievement single;
         static List<Achievement> achievementList = new List<Achievement>();
+
+        static string scoreFile = "stats.mesave";
+        static string achievesFile = "achievements.mesave";
         #endregion
 
         #region Methods
@@ -65,7 +68,6 @@ namespace Tetris
             achievementList.Add(doublec);
             achievementList.Add(single);
         }
-
         public static void Update(GameTime newGameTime)
         {
             //Update input
@@ -83,12 +85,18 @@ namespace Tetris
                         //For singleplayer: if player is dead, game over
                         if (currentGameMode == GameMode.Singleplayer)
                             if (!w.IsAlive)
+                            {
+                                SaveStats();
                                 currentGameState = GameState.GameOver;
+                            }
                         //For multiplayer: if all human players are dead, game over
                         if (currentGameMode == GameMode.Multiplayer)
                         {
                             if (w.CurrentControlMode == ControlMode.Player && !w.IsAlive)
+                            {
+                                SaveStats();
                                 currentGameState = GameState.GameOver;
+                            }
                         }
                     }
 
@@ -161,6 +169,8 @@ namespace Tetris
         }
         static void StartSP()
         {
+            LoadAchieves();
+
             gameWorld = new List<World>();
 
             //Set gamemode
@@ -172,6 +182,8 @@ namespace Tetris
         }
         static void StartMP()
         {
+            LoadAchieves(); 
+
             gameWorld = new List<World>();
 
             //Set gamemode
@@ -194,6 +206,54 @@ namespace Tetris
         {
             //Go to the main menu
             currentGameState = GameState.Menu;
+        }
+        static void SaveStats()
+        {
+            string text = String.Empty;
+
+            //Save score of every player
+            foreach (World w in gameWorld)
+            {
+                if (w.CurrentControlMode == ControlMode.Player)
+                {
+                    //Add line: Score,<score>,<lines>
+                    text += "Score," + w.Stats.Score + "," + w.Stats.LinesCleared + ";";
+                }
+            }
+
+            //Append new stats to the file
+            System.IO.File.AppendAllText(scoreFile, text);
+
+            //Save achievements
+            string achieves = String.Empty;
+            foreach (Achievement a in achievementList)
+            {
+                if (a.Achieved)
+                {
+                    achieves += a.Name + ";";
+                }
+            }
+
+            //Write Achievements to file
+            System.IO.File.WriteAllText(achievesFile, achieves);
+        }
+        static void LoadAchieves()
+        {
+            if (System.IO.File.Exists(achievesFile))
+            {
+                string achieves = System.IO.File.ReadAllText(achievesFile);
+
+                string[] lines = achieves.Split(';');
+
+                foreach (String l in lines)
+                {
+                    foreach (Achievement a in achievementList)
+                    {
+                        if (a.Name == l)
+                            a.Achieved = true;
+                    }
+                }
+            }
         }
         #endregion
 

@@ -276,6 +276,7 @@ namespace Tetris
         public Block[,] Grid { get { return grid; } }
         public bool IsAlive { get { return isAlive; } }
         public ControlMode CurrentControlMode { get { return controlMode; } }
+        public Stats Stats { get { return stats; } }
         #endregion
     }
 }
