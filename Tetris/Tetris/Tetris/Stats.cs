@@ -99,6 +99,8 @@ namespace Tetris
             get { return multiplier; }
             set { multiplier = value; }
         }
+        public int Score { get { return score; } }
+        public int LinesCleared { get { return linesCleared; } }
         #endregion
     }
 }
