@@ -102,7 +102,7 @@ namespace Tetris
             epicComboEmitter.Draw(GameManager.BGParticleSB);
             tetrisEmitter.Draw(GameManager.BGParticleSB);
         }
-        List<int> GetFullRows()
+        public List<int> GetFullRows()
         {
             List<int> fullRows = new List<int>();
             for (int y = rows - 1; y >= 0; y--)
@@ -118,15 +118,10 @@ namespace Tetris
             }
             return fullRows;
         }
-
-        public int GetFilledRows()
-        {
-            return GetFullRows().Count();
-        }
         public int GetEmptyRows()
         {
             int emptyRows = 0;
-            for (int y = rows - 1; y >= 0; y--)
+            for (int y = 0; y < rows; y++)
             {
                 bool emptyRow = true;
                 for (int x = columns - 1; x >= 0 && emptyRow; x--)

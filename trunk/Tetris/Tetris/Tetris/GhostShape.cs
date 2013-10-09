@@ -16,37 +16,14 @@ namespace Tetris
         Block[,] grid;
         Point location;
         Vector2 gridCenter;
-        int timeSinceMove = 0;
-        int moveSpeedDown = 4; //In blocks per sec
         int emptyRows;
         int emptyRowsWeight = 1;
         int filledRows;
-        int filledRowsWeight = 2;
+        int filledRowsWeight = 1;
         int score;
         #endregion
 
-        #region Methods
-        public void Update(World world)
-        {
-            //Add time
-            timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
-
-            //Move down
-            if (timeSinceMove >= 1000 / moveSpeedDown)
-            {
-                if (CanMove(new Point(0, 1), world, grid))
-                {
-                    location.Y += 1;
-                }
-                else
-                {
-                    //Can't move down
-                    MoveToWorld(world);
-                }
-                timeSinceMove = 0;
-            }
-        }
-        
+        #region Methods        
         //Calculate score (called by AI.cs)
         public int CalculateScore(int xMoves, int rotations)
         {
@@ -54,7 +31,7 @@ namespace Tetris
             MoveHoriz(xMoves);
             HardDrop();
             MoveToWorld(world);
-            filledRows = world.GetFilledRows();
+            filledRows = world.GetFullRows().Count();
             emptyRows = world.GetEmptyRows();
             RemoveFromWorld(world);
             score = filledRowsWeight * filledRows + emptyRowsWeight * emptyRows;
@@ -67,22 +44,25 @@ namespace Tetris
             //Move left
             while (CanMove(new Point(-1, 0), world, grid) && xMoves < 0)
             {
-                location.X--;
-                xMoves++;
+                location.X -= 1;
+                xMoves += 1;
             }
             //Move right
             while (CanMove(new Point(1, 0), world, grid) && xMoves > 0)
             {
-                location.X++;
-                xMoves--;
+                location.X += 1;
+                xMoves -= 1;
             }
         }
         //Rotate
         void Rotate(int rotations)
         {
-            RotateLeft(world);
-            //Infinity lock
-            timeSinceMove = 0;
+            if (rotations > 0)
+            {
+                RotateLeft(world);
+                rotations -= 1;
+                Rotate(rotations);
+            }
         }
         //Hard drop
         void HardDrop()
