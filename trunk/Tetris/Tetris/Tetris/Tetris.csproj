@@ -112,10 +112,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Achievement.cs" />
+    <Compile Include="AI.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Block.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="GameManager.cs" />
+    <Compile Include="GhostShape.cs" />
     <Compile Include="InputState.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="ParticleSystem\Emitter.cs" />

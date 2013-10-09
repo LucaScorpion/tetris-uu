@@ -118,6 +118,27 @@ namespace Tetris
             }
             return fullRows;
         }
+
+        public int GetFilledRows()
+        {
+            return GetFullRows().Count();
+        }
+        public int GetEmptyRows()
+        {
+            int emptyRows = 0;
+            for (int y = rows - 1; y >= 0; y--)
+            {
+                bool emptyRow = true;
+                for (int x = columns - 1; x >= 0 && emptyRow; x--)
+                {
+                    if (grid[x, y] != null)
+                        emptyRow = false;
+                    if (emptyRow)
+                        emptyRows++;
+                }
+            }
+            return emptyRows;
+        }
         public void DestroyFullRows()
         {
 
