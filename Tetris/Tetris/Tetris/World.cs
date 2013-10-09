@@ -133,9 +133,9 @@ namespace Tetris
                 {
                     if (grid[x, y] != null)
                         emptyRow = false;
-                    if (emptyRow)
-                        emptyRows++;
                 }
+                if (emptyRow)
+                    emptyRows++;
             }
             return emptyRows;
         }

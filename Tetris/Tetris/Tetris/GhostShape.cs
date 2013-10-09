@@ -51,22 +51,29 @@ namespace Tetris
         public int CalculateScore(int xMoves, int rotations)
         {
             Rotate(rotations);
-            MoveRight(xMoves);
+            MoveHoriz(xMoves);
             HardDrop();
             MoveToWorld(world);
             filledRows = world.GetFilledRows();
             emptyRows = world.GetEmptyRows();
+            RemoveFromWorld(world);
             score = filledRowsWeight * filledRows + emptyRowsWeight * emptyRows;
             return score;
         }
 
         //Movements used by CalculateScore
-        //Move right
-        void MoveRight(int xMoves)
+        void MoveHoriz(int xMoves)
         {
+            //Move left
+            while (CanMove(new Point(-1, 0), world, grid) && xMoves < 0)
+            {
+                location.X--;
+                xMoves++;
+            }
+            //Move right
             while (CanMove(new Point(1, 0), world, grid) && xMoves > 0)
             {
-                location.X += 1;
+                location.X++;
                 xMoves--;
             }
         }
