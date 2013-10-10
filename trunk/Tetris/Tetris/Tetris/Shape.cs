@@ -118,6 +118,11 @@ namespace Tetris
                     RotateLeft(world);
                     rotations--;
                 }
+                //Hard drop
+                while (CanMove(new Point(0, 1), world, grid))
+                {
+                    location.Y += 1;
+                }
             }
 
             //Move down
