@@ -119,9 +119,12 @@ namespace Tetris
                     rotations--;
                 }
                 //Hard drop
-                while (CanMove(new Point(0, 1), world, grid))
+                if (rotations == 0 && xMoves == 0)
                 {
-                    location.Y += 1;
+                    while (CanMove(new Point(0, 1), world, grid))
+                    {
+                        location.Y += 1;
+                    }
                 }
             }
 
