@@ -156,6 +156,42 @@ namespace Tetris
             }
             return gaps;
         }
+        //Get holes, used by AI
+        public int GetHoles()
+        {
+            int holes = 0;
+            //Check each row, starting at the first empty row
+            for (int y = GetEmptyRows(); y < rows - 1; y++)
+            {
+                for (int x = 0; x < columns - 1; x++)
+                {
+                    //If there is no block, check for blocks around it
+                    if (grid[x, y] == null)
+                    {
+                        bool isHole = true;
+                        //Check right
+                        if (x + 1 < grid.GetLength(1))
+                            if (grid[x + 1, y] == null)
+                                isHole = false;
+                        //Check left
+                        if (x - 1 >= 0)
+                            if (grid[x - 1, y] == null)
+                                isHole = false;
+                        //Check top
+                        if (y + 1 < grid.GetLength(0))
+                            if (grid[x, y + 1] == null)
+                                isHole = false;
+                        //Check bottom
+                        if (y - 1 >= 0)
+                            if (grid[x, y - 1] == null)
+                                isHole = false;
+                        if (isHole)
+                            holes++;
+                    }
+                }
+            }
+            return holes;
+        }
         public void DestroyFullRows()
         {
 
