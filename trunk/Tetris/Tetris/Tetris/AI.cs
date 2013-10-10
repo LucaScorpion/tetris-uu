@@ -21,7 +21,6 @@ namespace Tetris
         #region Methods
         public static Tuple<int, int> Think(World world, Shape shape)
         {
-            GhostShape ghostShape = new GhostShape(world, shape);
             gridWidth = world.Columns;
             gridHeight = world.Rows;
             lastScore = 0;
@@ -33,6 +32,7 @@ namespace Tetris
             {
                 for (int rotCheck = 0; rotCheck <= 3; rotCheck++)
                 {
+                    GhostShape ghostShape = new GhostShape(world, shape);
                     lastScore = ghostShape.CalculateScore(xCheck, rotCheck);
                     if (lastScore > bestScore)
                     {
