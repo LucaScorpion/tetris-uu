@@ -118,12 +118,15 @@ namespace Tetris
             }
             return fullRows;
         }
+        //Get empty rows, used by AI
         public int GetEmptyRows()
         {
             int emptyRows = 0;
+            //Check each row
             for (int y = 0; y < rows; y++)
             {
                 bool emptyRow = true;
+                //Check each column for a block
                 for (int x = columns - 1; x >= 0 && emptyRow; x--)
                 {
                     if (grid[x, y] != null)
@@ -133,6 +136,25 @@ namespace Tetris
                     emptyRows++;
             }
             return emptyRows;
+        }
+        //Get gaps, used by AI
+        public int GetGaps()
+        {
+            int gaps = 0;
+            //Check each column
+            for (int x = 0; x < columns; x++)
+            {
+                bool emptyBlock = false;
+                //Check each row for an empty space with a block above it
+                for (int y = rows - 1; y >= 0; y--)
+                {
+                    if (grid[x, y] == null)
+                        emptyBlock = true;
+                    if (grid[x, y] != null && emptyBlock)
+                        gaps++;
+                }
+            }
+            return gaps;
         }
         public void DestroyFullRows()
         {

@@ -17,9 +17,11 @@ namespace Tetris
         Point location;
         Vector2 gridCenter;
         int emptyRows;
-        int emptyRowsWeight = 1;
+        float emptyRowsWeight = 1;
         int filledRows;
-        int filledRowsWeight = 1;
+        float filledRowsWeight = 2;
+        int gaps;
+        float gapWeight = -3;
         int score;
         #endregion
 
@@ -33,8 +35,9 @@ namespace Tetris
             MoveToWorld(world);
             filledRows = world.GetFullRows().Count();
             emptyRows = world.GetEmptyRows();
+            gaps = world.GetGaps();
             RemoveFromWorld(world);
-            score = filledRowsWeight * filledRows + emptyRowsWeight * emptyRows;
+            score = (int)(filledRowsWeight * filledRows + emptyRowsWeight * (emptyRows + filledRows) + gaps * gapWeight );
             return score;
         }
 
