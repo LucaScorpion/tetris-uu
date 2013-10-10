@@ -91,11 +91,8 @@ namespace Tetris
             if (!isAlive)
                 spriteBatch.Draw(Assets.Textures.DummyTexture, rect, Color.Black * .6f);
 
-            if (controlMode == ControlMode.Player)
-            {
-                //Draw stats
-                stats.Draw(spriteBatch);
-            }
+            //Draw stats
+            stats.Draw(spriteBatch);
 
             explosionEmitter.Draw(spriteBatch);
             comboEmitter.Draw(GameManager.BGParticleSB);

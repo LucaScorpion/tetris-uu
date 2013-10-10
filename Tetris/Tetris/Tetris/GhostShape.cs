@@ -17,13 +17,13 @@ namespace Tetris
         Point location;
         Vector2 gridCenter;
         int emptyRows;
-        float emptyRowsWeight = 1;
+        float emptyRowsWeight = 3f;
         int filledRows;
-        float filledRowsWeight = 2;
+        float filledRowsWeight = 4f;
         int gaps;
-        float gapWeight = -3;
+        float gapWeight = -4f;
         int holes;
-        float holesWeight = -3;
+        float holesWeight = -7f;
         int score;
         #endregion
 
