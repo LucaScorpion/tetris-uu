@@ -19,11 +19,15 @@ namespace Tetris
         int emptyRows;
         float emptyRowsWeight = 3f;
         int filledRows;
-        float filledRowsWeight = 4f;
+        float filledRowsWeight = 5f;
         int gaps;
         float gapWeight = -4f;
         int holes;
         float holesWeight = -7f;
+        int wells;
+        float wellsWeight = -4f;
+        int dHeight;
+        float dHeightWeight = -0.5f;
         int score;
         #endregion
 
@@ -39,8 +43,10 @@ namespace Tetris
             emptyRows = world.GetEmptyRows();
             gaps = world.GetGaps();
             holes = world.GetHoles();
+            wells = world.GetWells();
+            dHeight = world.GetDeltaHeight();
             RemoveFromWorld(world);
-            score = (int)(filledRowsWeight * filledRows + emptyRowsWeight * (emptyRows + filledRows) + gaps * gapWeight + holes * holesWeight);
+            score = (int)(filledRowsWeight * filledRows + emptyRowsWeight * (emptyRows + filledRows) + gaps * gapWeight + holes * holesWeight + wells * wellsWeight + dHeight * dHeightWeight);
             return score;
         }
 
