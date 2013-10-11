@@ -16,15 +16,11 @@ namespace Tetris
         Block[,] grid;
         Point location;
         Vector2 gridCenter;
-        int emptyRows;
-        int emptyRowsWeight = 3;
-        int filledRows;
-        int filledRowsWeight = 4;
-        int gaps;
+        int emptyRows, filledRows, gaps, holes, score;
+        int emptyRowsWeight = 1;
+        int filledRowsWeight = 5;
         int gapWeight = -4;
-        int holes;
-        int holesWeight = -7;
-        int score;
+        int holesWeight = -4;
         #endregion
 
         #region Methods        
@@ -76,22 +72,6 @@ namespace Tetris
             while (CanMove(new Point(0, 1), world, grid))
             {
                 location.Y += 1;
-            }
-        }
-
-        public void Draw(SpriteBatch spriteBatch, World world)
-        {
-            for (int y = 0; y < grid.GetLength(1); y++)
-            {
-                for (int x = 0; x < grid.GetLength(0); x++)
-                {
-                    if (grid[x, y] != null)
-                    {
-                        Rectangle blockRect = world.CalculateBlockRectangle(GetWorldLocation(x, y));
-
-                        spriteBatch.Draw(grid[x, y].Texture, blockRect, grid[x, y].Color);
-                    }
-                }
             }
         }
         Point GetWorldLocation(int x, int y)
@@ -195,9 +175,7 @@ namespace Tetris
             location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
             //If can't spawn. kill world
             if (!CanMove(new Point(0, 0), world, shape.Grid))
-            {
                 world.Kill();
-            }
         }
         #endregion
 
@@ -230,22 +208,6 @@ namespace Tetris
         public static Block[,] OShape
         {
             get { return new Block[2, 2] { { new Block(), new Block() }, { new Block(), new Block() } }; }
-        }
-
-        //Properties
-        public Color Color
-        {
-            get { return Color.White; }
-            set
-            {
-                foreach (Block b in grid)
-                {
-                    if (b != null)
-                    {
-                        b.Color = value;
-                    }
-                }
-            }
         }
         #endregion
     }
