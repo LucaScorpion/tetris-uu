@@ -27,20 +27,26 @@ namespace Tetris
         //Calculate score (called by AI.cs)
         public int CalculateScore(int xMoves, int rotations)
         {
+            //Rotate and move
             Rotate(rotations);
             MoveHoriz(xMoves);
+            //Hard drop, and move to world
             HardDrop();
             MoveToWorld(world);
+            //Calculate all scores
             filledRows = world.GetFullRows().Count();
             emptyRows = world.GetEmptyRows();
             gaps = world.GetGaps();
             holes = world.GetHoles();
+            //Remove from the world
             RemoveFromWorld(world);
+            //Calculate total score
             score = (filledRowsWeight * filledRows + emptyRowsWeight * (emptyRows + filledRows) + gaps * gapWeight + holes * holesWeight);
             return score;
         }
 
         //Movements used by CalculateScore
+        //Move left/right
         void MoveHoriz(int xMoves)
         {
             //Move left
@@ -74,13 +80,14 @@ namespace Tetris
                 location.Y += 1;
             }
         }
+        //Get the location of the shape in the world
         Point GetWorldLocation(int x, int y)
         {
             return new Point((int)(x - (int)gridCenter.X + location.X), (int)(y - (int)gridCenter.Y + location.Y));
         }
+        //Move shape to world
         void MoveToWorld(World world)
         {
-            //Move shape to world
             for (int y = 0; y < grid.GetLength(0); y++)
             {
                 for (int x = 0; x < grid.GetLength(1); x++)
@@ -92,9 +99,9 @@ namespace Tetris
                 }
             }
         }
+        //Remove the shape from the world
         void RemoveFromWorld(World world)
         {
-            //Remove the shape from the world
             for (int y = 0; y < grid.GetLength(0); y++)
             {
                 for (int x = 0; x < grid.GetLength(1); x++)
@@ -106,7 +113,7 @@ namespace Tetris
                 }
             }
         }
-
+        //Check if the shape can move
         bool CanMove(Point direction, World world, Block[,] grid)
         {
             for (int y = 0; y < grid.GetLength(1); y++)
@@ -146,6 +153,7 @@ namespace Tetris
             }
             return true;
         }
+        //Rotate left
         void RotateLeft(World world)
         {
             Block[,] newGrid = new Block[grid.GetLength(0), grid.GetLength(1)];

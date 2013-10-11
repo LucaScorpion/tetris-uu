@@ -28,12 +28,16 @@ namespace Tetris
             xMoves = 0;
             rotations = 0;
 
+            //Check each possible space and rotation
             for (int xCheck = -(gridWidth / 2); xCheck <= gridWidth / 2; xCheck++)
             {
                 for (int rotCheck = 0; rotCheck <= 3; rotCheck++)
                 {
+                    //Create a new GhostShape
                     GhostShape ghostShape = new GhostShape(world, shape);
+                    //Calculate the score
                     lastScore = ghostShape.CalculateScore(xCheck, rotCheck);
+                    //Remember the highest score, and that movement and rotation
                     if (lastScore > bestScore)
                     {
                         bestScore = lastScore;
@@ -43,6 +47,7 @@ namespace Tetris
                     lastScore = 0;
                 }
             }
+            //Return the moves belonging to the best score
             var moves = Tuple.Create(xMoves, rotations);
             return moves;
         }

@@ -27,7 +27,8 @@ namespace Tetris
         Keys down = Keys.Down;
         Keys left = Keys.Left;
         Keys right = Keys.Right;
-        Keys rotate = Keys.C;
+        Keys rotateLeft = Keys.X;
+        Keys rotateRight = Keys.C;
         Keys drop = Keys.Up;
         #endregion
 
@@ -66,7 +67,7 @@ namespace Tetris
                 }
 
                 //Rotate
-                if (InputState.isKeyPressed(rotate))
+                if (InputState.isKeyPressed(rotateLeft))
                 {
                     RotateLeft(world);
                     //Infinity lock
