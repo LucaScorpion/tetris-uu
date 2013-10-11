@@ -28,7 +28,7 @@ namespace Tetris
             xMoves = 0;
             rotations = 0;
 
-            for (int xCheck = -(gridWidth / 2); xCheck <= gridWidth / 2; xCheck++)
+            for (int xCheck = -(gridWidth / 2) - 1; xCheck <= gridWidth / 2 + 1; xCheck++)
             {
                 for (int rotCheck = 0; rotCheck <= 3; rotCheck++)
                 {
