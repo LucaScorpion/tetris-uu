@@ -209,6 +209,8 @@ namespace Tetris
         {
             //Go to the main menu
             currentGameState = GameState.Menu;
+            //Save the stats and achievements
+            SaveStats();
         }
         static void SaveStats()
         {

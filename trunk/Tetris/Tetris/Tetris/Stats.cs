@@ -33,28 +33,32 @@ namespace Tetris
                 score += 100 * multiplier;
                 fullRows -= 4;
                 multiplier++;
-                GameManager.tetris.GetAchievement();
+                if (GameManager.CurrentGameMode == GameMode.Singleplayer)
+                    GameManager.tetris.GetAchievement();
             }
             if (fullRows == 3)
             {
                 score += 60 * multiplier;
                 fullRows -= 3;
                 multiplier++;
-                GameManager.triple.GetAchievement();
+                if (GameManager.CurrentGameMode == GameMode.Singleplayer)
+                    GameManager.triple.GetAchievement();
             }
             if (fullRows == 2)
             {
                 score += 30 * multiplier;
                 fullRows -= 2;
                 multiplier++;
-                GameManager.doublec.GetAchievement();
+                if (GameManager.CurrentGameMode == GameMode.Singleplayer)
+                    GameManager.doublec.GetAchievement();
             }
             if (fullRows == 1)
             {
                 score += 10;
                 fullRows -= 1;
                 multiplier++;
-                GameManager.single.GetAchievement();
+                if (GameManager.CurrentGameMode == GameMode.Singleplayer)
+                    GameManager.single.GetAchievement();
             }
         }
         public void Draw(SpriteBatch s)
