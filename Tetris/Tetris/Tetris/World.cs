@@ -42,7 +42,9 @@ namespace Tetris
 
             if (currentShape == null)
             {
+                //Create a new shape
                 currentShape = new Shape(this, controlMode);
+                //Reset the combo
                 stats.Combo = 1;
             }
 
@@ -188,73 +190,6 @@ namespace Tetris
                 }
             }
             return holes;
-        }
-        //Get wells (holes 3 blocks or deeper), used by AI
-        public int GetWells()
-        {
-            int wells = 0;
-            for (int x = 0; x <= columns - 1; x++)
-            {
-                int holeDepth = 0;
-                for (int y = rows - 1; y >= 0; y--)
-                {
-                    //Check if there is no block
-                    if (grid[x, y] == null)
-                    {
-                        bool blockLeft = true;
-                        bool blockRight = true;
-                        //Check if there is a block to the left
-                        if (x - 1 >= 0)
-                            if (grid[x - 1, y] == null)
-                                blockLeft = false;
-                        //Check if there is a block to the right
-                        if (x + 1 <= columns - 1)
-                            if (grid[x + 1, y] == null)
-                                blockRight = false;
-                        //If there are blocks to the left and right, add 1 to holeDepth
-                        if (blockLeft && blockRight)
-                            holeDepth++;
-                        //If the holeDepth is 3, add a well
-                        if (holeDepth == 3)
-                            wells++;
-                    }
-                    else
-                        holeDepth = 0;
-                }
-            }
-            return wells;
-        }
-        //Get delta height (bumpiness of the grid), used by AI
-        public int GetDeltaHeight()
-        {
-            int totalDHeight = 0;
-            int dHeight;
-            int hLeft = 0;
-            int hCurrent = 0;
-            //Check each column
-            for (int x = 0; x <= columns - 1; x++)
-            {
-                bool block = false;
-                for (int y = 0; y <= rows - 1; y++)
-                {
-                    //If no block was found yet, and there is a block, set the current height
-                    if (grid[x, y] != null && !block)
-                    {
-                        block = true;
-                        hCurrent = rows - y;
-                    }
-                    //If no block was found and it is the bottom row, hCurrent is 0
-                    if (y == rows - 1 && !block && grid[x, y] == null)
-                        hCurrent = 0;
-                }
-                //For the most left column of the grid
-                if (x == 0)
-                    hLeft = hCurrent;
-                dHeight = Math.Abs(hCurrent - hLeft);
-                totalDHeight += dHeight;
-                hLeft = hCurrent;
-            }
-            return totalDHeight;
         }
         public void DestroyFullRows()
         {
