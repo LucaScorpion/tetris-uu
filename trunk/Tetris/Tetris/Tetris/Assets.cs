@@ -26,6 +26,7 @@ namespace Tetris
             public static Texture2D CloseEnough;
             public static Texture2D ItsSomething;
             public static Texture2D Wow;
+            public static Texture2D ROFLcopter;
         }
         public struct Fonts
         {

@@ -19,8 +19,8 @@ namespace Tetris
         int moveSpeedBoost = 7; //Factor of speed boost when boosting down
         ControlMode controlMode = ControlMode.AI;
         Tuple<int, int> moves;
-        int xMoves;
-        int rotations;
+        int xMoves, rotations;
+        int helicopterMoves = 0;
         bool AIthought = false;
 
         //Controls
@@ -28,7 +28,6 @@ namespace Tetris
         Keys left = Keys.Left;
         Keys right = Keys.Right;
         Keys rotateLeft = Keys.X;
-        Keys rotateRight = Keys.C;
         Keys drop = Keys.Up;
         #endregion
 
@@ -70,6 +69,13 @@ namespace Tetris
                 if (InputState.isKeyPressed(rotateLeft))
                 {
                     RotateLeft(world);
+                    //Check for helicopter rotation (aka infinity lock)
+                    if (timeSinceMove < 250)
+                        helicopterMoves++;
+                    else
+                        helicopterMoves = 0;
+                    if (helicopterMoves > 4)
+                        GameManager.roflcopter.GetAchievement();
                     //Infinity lock
                     timeSinceMove = 0;
                 }
