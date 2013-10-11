@@ -28,6 +28,7 @@ namespace Tetris
         public static Achievement triple;
         public static Achievement doublec;
         public static Achievement single;
+        public static Achievement roflcopter;
         static List<Achievement> achievementList = new List<Achievement>();
 
         static string scoreFile = "stats.mesave";
@@ -64,11 +65,13 @@ namespace Tetris
             triple = new Achievement("Triple!", "Cleared 3 rows", "at once", Assets.Textures.CloseEnough, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             doublec = new Achievement("Double", "Cleared 2 rows", "at once", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             single = new Achievement("Single...", "Cleared 1 row", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            roflcopter = new Achievement("ROFLCOPTER", "roflroflroflrofl", "roflroflroflrofl", "roflroflroflrofl", Assets.Textures.ROFLcopter, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
 
             achievementList.Add(tetris);
             achievementList.Add(triple);
             achievementList.Add(doublec);
             achievementList.Add(single);
+            achievementList.Add(roflcopter);
         }
         public static void Update(GameTime newGameTime)
         {
