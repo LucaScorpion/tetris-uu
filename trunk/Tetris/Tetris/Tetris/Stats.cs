@@ -10,8 +10,7 @@ namespace Tetris
     public class Stats
     {
         #region Fields
-        int linesCleared;
-        int score;
+        int linesCleared, score;
         int multiplier = 1;
         Rectangle worldRect;
         SpriteFont font;
@@ -33,6 +32,7 @@ namespace Tetris
                 score += 100 * multiplier;
                 fullRows -= 4;
                 multiplier++;
+                //Get achievement
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.tetris.GetAchievement();
             }
@@ -41,6 +41,7 @@ namespace Tetris
                 score += 60 * multiplier;
                 fullRows -= 3;
                 multiplier++;
+                //Get achievement
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.triple.GetAchievement();
             }
@@ -49,6 +50,7 @@ namespace Tetris
                 score += 30 * multiplier;
                 fullRows -= 2;
                 multiplier++;
+                //Get achievement
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.doublec.GetAchievement();
             }
@@ -57,6 +59,7 @@ namespace Tetris
                 score += 10;
                 fullRows -= 1;
                 multiplier++;
+                //Get achievement
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.single.GetAchievement();
             }

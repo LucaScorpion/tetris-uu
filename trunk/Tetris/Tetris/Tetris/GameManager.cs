@@ -24,13 +24,9 @@ namespace Tetris
         public static SpriteBatch FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
-        public static Achievement tetris;
-        public static Achievement triple;
-        public static Achievement doublec;
-        public static Achievement single;
-        public static Achievement roflcopter;
+        public static Achievement tetris, triple, doublec, single, roflcopter;
         static List<Achievement> achievementList = new List<Achievement>();
-
+        //The files to save stats and achievements to
         static string scoreFile = "stats.mesave";
         static string achievesFile = "achievements.mesave";
 
@@ -38,6 +34,7 @@ namespace Tetris
         #endregion
 
         #region Methods
+        //Initialise all the buttons and achievements
         public static void Init(Action quit)
         {
             mainMenu = new Menu(new List<Button>() {
@@ -66,7 +63,7 @@ namespace Tetris
             doublec = new Achievement("Double", "Cleared 2 rows", "at once", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             single = new Achievement("Single...", "Cleared 1 row", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             roflcopter = new Achievement("ROFLCOPTER", "roflroflroflrofl", "roflroflroflrofl", "roflroflroflrofl", Assets.Textures.ROFLcopter, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-
+            //Add ALL of the achievements to achievementList
             achievementList.Add(tetris);
             achievementList.Add(triple);
             achievementList.Add(doublec);
@@ -174,6 +171,7 @@ namespace Tetris
         }
         static void StartSP()
         {
+            //Load the achievements
             LoadAchieves();
 
             gameWorld = new List<World>();
@@ -247,14 +245,15 @@ namespace Tetris
         }
         static void LoadAchieves()
         {
+            //If the achievesFile exists...
             if (System.IO.File.Exists(achievesFile))
             {
+                //Write the achievements, split by semicolons
                 string achieves = System.IO.File.ReadAllText(achievesFile);
-
                 string[] lines = achieves.Split(';');
-
                 foreach (String l in lines)
                 {
+                    //Write every achievement name
                     foreach (Achievement a in achievementList)
                     {
                         if (a.Name == l)

@@ -13,20 +13,15 @@ namespace Tetris
         static Texture2D Texture;
         static Rectangle imageRect = new Rectangle(5, 5, 90, 90);
         static Vector2 size = new Vector2(270, 100);
-        static Vector2 position;
+        static Vector2 position, screen;
         static int speed = 10;
-        static Vector2 screen;
         static List<Achievement> queueList = new List<Achievement>();
         static bool drawing = false;
         String name;
-        String line1;
-        String line2;
-        String line3;
+        String line1, line2, line3;
         Texture2D image;
-        Color backColor;
-        Color textColor;
-        SpriteFont titleFont;
-        SpriteFont descFont;
+        Color backColor, textColor;
+        SpriteFont titleFont, descFont;
         bool get = false;
         bool got = false;
         bool draw = false;
@@ -89,6 +84,7 @@ namespace Tetris
                     drawing = false;
                 }
             }
+            //Get all achievements from the queue, starting with the first
             if (queueList.Count != 0 && !drawing)
             {
                 Achievement a = queueList.First();
@@ -115,7 +111,7 @@ namespace Tetris
                 s.Draw(image, new Rectangle((int)position.X + imageRect.Left, (int)position.Y + imageRect.Top, imageRect.Width, imageRect.Height), Color.White);
                 //Achievement name
                 s.DrawString(titleFont, name, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y), textColor);
-                //Description
+                //Description (3 lines)
                 s.DrawString(descFont, line1, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y), textColor);
                 s.DrawString(descFont, line2, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y), textColor);
                 s.DrawString(descFont, line3, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y + descFont.MeasureString(line2).Y), textColor);
