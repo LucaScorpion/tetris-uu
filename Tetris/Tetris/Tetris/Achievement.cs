@@ -16,6 +16,8 @@ namespace Tetris
         static Vector2 position;
         static int speed = 10;
         static Vector2 screen;
+        static List<Achievement> queueList = new List<Achievement>();
+        static bool drawing = false;
         String name;
         String line1;
         String line2;
@@ -45,6 +47,7 @@ namespace Tetris
         }
         public void Update()
         {
+            //Check if an achievement was get
             if (get)
             {
                 //Set the startTime and stopTime, draw and got
@@ -52,6 +55,7 @@ namespace Tetris
                 {
                     draw = true;
                     got = true;
+                    drawing = true;
                 }
                 //Move up
                 if (move == 1)
@@ -82,14 +86,24 @@ namespace Tetris
                 {
                     get = false;
                     draw = false;
+                    drawing = false;
                 }
+            }
+            if (queueList.Count != 0 && !drawing)
+            {
+                Achievement a = queueList.First();
+                a.GetAchievement();
+                queueList.Remove(a);
             }
         }
         public void GetAchievement()
         {
-            //If the player hasn't got the achievement yet, get the achievement
-            if (!got)
+            //If the player hasn't got the achievement yet and another achievement is NOT being drawn, get the achievement
+            if (!got && !drawing)
                 get = true;
+            //If the player hasn't got the achievement yet and another achievement IS being drawn, add the achievement to the queue list
+            else if (!got && drawing)
+                queueList.Add(this);
         }
         public void Draw(SpriteBatch s)
         {
