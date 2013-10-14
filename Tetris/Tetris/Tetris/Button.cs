@@ -11,11 +11,9 @@ namespace Tetris
     {
         #region Fields
         Rectangle rect;
-        Color buttonColor;
-        Color hoverColor;
+        Color buttonColor, hoverColor, textColor;
         String text;
         SpriteFont font;
-        Color textColor;
         Texture2D texture;
         Action method;
         bool hover = false;

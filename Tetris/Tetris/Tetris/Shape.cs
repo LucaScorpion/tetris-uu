@@ -69,12 +69,13 @@ namespace Tetris
                 if (InputState.isKeyPressed(rotateLeft))
                 {
                     RotateLeft(world);
-                    //Check for helicopter rotation (aka infinity lock)
+                    //Check for helicopter rotation (aka infinity lock) withing 250 ms
                     if (timeSinceMove < 250)
                         helicopterMoves++;
                     else
                         helicopterMoves = 0;
-                    if (helicopterMoves > 4)
+                    //Do 10 rotations for the achievement
+                    if (helicopterMoves >= 10)
                         GameManager.roflcopter.GetAchievement();
                     //Infinity lock
                     timeSinceMove = 0;
@@ -82,6 +83,7 @@ namespace Tetris
                 //Hard drop
                 if (InputState.isKeyPressed(drop))
                 {
+                    //Keep moving down
                     while (CanMove(new Point(0, 1), world, grid))
                     {
                         location.Y += 1;
@@ -105,6 +107,7 @@ namespace Tetris
                 //Move horizontally
                 if (xMoves > 0)
                 {
+                    //Move right
                     if (CanMove(new Point(1, 0), world, grid))
                     {
                         location.X++;
@@ -113,6 +116,7 @@ namespace Tetris
                 }
                 if (xMoves < 0)
                 {
+                    //Move left
                     if (CanMove(new Point(-1, 0), world, grid))
                     {
                         location.X--;
@@ -128,6 +132,7 @@ namespace Tetris
                 //Hard drop
                 if (rotations == 0 && xMoves == 0)
                 {
+                    //Keep moving down
                     while (CanMove(new Point(0, 1), world, grid))
                     {
                         location.Y += 1;

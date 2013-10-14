@@ -23,10 +23,7 @@ namespace Tetris
         bool isAlive = true;
         bool mute = true;
 
-        Emitter comboEmitter;
-        Emitter epicComboEmitter;
-        Emitter explosionEmitter;
-        Emitter tetrisEmitter;
+        Emitter comboEmitter, epicComboEmitter, explosionEmitter, tetrisEmitter;
 
         Stats stats;
         #endregion
@@ -96,6 +93,7 @@ namespace Tetris
             //Draw stats
             stats.Draw(spriteBatch);
 
+            //Draw emitters
             explosionEmitter.Draw(spriteBatch);
             comboEmitter.Draw(GameManager.BGParticleSB);
             epicComboEmitter.Draw(GameManager.BGParticleSB);
@@ -104,11 +102,14 @@ namespace Tetris
         public List<int> GetFullRows()
         {
             List<int> fullRows = new List<int>();
+            //Check each row
             for (int y = rows - 1; y >= 0; y--)
             {
                 bool fullRow = true;
+                //Check each column for a block
                 for (int x = columns - 1; x >= 0 && fullRow; x--)
                 {
+                    //If there is no block, the row is not full
                     if (grid[x, y] == null)
                         fullRow = false;
                 }
@@ -128,6 +129,7 @@ namespace Tetris
                 //Check each column for a block
                 for (int x = columns - 1; x >= 0 && emptyRow; x--)
                 {
+                    //If there is a block, the row is not empty
                     if (grid[x, y] != null)
                         emptyRow = false;
                 }
@@ -207,8 +209,7 @@ namespace Tetris
                     explosionEmitter.SetColor(grid[x, fullRows[i] + i].Color);
                     explosionEmitter.Shoot();
                 }
-
-                //move down grid
+                //Move down grid
                 for (int y = fullRows[i] + i; y > 0; y--)
                 {
                     for (int x = 0; x < columns; x++)
@@ -220,16 +221,12 @@ namespace Tetris
                 //Remove row 0
                 for (int x = 0; x < columns; x++)
                     grid[x, 0] = null;
-
-
                 //Calculate the score
                 stats.CalculateScore(fullRows.Count());
                 //create new shape
                 this.currentShape = new Shape(this, controlMode);
-
             }
 
-            
             if (!mute)
             {
                 //Play sound

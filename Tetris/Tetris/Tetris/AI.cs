@@ -10,12 +10,7 @@ namespace Tetris
     public static class AI
     {
         #region Fields
-        static int gridWidth;
-        static int gridHeight;
-        static int lastScore;
-        static int bestScore;
-        static int xMoves;
-        static int rotations;
+        static int gridWidth, gridHeight, lastScore, bestScore, xMoves, rotations;
         #endregion
 
         #region Methods
