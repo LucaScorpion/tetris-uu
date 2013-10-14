@@ -124,6 +124,27 @@ namespace Tetris
         /// Creates a Steam-like achievement
         /// </summary>
         /// <param name="name">The title of the achievement</param>
+        /// <param name="image">The picture to be displayed next to the text</param>
+        /// <param name="backColor">The color of the back rectangle</param>
+        /// <param name="textColor">The color of the text</param>
+        /// <param name="titleFont">The font to be used for the title</param>
+        /// <param name="descFont">The font to be used for the description</param>
+        public Achievement(String name, Texture2D image, Color backColor, Color textColor, SpriteFont titleFont, SpriteFont descFont)
+        {
+            this.name = name;
+            this.line1 = "";
+            this.line2 = "";
+            this.line3 = "";
+            this.image = image;
+            this.backColor = backColor;
+            this.textColor = textColor;
+            this.titleFont = titleFont;
+            this.descFont = descFont;
+        }
+        /// <summary>
+        /// Creates a Steam-like achievement
+        /// </summary>
+        /// <param name="name">The title of the achievement</param>
         /// <param name="line1">Line 1 of the description</param>
         /// <param name="image">The picture to be displayed next to the text</param>
         /// <param name="backColor">The color of the back rectangle</param>
