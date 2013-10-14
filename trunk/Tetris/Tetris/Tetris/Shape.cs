@@ -22,6 +22,7 @@ namespace Tetris
         int xMoves, rotations;
         int helicopterMoves = 0;
         bool AIthought = false;
+        bool slow = true;
 
         //Controls
         Keys down = Keys.Down;
@@ -45,6 +46,7 @@ namespace Tetris
                 {
                     //Complete boost for keypress
                     timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds * (moveSpeedBoost - 1);
+                    slow = false;
                 }
 
                 //Move left
@@ -90,6 +92,7 @@ namespace Tetris
                     }
                     //Move shape to world 
                     MoveToWorld(world);
+                    slow = false;
                 }
             }
 
@@ -154,6 +157,9 @@ namespace Tetris
                     //Reset AI
                     if (controlMode == ControlMode.AI)
                         AIthought = false;
+                    //If hard drop and boost down weren't used, get the slow achievement
+                    if (slow)
+                        GameManager.slow.GetAchievement();
                 }
                 timeSinceMove = 0;
             }

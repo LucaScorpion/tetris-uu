@@ -24,7 +24,7 @@ namespace Tetris
         public static SpriteBatch FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
-        public static Achievement tetris, triple, doublec, single, roflcopter;
+        public static Achievement tetris, triple, doublec, single, roflcopter, slow;
         static List<Achievement> achievementList = new List<Achievement>();
         //The files to save stats and achievements to
         static string scoreFile = "stats.mesave";
@@ -63,12 +63,14 @@ namespace Tetris
             doublec = new Achievement("Double", "Cleared 2 rows", "at once", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             single = new Achievement("Single...", "Cleared 1 row", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             roflcopter = new Achievement("ROFLCOPTER", "roflroflroflrofl", "roflroflroflrofl", "roflroflroflrofl", Assets.Textures.ROFLcopter, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            slow = new Achievement("So slow...", Assets.Textures.IELogo, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
             achievementList.Add(tetris);
             achievementList.Add(triple);
             achievementList.Add(doublec);
             achievementList.Add(single);
             achievementList.Add(roflcopter);
+            achievementList.Add(slow);
         }
         public static void Update(GameTime newGameTime)
         {
