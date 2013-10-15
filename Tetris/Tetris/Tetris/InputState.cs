@@ -65,7 +65,7 @@ namespace Tetris
         }
         public static Boolean leftClick()
         {
-            if (currentMouse.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Pressed)
+            if (currentMouse.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released)
             {
                 return true;
             }
@@ -73,7 +73,7 @@ namespace Tetris
         }
         public static Boolean rightClick()
         {
-            if (currentMouse.RightButton == ButtonState.Pressed && previousMouse.RightButton == ButtonState.Pressed)
+            if (currentMouse.RightButton == ButtonState.Pressed && previousMouse.RightButton == ButtonState.Released)
             {
                 return true;
             }

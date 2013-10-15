@@ -17,11 +17,8 @@ namespace Tetris
         static GameTime gameTime;
         static Keys pauseKey = Keys.Escape;
         static Random random = new Random(1337);
-        static Menu mainMenu = new Menu(new List<Button>());
-        static Menu pausedMenu = new Menu(new List<Button>());
-        static Menu gameOverMenu = new Menu(new List<Button>());
-        public static SpriteBatch BGParticleSB;
-        public static SpriteBatch FGParticleSB;
+        static Menu mainMenu, pausedMenu, gameOverMenu, mpGameOverMenu;
+        public static SpriteBatch BGParticleSB, FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
         public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon;
@@ -30,11 +27,14 @@ namespace Tetris
         static string scoreFile = "stats.mesave";
         static string achievesFile = "achievements.mesave";
 
+        static string winText = "You rock! \\m/";
+        static string loseText = "You fail...";
+
         public static World AIWorld;
         #endregion
 
         #region Methods
-        //Initialise all the buttons and achievements
+        //Initialise all the buttons, menus and achievements
         public static void Init(Action quit)
         {
             mainMenu = new Menu(new List<Button>() {
@@ -48,6 +48,9 @@ namespace Tetris
         });
             gameOverMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(60, 150, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
+        });
+            mpGameOverMenu = new Menu(new List<Button>() {
+            new Button(new Rectangle(300, 330, 200, 50), Color.Transparent, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
         });
             //Create the menu emitter
             List<ParticleModifier> p = new List<ParticleModifier>();
@@ -78,7 +81,7 @@ namespace Tetris
         {
             //Update input
             InputState.update();
-
+            //Update gametime
             gameTime = newGameTime;
 
             switch (currentGameState)
@@ -95,19 +98,13 @@ namespace Tetris
                                 SaveStats();
                                 currentGameState = GameState.GameOver;
                             }
-                        //For multiplayer: if all human players are dead, game over
+                        //For multiplayer: go to the MPLost or MPWon game over screen, depending on if the player or the AI died
                         if (currentGameMode == GameMode.Multiplayer)
                         {
                             if (w.CurrentControlMode == ControlMode.Player && !w.IsAlive)
-                            {
-                                SaveStats();
                                 currentGameState = GameState.MPLost;
-                            }
                             if (w.CurrentControlMode == ControlMode.AI && !w.IsAlive)
-                            {
-                                SaveStats();
                                 currentGameState = GameState.MPWon;
-                            }
                         }
                     }
 
@@ -143,8 +140,12 @@ namespace Tetris
                     //Update achievements
                     foreach (Achievement a in achievementList)
                         a.Update();
+                    //Update the menu
+                    mpGameOverMenu.Update();
                     break;
                 case GameState.MPLost:
+                    //Update the menu
+                    mpGameOverMenu.Update();
                     break;
             }
         }
@@ -186,8 +187,16 @@ namespace Tetris
                     //Draw achievements
                     foreach (Achievement a in achievementList)
                         a.Draw(s);
+                    //Draw the menu
+                    mpGameOverMenu.Draw(s);
+                    //Draw the text
+                    s.DrawString(Assets.Fonts.GiantFont, winText, new Vector2(s.GraphicsDevice.Viewport.Width / 2 - Assets.Fonts.GiantFont.MeasureString(winText).X / 2, 100), Color.White);
                     break;
                 case GameState.MPLost:
+                    //Draw the menu
+                    mpGameOverMenu.Draw(s);
+                    //Draw the text
+                    s.DrawString(Assets.Fonts.GiantFont, loseText, new Vector2(s.GraphicsDevice.Viewport.Width / 2 - Assets.Fonts.GiantFont.MeasureString(loseText).X / 2, 100), Color.White);
                     break;
 
             }
