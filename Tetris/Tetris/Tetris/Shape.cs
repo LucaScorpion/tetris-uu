@@ -157,8 +157,8 @@ namespace Tetris
                     //Reset AI
                     if (controlMode == ControlMode.AI)
                         AIthought = false;
-                    //If hard drop and boost down weren't used, get the slow achievement
-                    if (slow)
+                    //If hard drop and boost down weren't used, get the slow achievement (SP only)
+                    if (slow && GameManager.CurrentGameMode == GameMode.Singleplayer)
                         GameManager.slow.GetAchievement();
                 }
                 timeSinceMove = 0;

@@ -24,7 +24,7 @@ namespace Tetris
         public static SpriteBatch FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
-        public static Achievement tetris, triple, doublec, single, roflcopter, slow;
+        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon;
         static List<Achievement> achievementList = new List<Achievement>();
         //The files to save stats and achievements to
         static string scoreFile = "stats.mesave";
@@ -58,12 +58,13 @@ namespace Tetris
             menuEmitter.Start();
 
             //Create achievements
-            tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once", Assets.Textures.Wow, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            triple = new Achievement("Triple!", "Cleared 3 rows", "at once", Assets.Textures.CloseEnough, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            doublec = new Achievement("Double", "Cleared 2 rows", "at once", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once.", Assets.Textures.Wow, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            triple = new Achievement("Triple!", "Cleared 3 rows", "at once.", Assets.Textures.CloseEnough, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            doublec = new Achievement("Double", "Cleared 2 rows", "at once.", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             single = new Achievement("Single...", "Cleared 1 row", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             roflcopter = new Achievement("ROFLCOPTER", "roflroflroflrofl", "roflroflroflrofl", "roflroflroflrofl", Assets.Textures.ROFLcopter, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            slow = new Achievement("So slow...", Assets.Textures.IELogo, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            slow = new Achievement("So slow...", "Don't use hard drop", "or boost down.", Assets.Textures.IELogo, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            mpWon = new Achievement("You rock!", "Beat the AI.", Assets.Textures.RockHand, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
             achievementList.Add(tetris);
             achievementList.Add(triple);
@@ -71,6 +72,7 @@ namespace Tetris
             achievementList.Add(single);
             achievementList.Add(roflcopter);
             achievementList.Add(slow);
+            achievementList.Add(mpWon);
         }
         public static void Update(GameTime newGameTime)
         {
@@ -99,7 +101,12 @@ namespace Tetris
                             if (w.CurrentControlMode == ControlMode.Player && !w.IsAlive)
                             {
                                 SaveStats();
-                                currentGameState = GameState.GameOver;
+                                currentGameState = GameState.MPLost;
+                            }
+                            if (w.CurrentControlMode == ControlMode.AI && !w.IsAlive)
+                            {
+                                SaveStats();
+                                currentGameState = GameState.MPWon;
                             }
                         }
                     }
@@ -129,6 +136,15 @@ namespace Tetris
                     foreach (World w in gameWorld)
                         w.Update();
                     gameOverMenu.Update();
+                    break;
+                case GameState.MPWon:
+                    //Get the mpWon achievement
+                    mpWon.GetAchievement();
+                    //Update achievements
+                    foreach (Achievement a in achievementList)
+                        a.Update();
+                    break;
+                case GameState.MPLost:
                     break;
             }
         }
@@ -166,6 +182,14 @@ namespace Tetris
                         w.Draw(s);
                     gameOverMenu.Draw(s);
                     break;
+                case GameState.MPWon:
+                    //Draw achievements
+                    foreach (Achievement a in achievementList)
+                        a.Draw(s);
+                    break;
+                case GameState.MPLost:
+                    break;
+
             }
             BGParticleSB.End();
             s.End();
@@ -193,13 +217,10 @@ namespace Tetris
 
             //Set gamemode
             currentGameMode = GameMode.Multiplayer;
-            //Load test worlds
+            //Load worlds
             GameWorld.Add(new World(new Rectangle(50, 70, 216, 360), 0, ControlMode.Player, false));
             AIWorld = new World(new Rectangle(400, 70, 216, 360), 0, ControlMode.AI);
             GameWorld.Add(AIWorld);
-            /*GameWorld.Add(new World(new Rectangle(400, 245, 110, 190), 0, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(550, 245, 110, 190), 0, ControlMode.AI));
-            GameWorld.Add(new World(new Rectangle(550, 25, 110, 190), 0, ControlMode.AI));*/
             //Change gamestate
             currentGameState = GameState.Playing;
         }
@@ -277,7 +298,7 @@ namespace Tetris
     }
     public enum GameState
     {
-        StartScreen, Playing, Menu, GameOver, Paused
+        StartScreen, Playing, Menu, GameOver, Paused, MPWon, MPLost
     }
     public enum GameMode
     {
