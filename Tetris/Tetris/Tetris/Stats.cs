@@ -27,12 +27,21 @@ namespace Tetris
         public void CalculateScore(int fullRows)
         {
             linesCleared += fullRows;
+            if (GameManager.CurrentGameMode == GameMode.Singleplayer)
+            {
+                //Get achievements for clearing 50/100 lines
+                if (linesCleared >= 50)
+                    GameManager.cleared1.GetAchievement();
+                if (linesCleared >= 100)
+                    GameManager.cleared2.GetAchievement();
+            }
+
+            //Calculate multiplier, add score, get achievements
             if (fullRows == 4)
             {
                 score += 100 * multiplier;
                 fullRows -= 4;
                 multiplier++;
-                //Get achievement
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.tetris.GetAchievement();
             }
@@ -41,7 +50,6 @@ namespace Tetris
                 score += 60 * multiplier;
                 fullRows -= 3;
                 multiplier++;
-                //Get achievement
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.triple.GetAchievement();
             }
@@ -50,7 +58,6 @@ namespace Tetris
                 score += 30 * multiplier;
                 fullRows -= 2;
                 multiplier++;
-                //Get achievement
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.doublec.GetAchievement();
             }
@@ -59,7 +66,6 @@ namespace Tetris
                 score += 10;
                 fullRows -= 1;
                 multiplier++;
-                //Get achievement
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.single.GetAchievement();
             }
