@@ -28,11 +28,13 @@ namespace Tetris
             public static Texture2D Wow;
             public static Texture2D ROFLcopter;
             public static Texture2D IELogo;
+            public static Texture2D RockHand;
         }
         public struct Fonts
         {
             public static SpriteFont BasicFont;
             public static SpriteFont SmallerFont;
+            public static SpriteFont GiantFont;
         }
         public struct Audio
         {

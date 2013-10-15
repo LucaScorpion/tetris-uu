@@ -52,6 +52,7 @@ namespace Tetris
             Assets.init(GraphicsDevice);
             Assets.Fonts.BasicFont = Content.Load<SpriteFont>("Fonts/basicFont");
             Assets.Fonts.SmallerFont = Content.Load<SpriteFont>("Fonts/smallerFont");
+            Assets.Fonts.GiantFont = Content.Load<SpriteFont>("Fonts/giantFont");
 
             Assets.Textures.Block = Content.Load<Texture2D>("Textures/block");
             Assets.Textures.Particle = Content.Load<Texture2D>("Textures/Particle");
@@ -63,6 +64,7 @@ namespace Tetris
             Assets.Textures.ItsSomething = Content.Load<Texture2D>("Textures/ItsSomething");
             Assets.Textures.ROFLcopter = Content.Load<Texture2D>("Textures/ROFLcopter");
             Assets.Textures.IELogo = Content.Load<Texture2D>("Textures/IELogo");
+            Assets.Textures.RockHand = Content.Load<Texture2D>("Textures/RockHand");
 
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
             Assets.Audio.Single = Content.Load<SoundEffect>("Audio/Single");
