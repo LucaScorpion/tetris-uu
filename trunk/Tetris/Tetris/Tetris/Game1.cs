@@ -65,6 +65,8 @@ namespace Tetris
             Assets.Textures.ROFLcopter = Content.Load<Texture2D>("Textures/ROFLcopter");
             Assets.Textures.IELogo = Content.Load<Texture2D>("Textures/IELogo");
             Assets.Textures.RockHand = Content.Load<Texture2D>("Textures/RockHand");
+            Assets.Textures.Focused = Content.Load<Texture2D>("Textures/Focused");
+            Assets.Textures.Focused = Content.Load<Texture2D>("Textures/PukingRainbows");
 
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
             Assets.Audio.Single = Content.Load<SoundEffect>("Audio/Single");

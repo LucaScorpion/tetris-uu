@@ -21,7 +21,7 @@ namespace Tetris
         public static SpriteBatch BGParticleSB, FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
-        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon;
+        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2;
         static List<Achievement> achievementList = new List<Achievement>();
         //The files to save stats and achievements to
         static string scoreFile = "stats.mesave";
@@ -68,6 +68,8 @@ namespace Tetris
             roflcopter = new Achievement("ROFLCOPTER", "roflroflroflrofl", "roflroflroflrofl", "roflroflroflrofl", Assets.Textures.ROFLcopter, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             slow = new Achievement("So slow...", "Don't use hard drop", "or boost down.", Assets.Textures.IELogo, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             mpWon = new Achievement("You rock!", "Beat the AI.", Assets.Textures.RockHand, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            cleared1 = new Achievement("Focused", "Cleared 50 lines.", Assets.Textures.Focused, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            cleared2 = new Achievement("In the zone", "Cleared 100 lines.", Assets.Textures.PukingRainbows, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
             achievementList.Add(tetris);
             achievementList.Add(triple);
@@ -76,6 +78,8 @@ namespace Tetris
             achievementList.Add(roflcopter);
             achievementList.Add(slow);
             achievementList.Add(mpWon);
+            achievementList.Add(cleared1);
+            achievementList.Add(cleared2);
         }
         public static void Update(GameTime newGameTime)
         {
