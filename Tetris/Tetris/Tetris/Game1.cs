@@ -86,10 +86,11 @@ namespace Tetris
 
             //Start music
             intro = Assets.Audio.Intro.CreateInstance();
-            intro.Play();
+            //intro.Play();
 
             loop = Assets.Audio.Loop.CreateInstance();
             loop.IsLooped = true;
+            loop.Play();
         }
 
         /// <summary>
@@ -108,10 +109,6 @@ namespace Tetris
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime >= Assets.Audio.Intro.Duration && loop.State == SoundState.Stopped)
-            {
-                loop.Play();
-            }
             //update game
             GameManager.Update(gameTime);
 
