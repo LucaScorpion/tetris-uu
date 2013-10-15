@@ -132,14 +132,11 @@ namespace Tetris
                     RotateLeft(world);
                     rotations--;
                 }
-                //Hard drop
+                //Move down
                 if (rotations == 0 && xMoves == 0)
                 {
-                    //Keep moving down
-                    while (CanMove(new Point(0, 1), world, grid))
-                    {
-                        location.Y += 1;
-                    }
+                    //Speed boost
+                    timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds * (moveSpeedBoost - 1);
                 }
             }
 
