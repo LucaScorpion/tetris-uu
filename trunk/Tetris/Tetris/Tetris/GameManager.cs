@@ -140,6 +140,8 @@ namespace Tetris
                     //Update achievements
                     foreach (Achievement a in achievementList)
                         a.Update();
+                    //Update particles
+                    menuEmitter.Update();
                     //Update the menu
                     mpGameOverMenu.Update();
                     break;
@@ -187,6 +189,8 @@ namespace Tetris
                     //Draw achievements
                     foreach (Achievement a in achievementList)
                         a.Draw(s);
+                    //Draw particles
+                    menuEmitter.Draw(FGParticleSB);
                     //Draw the menu
                     mpGameOverMenu.Draw(s);
                     //Draw the text
