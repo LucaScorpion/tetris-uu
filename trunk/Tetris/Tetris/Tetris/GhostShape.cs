@@ -16,14 +16,15 @@ namespace Tetris
         Block[,] grid;
         Point location;
         Vector2 gridCenter;
-        int emptyRows, filledRows, gaps, holes, score;
+        int emptyRows, filledRows, gaps, holes, score, movesDown;
         int emptyRowsWeight = 1;
         int filledRowsWeight = 5;
         int gapWeight = -4;
         int holesWeight = -4;
+        int movesDownWeight = 1;
         #endregion
 
-        #region Methods        
+        #region Methods
         //Calculate score (called by AI.cs)
         public int CalculateScore(int xMoves, int rotations)
         {
@@ -41,7 +42,7 @@ namespace Tetris
             //Remove from the world
             RemoveFromWorld(world);
             //Calculate total score
-            score = (filledRowsWeight * filledRows + emptyRowsWeight * (emptyRows + filledRows) + gaps * gapWeight + holes * holesWeight);
+            score = (filledRowsWeight * filledRows + emptyRowsWeight * (emptyRows + filledRows) + gaps * gapWeight + holes * holesWeight + movesDown * movesDownWeight);
             return score;
         }
 
@@ -75,9 +76,11 @@ namespace Tetris
         //Hard drop
         void HardDrop()
         {
+            movesDown = 0;
             while (CanMove(new Point(0, 1), world, grid))
             {
-                location.Y += 1;
+                location.Y++;
+                movesDown++;
             }
         }
         //Get the location of the shape in the world
