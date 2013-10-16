@@ -25,6 +25,8 @@ namespace Tetris
         static List<Achievement> achievementList = new List<Achievement>();
         static int gotAchievements, lockedAchievements;
         static int scroll = 0;
+        static int secondsPlayed = 0;
+        static int prevTime;
         //The files to save stats and achievements to
         static string scoreFile = "stats.mesave";
         static string achievesFile = "achievements.mesave";
@@ -44,20 +46,20 @@ namespace Tetris
             menuEmitter.Start();
 
             //Create achievements
-            tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once.", Assets.Textures.Wow, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            triple = new Achievement("Triple!", "Cleared 3 rows", "at once.", Assets.Textures.CloseEnough, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            doublec = new Achievement("Double", "Cleared 2 rows", "at once.", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            single = new Achievement("Single...", "Cleared 1 row.", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            tetris = new Achievement("TETRIS!", "Clear 4 rows", "at once.", Assets.Textures.Wow, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            triple = new Achievement("Triple!", "Clear 3 rows", "at once.", Assets.Textures.CloseEnough, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            doublec = new Achievement("Double", "Clear 2 rows", "at once.", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            single = new Achievement("Single...", "Clear 1 row.", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             roflcopter = new Achievement("ROFLCOPTER", "roflroflroflrofl", "roflroflroflrofl", "roflroflroflrofl", Assets.Textures.ROFLcopter, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             slow = new Achievement("So slow...", "Don't use hard drop", "or boost down.", Assets.Textures.IELogo, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             mpWon = new Achievement("You rock!", "Beat the AI.", Assets.Textures.RockHand, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            cleared1 = new Achievement("Focused", "Cleared 50 lines", "in 1 game.", Assets.Textures.Focused, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            cleared2 = new Achievement("In the zone", "Cleared 100 lines", "in 1 game.", Assets.Textures.PukingRainbows, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            cleared1 = new Achievement("Focused", "Clear 50 lines", "in 1 game.", Assets.Textures.Focused, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            cleared2 = new Achievement("In the zone", "Clear 100 lines", "in 1 game.", Assets.Textures.PukingRainbows, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             combo = new Achievement("Combobreaker", "Get a multiplier", "of 3.", Assets.Textures.ComboBreaker, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             allInOne = new Achievement("All in one", "Clear a single,", "double, triple and", "tetris in 1 game.", Assets.Textures.CountVonCount, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             doubleTetris = new Achievement("Back-to-back", "Clear 2 tetrises", "back to back.", Assets.Textures.AwwYea, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            love = new Achievement("I love this game!", "Played singleplayer", "for more then", "10 minutes.", Assets.Textures.Heart, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            achievementWh0re = new Achievement("Chievies!", "Got all achievements.", Assets.Textures.AchievementWh0re, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            love = new Achievement("I love this game!", "Play singleplayer", "for more then", "10 minutes total.", Assets.Textures.Heart, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            achievementWh0re = new Achievement("Chievies!", "Unlock all", "achievements.", Assets.Textures.AchievementWh0re, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
             achievementList.Add(single);
             achievementList.Add(doublec);
@@ -88,6 +90,18 @@ namespace Tetris
             {
                 case GameState.Playing:
                     UpdateGame();
+                    if (currentGameMode == GameMode.Singleplayer)
+                    {
+                        //Add time
+                        if (secondsPlayed < 600 && prevTime != newGameTime.TotalGameTime.Seconds)
+                        {
+                            secondsPlayed++;
+                            prevTime = newGameTime.TotalGameTime.Seconds;
+                        }
+                        //Get achievement
+                        if (secondsPlayed == 600)
+                            love.GetAchievement();
+                    }
                     break;
                 case GameState.Menu:
                     menuEmitter.Update();
