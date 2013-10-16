@@ -50,7 +50,8 @@ namespace Tetris
                 s.Draw(texture, rect, Color.White);
             }
             //Draw the text on the button
-            s.DrawString(font, text, new Vector2((int)(rect.Width / 2 - font.MeasureString(text).X / 2) + rect.Left, (int)(rect.Height / 2 - font.MeasureString(text).Y / 2) + rect.Top), textColor);
+            if (text != "")
+                s.DrawString(font, text, new Vector2((int)(rect.Width / 2 - font.MeasureString(text).X / 2) + rect.Left, (int)(rect.Height / 2 - font.MeasureString(text).Y / 2) + rect.Top), textColor);
         }
         #endregion
 
@@ -72,6 +73,13 @@ namespace Tetris
             this.text = text;
             this.font = font;
             this.textColor = textColor;
+            this.method = method;
+        }
+        public Button(Rectangle rect, Texture2D texture, Action method)
+        {
+            this.rect = rect;
+            this.texture = texture;
+            this.text = "";
             this.method = method;
         }
         #endregion
