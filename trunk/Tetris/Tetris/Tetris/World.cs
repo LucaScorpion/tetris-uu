@@ -109,8 +109,10 @@ namespace Tetris
                 //Check each column for a block
                 for (int x = columns - 1; x >= 0 && fullRow; x--)
                 {
-                    //If there is no block, the row is not full
+                    //If there is no block, the row is not full. Also grey blocks are indestructible
                     if (grid[x, y] == null)
+                        fullRow = false;
+                    else if (grid[x, y].Color == Color.Gray)
                         fullRow = false;
                 }
                 if (fullRow)
@@ -225,6 +227,13 @@ namespace Tetris
                 stats.CalculateScore(fullRows.Count());
                 //create new shape
                 this.currentShape = new Shape(this, controlMode);
+
+                //Add 1 row to all other worlds
+                foreach(World world in GameManager.GameWorld)
+                {
+                    if(world != this)
+                        world.AddRow();
+                }
             }
 
             if (!mute)
@@ -248,6 +257,22 @@ namespace Tetris
                         Assets.Audio.Tetris.Play();
                         break;
                 }
+            }
+        }
+        public void AddRow()
+        {
+            for (int y = 1; y < grid.GetLength(1); y++)
+            {
+                for (int x = 0; x < grid.GetLength(0); x++)
+                {
+                    grid[x, y - 1] = grid[x, y];
+                }
+            }
+            for (int x = 0; x < grid.GetLength(0); x++)
+            {
+                Block b = new Block();
+                b.Color = Color.Gray;
+                grid[x, grid.GetLength(1) - 1] = b;
             }
         }
         public Rectangle CalculateBlockRectangle(int x, int y)
