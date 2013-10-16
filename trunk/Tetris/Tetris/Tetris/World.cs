@@ -48,7 +48,7 @@ namespace Tetris
             if (isAlive)
             {
                 //Update shape
-                currentShape.Update(this);
+                currentShape.Update();
 
                 if (stats.Combo >= 1)
                 {
@@ -83,7 +83,7 @@ namespace Tetris
                 //Draw shape
                 if (currentShape != null)
                 {
-                    currentShape.Draw(spriteBatch, this);
+                    currentShape.Draw(spriteBatch);
                 }
             }
             //Dark grey overlay when player is dead
