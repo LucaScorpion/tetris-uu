@@ -73,6 +73,8 @@ namespace Tetris
             Assets.Textures.ComboBreaker = Content.Load<Texture2D>("Textures/ComboBreaker");
             Assets.Textures.AwwYea = Content.Load<Texture2D>("Textures/AwwYea");
             Assets.Textures.Heart = Content.Load<Texture2D>("Textures/Heart");
+            Assets.Textures.AchievementWh0re = Content.Load<Texture2D>("Textures/AchievementWh0re");
+            Assets.Textures.CountVonCount = Content.Load<Texture2D>("Textures/CountVonCount");
 
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
             Assets.Audio.Single = Content.Load<SoundEffect>("Audio/Single");

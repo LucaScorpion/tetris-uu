@@ -37,6 +37,8 @@ namespace Tetris
             public static Texture2D ComboBreaker;
             public static Texture2D AwwYea;
             public static Texture2D Heart;
+            public static Texture2D AchievementWh0re;
+            public static Texture2D CountVonCount;
         }
         public struct Fonts
         {
