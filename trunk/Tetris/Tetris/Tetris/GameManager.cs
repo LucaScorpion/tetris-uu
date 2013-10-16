@@ -37,27 +37,8 @@ namespace Tetris
         //Initialise all the buttons, menus and achievements
         public static void Init(Action quit)
         {
-            mainMenu = new Menu(new List<Button>() {
-            new Button(new Rectangle(180, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Endless", Assets.Fonts.BasicFont, Color.White, StartSP),
-            new Button(new Rectangle(330, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Battle mode", Assets.Fonts.BasicFont, Color.White, StartMP),
-            new Button(new Rectangle(490, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Exit game", Assets.Fonts.BasicFont, Color.White, quit)
-        });
-            pausedMenu = new Menu(new List<Button>() {
-            new Button(new Rectangle(60, 80, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Continue", Assets.Fonts.BasicFont, Color.White, Continue),
-            new Button(new Rectangle(60, 150, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
-        });
-            gameOverMenu = new Menu(new List<Button>() {
-            new Button(new Rectangle(60, 150, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
-        });
-            mpGameOverMenu = new Menu(new List<Button>() {
-            new Button(new Rectangle(300, 330, 200, 50), Color.Transparent, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
-        });
-            //Create the menu emitter
-            List<ParticleModifier> p = new List<ParticleModifier>();
-            p.Add(new GravityModifier(new Vector2(0, -0.07f)));
-            p.Add(new RandomSpeedModifier(new Vector2(0.1f, 0.1f)));
-            menuEmitter = new Emitter(2, 0.5f, Color.Orange * 0.6f, Color.Red * 0.7f, 20, 1, new RandomSpawnSpeed(Vector2.Zero, Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(800, 0), p);
-            menuEmitter.ForcePosition(new Vector2(400, 500));
+            BuildMenu(quit);
+
             menuEmitter.Start();
 
             //Create achievements
@@ -80,6 +61,9 @@ namespace Tetris
             achievementList.Add(mpWon);
             achievementList.Add(cleared1);
             achievementList.Add(cleared2);
+
+            //Load all achievements
+            LoadAchieves();
         }
         public static void Update(GameTime newGameTime)
         {
@@ -226,9 +210,6 @@ namespace Tetris
         }
         static void StartSP()
         {
-            //Load the achievements
-            LoadAchieves();
-
             gameWorld = new List<World>();
 
             //Set gamemode
@@ -240,8 +221,6 @@ namespace Tetris
         }
         static void StartMP()
         {
-            LoadAchieves(); 
-
             gameWorld = new List<World>();
 
             //Set gamemode
@@ -314,6 +293,30 @@ namespace Tetris
                 }
             }
         }
+        static void BuildMenu(Action quit)
+        {
+            mainMenu = new Menu(new List<Button>() {
+            new Button(new Rectangle(180, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Endless", Assets.Fonts.BasicFont, Color.White, StartSP),
+            new Button(new Rectangle(330, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Battle mode", Assets.Fonts.BasicFont, Color.White, StartMP),
+            new Button(new Rectangle(490, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Exit game", Assets.Fonts.BasicFont, Color.White, quit)
+        });
+            pausedMenu = new Menu(new List<Button>() {
+            new Button(new Rectangle(60, 80, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Continue", Assets.Fonts.BasicFont, Color.White, Continue),
+            new Button(new Rectangle(60, 150, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
+        });
+            gameOverMenu = new Menu(new List<Button>() {
+            new Button(new Rectangle(60, 150, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
+        });
+            mpGameOverMenu = new Menu(new List<Button>() {
+            new Button(new Rectangle(300, 330, 200, 50), Color.Transparent, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
+        });
+            //Create the menu emitter
+            List<ParticleModifier> p = new List<ParticleModifier>();
+            p.Add(new GravityModifier(new Vector2(0, -0.07f)));
+            p.Add(new RandomSpeedModifier(new Vector2(0.1f, 0.1f)));
+            menuEmitter = new Emitter(2, 0.5f, Color.Orange * 0.6f, Color.Red * 0.7f, 20, 1, new RandomSpawnSpeed(Vector2.Zero, Vector2.Zero), Assets.Textures.Particle, new RectangleSpawnShape(800, 0), p);
+            menuEmitter.ForcePosition(new Vector2(400, 500));
+        }
         #endregion
 
         #region Properties
@@ -327,7 +330,7 @@ namespace Tetris
     }
     public enum GameState
     {
-        StartScreen, Playing, Menu, GameOver, Paused, MPWon, MPLost
+        StartScreen, Playing, Menu, GameOver, Paused, MPWon, MPLost, Achievements
     }
     public enum GameMode
     {
