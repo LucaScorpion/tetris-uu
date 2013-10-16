@@ -49,7 +49,6 @@ namespace Tetris
             public static SoundEffect Double;
             public static SoundEffect Triple;
             public static SoundEffect Tetris;
-            public static SoundEffect Intro;
             public static SoundEffect Loop;
         }
         #endregion
