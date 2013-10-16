@@ -17,12 +17,13 @@ namespace Tetris
         static GameTime gameTime;
         static Keys pauseKey = Keys.Escape;
         static Random random = new Random(1337);
-        static Menu mainMenu, pausedMenu, gameOverMenu, mpGameOverMenu;
+        static Menu mainMenu, pausedMenu, gameOverMenu, mpGameOverMenu, achievementsMenu;
         public static SpriteBatch BGParticleSB, FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
         public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2;
         static List<Achievement> achievementList = new List<Achievement>();
+        static int gotAchievements, lockedAchievements;
         //The files to save stats and achievements to
         static string scoreFile = "stats.mesave";
         static string achievesFile = "achievements.mesave";
@@ -52,10 +53,10 @@ namespace Tetris
             cleared1 = new Achievement("Focused", "Cleared 50 lines.", Assets.Textures.Focused, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             cleared2 = new Achievement("In the zone", "Cleared 100 lines.", Assets.Textures.PukingRainbows, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
-            achievementList.Add(tetris);
-            achievementList.Add(triple);
-            achievementList.Add(doublec);
             achievementList.Add(single);
+            achievementList.Add(doublec);
+            achievementList.Add(triple);
+            achievementList.Add(tetris);
             achievementList.Add(roflcopter);
             achievementList.Add(slow);
             achievementList.Add(mpWon);
@@ -110,6 +111,22 @@ namespace Tetris
                     //Update the menu
                     mpGameOverMenu.Update();
                     break;
+                case GameState.Achievements:
+                    gotAchievements = 0;
+                    //Check each achievement
+                    for (int n = 0; n < achievementList.Count(); n++)
+                    {
+                        Achievement a = achievementList.ElementAt(n);
+                        //If the achievement is achieved
+                        if (a.Achieved)
+                            //Add 1 to got achievements
+                            gotAchievements++;
+                    }
+                    //Calculate locked achievements
+                    lockedAchievements = achievementList.Count() - gotAchievements;
+                    //Update the menu
+                    achievementsMenu.Update();
+                    break;
             }
         }
         public static void Draw(SpriteBatch spriteBatch)
@@ -155,7 +172,12 @@ namespace Tetris
                     //Draw the text
                     spriteBatch.DrawString(Assets.Fonts.GiantFont, loseText, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width / 2 - Assets.Fonts.GiantFont.MeasureString(loseText).X / 2, 100), Color.White);
                     break;
-
+                case GameState.Achievements:
+                    //View achievements
+                    ViewAchievements(spriteBatch);
+                    //Draw the menu
+                    achievementsMenu.Draw(spriteBatch);
+                    break;
             }
             BGParticleSB.End();
             spriteBatch.End();
@@ -208,6 +230,46 @@ namespace Tetris
             //Draw the text
             spriteBatch.DrawString(Assets.Fonts.GiantFont, winText, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width / 2 - Assets.Fonts.GiantFont.MeasureString(winText).X / 2, 100), Color.White);
         }
+        static void ViewAchievements(SpriteBatch spriteBatch)
+        {
+            //Draw the text
+            spriteBatch.DrawString(Assets.Fonts.BasicFont, "Achievements", new Vector2(10, 0), Color.White);
+            spriteBatch.DrawString(Assets.Fonts.BasicFont, "Got achievements:", new Vector2(10, Assets.Fonts.BasicFont.MeasureString("Achievements").Y), Color.White);
+            spriteBatch.DrawString(Assets.Fonts.BasicFont, "Locked achievements:", new Vector2(10, Assets.Fonts.BasicFont.MeasureString("Achievements").Y + Assets.Fonts.BasicFont.MeasureString("Got achievements:").Y), Color.White);
+            //Draw the numbers
+            spriteBatch.DrawString(Assets.Fonts.BasicFont, gotAchievements.ToString(), new Vector2(250, Assets.Fonts.BasicFont.MeasureString("Achievements").Y), Color.White);
+            spriteBatch.DrawString(Assets.Fonts.BasicFont, lockedAchievements.ToString(), new Vector2(250, Assets.Fonts.BasicFont.MeasureString("Achievements").Y + Assets.Fonts.BasicFont.MeasureString("Got achievements:").Y), Color.White);
+            //Check and draw each achievement
+            int cols = 0;
+            int rows = 1;
+            Vector2 pos = new Vector2();
+            for (int n = 0; n < achievementList.Count(); n++)
+            {
+                Achievement a = achievementList.ElementAt(n);
+                //Calculate the position
+                pos = new Vector2(10 + cols * (a.Size.X + 10), 110 + (rows - 1) * (a.Size.Y + 10));
+                
+                //If the achievement is achieved, show the achievement, else show a locked achievement.
+                if (a.Achieved)
+                {
+                    //View the achievement
+                    a.View(spriteBatch, pos);
+                }
+                else
+                {
+                    a.ViewLocked(spriteBatch, pos, Assets.Textures.Lock, "Locked", true);
+                }
+
+                //Add a row
+                rows++;
+                //3 rows per column
+                if (rows > 3)
+                {
+                    rows = 1;
+                    cols++;
+                }
+            }
+        }
         static void StartSP()
         {
             gameWorld = new List<World>();
@@ -243,6 +305,11 @@ namespace Tetris
             currentGameState = GameState.Menu;
             //Save the stats and achievements
             SaveStats();
+        }
+        static void ToAchievements()
+        {
+            //Set the gamestate to Achievements
+            currentGameState = GameState.Achievements;
         }
         static void SaveStats()
         {
@@ -298,7 +365,8 @@ namespace Tetris
             mainMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(180, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Endless", Assets.Fonts.BasicFont, Color.White, StartSP),
             new Button(new Rectangle(330, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Battle mode", Assets.Fonts.BasicFont, Color.White, StartMP),
-            new Button(new Rectangle(490, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Exit game", Assets.Fonts.BasicFont, Color.White, quit)
+            new Button(new Rectangle(490, 330, 140, 50), Color.Transparent, Color.White * 0.3f, "Exit game", Assets.Fonts.BasicFont, Color.White, quit),
+            new Button(new Rectangle(320, 400, 160, 50), Color.Transparent, Color.White * 0.3f, "Achievements", Assets.Fonts.BasicFont, Color.White, ToAchievements)
         });
             pausedMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(60, 80, 195, 50), Color.Black * 0.5f, Color.White * 0.3f, "Continue", Assets.Fonts.BasicFont, Color.White, Continue),
@@ -309,6 +377,10 @@ namespace Tetris
         });
             mpGameOverMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(300, 330, 200, 50), Color.Transparent, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu)
+        });
+            achievementsMenu = new Menu(new List<Button>() {
+            new Button(new Rectangle(590, 10, 200, 50), Color.Transparent, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu),
+            //new Button(new Rectangle
         });
             //Create the menu emitter
             List<ParticleModifier> p = new List<ParticleModifier>();

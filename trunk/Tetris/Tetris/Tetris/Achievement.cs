@@ -17,8 +17,7 @@ namespace Tetris
         static int speed = 10;
         static List<Achievement> queueList = new List<Achievement>();
         static bool drawing = false;
-        String name;
-        String line1, line2, line3;
+        String name, line1, line2, line3;
         Texture2D image;
         Color backColor, textColor;
         SpriteFont titleFont, descFont;
@@ -111,6 +110,35 @@ namespace Tetris
                 s.Draw(image, new Rectangle((int)position.X + imageRect.Left, (int)position.Y + imageRect.Top, imageRect.Width, imageRect.Height), Color.White);
                 //Achievement name
                 s.DrawString(titleFont, name, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y), textColor);
+                //Description (3 lines)
+                s.DrawString(descFont, line1, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y), textColor);
+                s.DrawString(descFont, line2, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y), textColor);
+                s.DrawString(descFont, line3, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y + descFont.MeasureString(line2).Y), textColor);
+            }
+        }
+        public void View(SpriteBatch s, Vector2 position)
+        {
+            //Background rectangle
+            s.Draw(Texture, new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), backColor);
+            //Image
+            s.Draw(image, new Rectangle((int)position.X + imageRect.Left, (int)position.Y + imageRect.Top, imageRect.Width, imageRect.Height), Color.White);
+            //Achievement name
+            s.DrawString(titleFont, name, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y), textColor);
+            //Description (3 lines)
+            s.DrawString(descFont, line1, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y), textColor);
+            s.DrawString(descFont, line2, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y), textColor);
+            s.DrawString(descFont, line3, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y + descFont.MeasureString(line2).Y), textColor);
+        }
+        public void ViewLocked(SpriteBatch s, Vector2 position, Texture2D lockedImage, String lockedText, bool showDescription)
+        {
+            //Background rectangle
+            s.Draw(Texture, new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), backColor);
+            //Image
+            s.Draw(lockedImage, new Rectangle((int)position.X + imageRect.Left, (int)position.Y + imageRect.Top, imageRect.Width, imageRect.Height), Color.White);
+            //Locked text
+            s.DrawString(titleFont, lockedText, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y), textColor);
+            if (showDescription)
+            {
                 //Description (3 lines)
                 s.DrawString(descFont, line1, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y), textColor);
                 s.DrawString(descFont, line2, new Vector2((int)position.X + imageRect.Left + imageRect.Right, (int)position.Y + descFont.MeasureString(name).Y + descFont.MeasureString(line1).Y), textColor);
@@ -215,6 +243,7 @@ namespace Tetris
         #region Properties
         public bool Achieved { get { return got; } set { got = value; } }
         public string Name { get { return name; } }
+        public Vector2 Size { get { return size; } }
         #endregion
     }
 }
