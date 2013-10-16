@@ -32,6 +32,8 @@ namespace Tetris
             public static Texture2D Focused;
             public static Texture2D PukingRainbows;
             public static Texture2D Lock;
+            public static Texture2D ArrowLeft;
+            public static Texture2D ArrowRight;
         }
         public struct Fonts
         {

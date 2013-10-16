@@ -24,6 +24,7 @@ namespace Tetris
         public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2;
         static List<Achievement> achievementList = new List<Achievement>();
         static int gotAchievements, lockedAchievements;
+        static int scroll = 0;
         //The files to save stats and achievements to
         static string scoreFile = "stats.mesave";
         static string achievesFile = "achievements.mesave";
@@ -247,7 +248,7 @@ namespace Tetris
             {
                 Achievement a = achievementList.ElementAt(n);
                 //Calculate the position
-                pos = new Vector2(10 + cols * (a.Size.X + 10), 110 + (rows - 1) * (a.Size.Y + 10));
+                pos = new Vector2(10 + (cols - scroll) * (a.Size.X + 10), 110 + (rows - 1) * (a.Size.Y + 10));
                 
                 //If the achievement is achieved, show the achievement, else show a locked achievement.
                 if (a.Achieved)
@@ -310,6 +311,16 @@ namespace Tetris
         {
             //Set the gamestate to Achievements
             currentGameState = GameState.Achievements;
+        }
+        static void ScrollLeft()
+        {
+            if (scroll < achievementList.Count / 3 - 2)
+                scroll++;
+        }
+        static void ScrollRight()
+        {
+            if (scroll > 0)
+                scroll--;
         }
         static void SaveStats()
         {
@@ -380,7 +391,8 @@ namespace Tetris
         });
             achievementsMenu = new Menu(new List<Button>() {
             new Button(new Rectangle(590, 10, 200, 50), Color.Transparent, Color.White * 0.3f, "Back to main menu", Assets.Fonts.BasicFont, Color.White, ToMenu),
-            //new Button(new Rectangle
+            new Button(new Rectangle(0, 440, 80, 40), Assets.Textures.ArrowLeft, ScrollRight),
+            new Button(new Rectangle(720, 440, 80, 40), Assets.Textures.ArrowRight, ScrollLeft)
         });
             //Create the menu emitter
             List<ParticleModifier> p = new List<ParticleModifier>();
