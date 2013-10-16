@@ -91,34 +91,7 @@ namespace Tetris
             switch (currentGameState)
             {
                 case GameState.Playing:
-                    //Update world
-                    foreach (World w in gameWorld)
-                    {
-                        w.Update();
-                        //For singleplayer: if player is dead, game over
-                        if (currentGameMode == GameMode.Singleplayer)
-                            if (!w.IsAlive)
-                            {
-                                SaveStats();
-                                currentGameState = GameState.GameOver;
-                            }
-                        //For multiplayer: go to the MPLost or MPWon game over screen, depending on if the player or the AI died
-                        if (currentGameMode == GameMode.Multiplayer)
-                        {
-                            if (w.CurrentControlMode == ControlMode.Player && !w.IsAlive)
-                                currentGameState = GameState.MPLost;
-                            if (w.CurrentControlMode == ControlMode.AI && !w.IsAlive)
-                                currentGameState = GameState.MPWon;
-                        }
-                    }
-
-                    //Update achievements
-                    foreach (Achievement a in achievementList)
-                        a.Update();
-
-                    //Pause game if esc is pressed
-                    if (InputState.isKeyPressed(pauseKey))
-                        currentGameState = GameState.Paused;
+                    UpdateGame();
                     break;
                 case GameState.Menu:
                     menuEmitter.Update();
@@ -155,9 +128,9 @@ namespace Tetris
                     break;
             }
         }
-        public static void Draw(SpriteBatch s)
+        public static void Draw(SpriteBatch spriteBatch)
         {
-            s.Begin();
+            spriteBatch.Begin();
             BGParticleSB.Begin(SpriteSortMode.Deferred, BlendState.Additive);
             FGParticleSB.Begin(SpriteSortMode.Deferred, BlendState.Additive);
             switch (currentGameState)
@@ -165,52 +138,91 @@ namespace Tetris
                 case GameState.Playing:
                     //Draw world
                     foreach (World w in gameWorld)
-                        w.Draw(s);
+                        w.Draw(spriteBatch);
                     //Draw achievements
                     foreach (Achievement a in achievementList)
-                        a.Draw(s);
+                        a.Draw(spriteBatch);
                     break;
                 case GameState.Menu:
-                    s.Draw(Assets.Textures.MenuBG, new Rectangle(0, 0, Assets.Textures.MenuBG.Width, Assets.Textures.MenuBG.Height), Color.White);
+                    spriteBatch.Draw(Assets.Textures.MenuBG, new Rectangle(0, 0, Assets.Textures.MenuBG.Width, Assets.Textures.MenuBG.Height), Color.White);
                     menuEmitter.Draw(FGParticleSB);
-                    mainMenu.Draw(s);
+                    mainMenu.Draw(spriteBatch);
                     break;
                 case GameState.Paused:
                     //Draw world
                     foreach (World w in gameWorld)
-                        w.Draw(s);
+                        w.Draw(spriteBatch);
                     //Draw menu
-                    pausedMenu.Draw(s);
+                    pausedMenu.Draw(spriteBatch);
                     break;
                 case GameState.StartScreen:
                     break;
                 case GameState.GameOver:
                     foreach (World w in gameWorld)
-                        w.Draw(s);
-                    gameOverMenu.Draw(s);
+                        w.Draw(spriteBatch);
+                    gameOverMenu.Draw(spriteBatch);
                     break;
                 case GameState.MPWon:
-                    //Draw achievements
-                    foreach (Achievement a in achievementList)
-                        a.Draw(s);
-                    //Draw particles
-                    menuEmitter.Draw(FGParticleSB);
-                    //Draw the menu
-                    mpGameOverMenu.Draw(s);
-                    //Draw the text
-                    s.DrawString(Assets.Fonts.GiantFont, winText, new Vector2(s.GraphicsDevice.Viewport.Width / 2 - Assets.Fonts.GiantFont.MeasureString(winText).X / 2, 100), Color.White);
+                    DrawMPWinscreen(spriteBatch);
                     break;
                 case GameState.MPLost:
                     //Draw the menu
-                    mpGameOverMenu.Draw(s);
+                    mpGameOverMenu.Draw(spriteBatch);
                     //Draw the text
-                    s.DrawString(Assets.Fonts.GiantFont, loseText, new Vector2(s.GraphicsDevice.Viewport.Width / 2 - Assets.Fonts.GiantFont.MeasureString(loseText).X / 2, 100), Color.White);
+                    spriteBatch.DrawString(Assets.Fonts.GiantFont, loseText, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width / 2 - Assets.Fonts.GiantFont.MeasureString(loseText).X / 2, 100), Color.White);
                     break;
 
             }
             BGParticleSB.End();
-            s.End();
+            spriteBatch.End();
             FGParticleSB.End();
+        }
+        static void UpdateGame()
+        {
+
+            //Update world
+            foreach (World w in gameWorld)
+            {
+                w.Update();
+                //For singleplayer: if player is dead, game over
+                if (currentGameMode == GameMode.Singleplayer)
+                    if (!w.IsAlive)
+                    {
+                        SaveStats();
+                        currentGameState = GameState.GameOver;
+                    }
+                //For multiplayer: go to the MPLost or MPWon game over screen, depending on if the player or the AI died
+                if (currentGameMode == GameMode.Multiplayer)
+                {
+                    if (w.CurrentControlMode == ControlMode.Player && !w.IsAlive)
+                        currentGameState = GameState.MPLost;
+                    if (w.CurrentControlMode == ControlMode.AI && !w.IsAlive)
+                        currentGameState = GameState.MPWon;
+                }
+            }
+
+            //Update achievements
+            foreach (Achievement a in achievementList)
+                a.Update();
+
+            //Pause game if esc is pressed
+            if (InputState.isKeyPressed(pauseKey))
+                currentGameState = GameState.Paused;
+        }
+        static void DrawMPWinscreen(SpriteBatch spriteBatch)
+        {
+            foreach (World w in gameWorld)
+                w.Draw(spriteBatch);
+
+            //Draw achievements
+            foreach (Achievement a in achievementList)
+                a.Draw(spriteBatch);
+            //Draw particles
+            menuEmitter.Draw(FGParticleSB);
+            //Draw the menu
+            mpGameOverMenu.Draw(spriteBatch);
+            //Draw the text
+            spriteBatch.DrawString(Assets.Fonts.GiantFont, winText, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width / 2 - Assets.Fonts.GiantFont.MeasureString(winText).X / 2, 100), Color.White);
         }
         static void StartSP()
         {
@@ -235,8 +247,8 @@ namespace Tetris
             //Set gamemode
             currentGameMode = GameMode.Multiplayer;
             //Load worlds
-            GameWorld.Add(new World(new Rectangle(50, 70, 216, 360), 0, ControlMode.Player, false));
-            AIWorld = new World(new Rectangle(400, 70, 216, 360), 0, ControlMode.AI);
+            GameWorld.Add(new World(new Rectangle(50, 70, 240, 400), 0, ControlMode.Player, false));
+            AIWorld = new World(new Rectangle(510, 70, 240, 400), 0, ControlMode.AI);
             GameWorld.Add(AIWorld);
             //Change gamestate
             currentGameState = GameState.Playing;
