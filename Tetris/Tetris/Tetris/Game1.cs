@@ -77,7 +77,6 @@ namespace Tetris
             Assets.Audio.Double = Content.Load<SoundEffect>("Audio/Double");
             Assets.Audio.Triple = Content.Load<SoundEffect>("Audio/Triple");
             Assets.Audio.Tetris = Content.Load<SoundEffect>("Audio/Tetris");
-            Assets.Audio.Intro = Content.Load<SoundEffect>("Audio/Intro");
             Assets.Audio.Loop = Content.Load<SoundEffect>("Audio/Loop");
 
             GameManager.BGParticleSB = new SpriteBatch(graphics.GraphicsDevice);
@@ -87,9 +86,6 @@ namespace Tetris
 
             //Initialise the achiement class
             Achievement.Initialise(GraphicsDevice);
-
-            //Start music
-            intro = Assets.Audio.Intro.CreateInstance();
             //intro.Play();
 
             loop = Assets.Audio.Loop.CreateInstance();
