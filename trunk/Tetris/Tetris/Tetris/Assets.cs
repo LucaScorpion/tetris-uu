@@ -35,6 +35,8 @@ namespace Tetris
             public static Texture2D ArrowLeft;
             public static Texture2D ArrowRight;
             public static Texture2D ComboBreaker;
+            public static Texture2D AwwYea;
+            public static Texture2D Heart;
         }
         public struct Fonts
         {
