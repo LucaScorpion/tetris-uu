@@ -12,6 +12,15 @@ namespace Tetris
         #region Fields
         int linesCleared, score;
         int multiplier = 1;
+        //The amount of back to back tetrises for "doubleTetris"
+        int tetrises = 0;
+
+        //The clears for "allInOne"
+        bool single = false;
+        bool doublec = false;
+        bool triple = false;
+        bool tetris = false;
+
         Rectangle worldRect;
         SpriteFont font;
         Color textColor;
@@ -45,14 +54,22 @@ namespace Tetris
                 score += 100 * multiplier;
                 fullRows -= 4;
                 multiplier++;
+                tetrises++;
+                tetris = true;
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
+                {
                     GameManager.tetris.GetAchievement();
+                    if (tetrises == 2)
+                        GameManager.doubleTetris.GetAchievement();
+                }
             }
             if (fullRows == 3)
             {
                 score += 60 * multiplier;
                 fullRows -= 3;
                 multiplier++;
+                tetrises = 0;
+                triple = true;
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.triple.GetAchievement();
             }
@@ -61,6 +78,8 @@ namespace Tetris
                 score += 30 * multiplier;
                 fullRows -= 2;
                 multiplier++;
+                tetrises = 0;
+                doublec = true;
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.doublec.GetAchievement();
             }
@@ -69,9 +88,14 @@ namespace Tetris
                 score += 10;
                 fullRows -= 1;
                 multiplier++;
+                tetrises = 0;
+                single = true;
                 if (GameManager.CurrentGameMode == GameMode.Singleplayer)
                     GameManager.single.GetAchievement();
             }
+            //Check if all 4 clears have been got
+            if (single && doublec && triple && tetris)
+                GameManager.allInOne.GetAchievement();
         }
         public void Draw(SpriteBatch s)
         {

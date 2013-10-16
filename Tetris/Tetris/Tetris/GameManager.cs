@@ -21,7 +21,7 @@ namespace Tetris
         public static SpriteBatch BGParticleSB, FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
-        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2, combo;
+        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2, combo, allInOne, doubleTetris, love;
         static List<Achievement> achievementList = new List<Achievement>();
         static int gotAchievements, lockedAchievements;
         static int scroll = 0;
@@ -54,6 +54,9 @@ namespace Tetris
             cleared1 = new Achievement("Focused", "Cleared 50 lines.", Assets.Textures.Focused, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             cleared2 = new Achievement("In the zone", "Cleared 100 lines.", Assets.Textures.PukingRainbows, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             combo = new Achievement("Combobreaker", "Get a multiplier", "of 3.", Assets.Textures.ComboBreaker, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            allInOne = new Achievement("All in one", "Clear a single,", "double, triple and", "tetris in 1 game.", Assets.Textures.Focused, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            doubleTetris = new Achievement("Back-to-back", "Clear 2 tetrises", "back to back.", Assets.Textures.AwwYea, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            love = new Achievement("I love this game!", Assets.Textures.Heart, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
             achievementList.Add(single);
             achievementList.Add(doublec);
@@ -65,6 +68,9 @@ namespace Tetris
             achievementList.Add(combo);
             achievementList.Add(cleared1);
             achievementList.Add(cleared2);
+            achievementList.Add(allInOne);
+            achievementList.Add(doubleTetris);
+            achievementList.Add(love);
 
             //Load all achievements
             LoadAchieves();
