@@ -70,6 +70,7 @@ namespace Tetris
             Assets.Textures.Lock = Content.Load<Texture2D>("Textures/Lock");
             Assets.Textures.ArrowLeft = Content.Load<Texture2D>("Textures/ArrowLeft");
             Assets.Textures.ArrowRight = Content.Load<Texture2D>("Textures/ArrowRight");
+            Assets.Textures.ComboBreaker = Content.Load<Texture2D>("Textures/ComboBreaker");
 
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
             Assets.Audio.Single = Content.Load<SoundEffect>("Audio/Single");

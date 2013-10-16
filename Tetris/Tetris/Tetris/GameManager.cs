@@ -21,7 +21,7 @@ namespace Tetris
         public static SpriteBatch BGParticleSB, FGParticleSB;
         static Emitter menuEmitter;
         //Achievements
-        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2;
+        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2, combo;
         static List<Achievement> achievementList = new List<Achievement>();
         static int gotAchievements, lockedAchievements;
         static int scroll = 0;
@@ -47,12 +47,13 @@ namespace Tetris
             tetris = new Achievement("TETRIS!", "Cleared 4 rows", "at once.", Assets.Textures.Wow, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             triple = new Achievement("Triple!", "Cleared 3 rows", "at once.", Assets.Textures.CloseEnough, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             doublec = new Achievement("Double", "Cleared 2 rows", "at once.", Assets.Textures.FreddieMercury, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            single = new Achievement("Single...", "Cleared 1 row", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            single = new Achievement("Single...", "Cleared 1 row.", Assets.Textures.ItsSomething, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             roflcopter = new Achievement("ROFLCOPTER", "roflroflroflrofl", "roflroflroflrofl", "roflroflroflrofl", Assets.Textures.ROFLcopter, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             slow = new Achievement("So slow...", "Don't use hard drop", "or boost down.", Assets.Textures.IELogo, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             mpWon = new Achievement("You rock!", "Beat the AI.", Assets.Textures.RockHand, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             cleared1 = new Achievement("Focused", "Cleared 50 lines.", Assets.Textures.Focused, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             cleared2 = new Achievement("In the zone", "Cleared 100 lines.", Assets.Textures.PukingRainbows, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            combo = new Achievement("Combobreaker", "Get a multiplier", "of 3.", Assets.Textures.ComboBreaker, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
             achievementList.Add(single);
             achievementList.Add(doublec);
@@ -61,6 +62,7 @@ namespace Tetris
             achievementList.Add(roflcopter);
             achievementList.Add(slow);
             achievementList.Add(mpWon);
+            achievementList.Add(combo);
             achievementList.Add(cleared1);
             achievementList.Add(cleared2);
 
@@ -314,7 +316,7 @@ namespace Tetris
         }
         static void ScrollLeft()
         {
-            if (scroll < achievementList.Count / 3 - 2)
+            if (scroll < (achievementList.Count + 2) / 3 - 2)
                 scroll++;
         }
         static void ScrollRight()

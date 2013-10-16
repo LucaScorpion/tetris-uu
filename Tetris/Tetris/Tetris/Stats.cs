@@ -34,6 +34,9 @@ namespace Tetris
                     GameManager.cleared1.GetAchievement();
                 if (linesCleared >= 100)
                     GameManager.cleared2.GetAchievement();
+                //Get achievement for a 3 multiplier
+                if (multiplier >= 2)
+                    GameManager.combo.GetAchievement();
             }
 
             //Calculate multiplier, add score, get achievements
