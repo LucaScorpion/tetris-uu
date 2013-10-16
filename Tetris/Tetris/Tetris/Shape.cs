@@ -12,8 +12,8 @@ namespace Tetris
     {
         #region Fields
         Block[,] grid;
-        Point location;
-        Vector2 gridCenter;
+        protected Point location;
+        protected Vector2 gridCenter;
         int timeSinceMove = 0;
         int moveSpeedDown = 4; //In blocks per sec
         int moveSpeedBoost = 7; //Factor of speed boost when boosting down
@@ -30,10 +30,14 @@ namespace Tetris
         Keys right = Keys.Right;
         Keys rotateLeft = Keys.X;
         Keys drop = Keys.Up;
+
+        Shadow shadow;
+        World world;
+        Color color;
         #endregion
 
         #region Methods
-        public void Update(World world)
+        public virtual void Update()
         {
             //Add time
             timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
@@ -52,7 +56,7 @@ namespace Tetris
                 //Move left
                 if (InputState.isKeyPressed(left))
                 {
-                    if (CanMove(new Point(-1, 0), world, grid))
+                    if (CanMove(new Point(-1, 0), grid))
                     {
                         location.X -= 1;
                     }
@@ -61,7 +65,7 @@ namespace Tetris
                 //Move right
                 if (InputState.isKeyPressed(right))
                 {
-                    if (CanMove(new Point(1, 0), world, grid))
+                    if (CanMove(new Point(1, 0), grid))
                     {
                         location.X += 1;
                     }
@@ -70,7 +74,7 @@ namespace Tetris
                 //Rotate
                 if (InputState.isKeyPressed(rotateLeft))
                 {
-                    RotateLeft(world);
+                    RotateLeft();
                     //Check for helicopter rotation (aka infinity lock) withing 250 ms
                     if (timeSinceMove < 250)
                         helicopterMoves++;
@@ -85,14 +89,7 @@ namespace Tetris
                 //Hard drop
                 if (InputState.isKeyPressed(drop))
                 {
-                    //Keep moving down
-                    while (CanMove(new Point(0, 1), world, grid))
-                    {
-                        location.Y += 1;
-                    }
-                    //Move shape to world 
-                    MoveToWorld(world);
-                    slow = false;
+                    Harddrop();
                 }
             }
 
@@ -111,7 +108,7 @@ namespace Tetris
                 if (xMoves > 0)
                 {
                     //Move right
-                    if (CanMove(new Point(1, 0), world, grid))
+                    if (CanMove(new Point(1, 0), grid))
                     {
                         location.X++;
                     }
@@ -120,7 +117,7 @@ namespace Tetris
                 if (xMoves < 0)
                 {
                     //Move left
-                    if (CanMove(new Point(-1, 0), world, grid))
+                    if (CanMove(new Point(-1, 0), grid))
                     {
                         location.X--;
                     }
@@ -129,7 +126,7 @@ namespace Tetris
                 //Rotate
                 if (rotations > 0)
                 {
-                    RotateLeft(world);
+                    RotateLeft();
                     rotations--;
                 }
                 //Move down
@@ -143,14 +140,14 @@ namespace Tetris
             //Move down
             if (timeSinceMove >= 1000 / moveSpeedDown)
             {
-                if (CanMove(new Point(0, 1), world, grid))
+                if (CanMove(new Point(0, 1), grid))
                 {
                     location.Y += 1;
                 }
                 else
                 {
                     //Can't move down
-                    MoveToWorld(world);
+                    MoveToWorld();
                     //Reset AI
                     if (controlMode == ControlMode.AI)
                         AIthought = false;
@@ -161,7 +158,7 @@ namespace Tetris
                 timeSinceMove = 0;
             }
         }
-        public void Draw(SpriteBatch spriteBatch, World world)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             for (int y = 0; y < grid.GetLength(1); y++)
             {
@@ -175,12 +172,29 @@ namespace Tetris
                     }
                 }
             }
+
+            if (controlMode == ControlMode.Player)
+            {
+                shadow.Draw(spriteBatch);
+            }
+        }
+        public void Harddrop()
+        {
+            //Keep moving down
+            while (CanMove(new Point(0, 1), grid))
+            {
+                location.Y += 1;
+            }
+            //Move shape to world 
+            if(shadow != null)
+                MoveToWorld();
+            slow = false;
         }
         Point GetWorldLocation(int x, int y)
         {
             return new Point((int)(x - (int)gridCenter.X + location.X), (int)(y - (int)gridCenter.Y + location.Y));
         }
-        void MoveToWorld(World world)
+        void MoveToWorld()
         {
             //Move shape to world
             for (int y = 0; y < grid.GetLength(0); y++)
@@ -197,7 +211,7 @@ namespace Tetris
             //destroy all full rows
             world.DestroyFullRows();
         }
-        bool CanMove(Point direction, World world, Block[,] grid)
+        bool CanMove(Point direction, Block[,] grid)
         {
             for (int y = 0; y < grid.GetLength(1); y++)
             {
@@ -236,7 +250,7 @@ namespace Tetris
             }
             return true;
         }
-        void RotateLeft(World world)
+        void RotateLeft()
         {
             Block[,] newGrid = new Block[grid.GetLength(0), grid.GetLength(1)];
 
@@ -248,7 +262,7 @@ namespace Tetris
                 }
             }
             //Check if rotation is possible
-            if (CanMove(Point.Zero, world, newGrid))
+            if (CanMove(Point.Zero, newGrid))
             {
                 grid = newGrid;
             }
@@ -267,7 +281,7 @@ namespace Tetris
                 }
 
                 //Check again
-                if (CanMove(Point.Zero, world, newGrid))
+                if (CanMove(Point.Zero, newGrid))
                 {
                     grid = newGrid;
                 }
@@ -315,12 +329,16 @@ namespace Tetris
             gridCenter = new Vector2(grid.GetLength(0) - 1, grid.GetLength(1) - 1) / 2;
             location = new Point(world.Columns / 2 - 1, (int)gridCenter.Y);
             this.controlMode = controlMode;
+            this.world = world;
 
             //If can't spawn. kill world
-            if (!CanMove(new Point(0, 0), world, grid))
+            if (!CanMove(new Point(0, 0), grid))
             {
                 world.Kill();
             }
+
+            if (controlMode == ControlMode.Player)
+                shadow = new Shadow(world, this);
         }
         #endregion
 
@@ -358,7 +376,7 @@ namespace Tetris
         //Properties
         public Color Color
         {
-            get { return Color.White; }
+            get { return color; }
             set
             {
                 foreach (Block b in grid)
@@ -368,14 +386,50 @@ namespace Tetris
                         b.Color = value;
                     }
                 }
+                color = value;
             }
         }
         public ControlMode ControlMode { get { return controlMode; } set { controlMode = value; } }
-        public Block[,] Grid { get { return grid; } }
+        public Block[,] Grid { get { return grid; } set { grid = value; } }
+        public Point Location { get { return location; } }
         #endregion
     }
     public enum ControlMode
     {
-        Player, AI
+        Player, AI, None
+    }
+    public class Shadow : Shape
+    {
+        Shape shape;
+        public Shadow(World world, Shape shape)
+            : base(world, ControlMode.None)
+        {
+            this.shape = shape;
+        }
+        public override void Update()
+        {
+
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            this.Grid = new Block[shape.Grid.GetLength(0), shape.Grid.GetLength(1)];
+            //Clone the grid
+            for (int y = 0; y < shape.Grid.GetLength(1); y++)
+            {
+                for (int x = 0; x < shape.Grid.GetLength(0); x++)
+                {
+                    if (shape.Grid[x, y] != null)
+                    {
+                        this.Grid[x, y] = new Block();
+                    }
+                }
+            }
+            this.Color = shape.Color * 0.5f;
+            this.location = shape.Location;
+            gridCenter = new Vector2(Grid.GetLength(0) - 1, Grid.GetLength(1) - 1) / 2;
+            Harddrop();
+
+            base.Draw(spriteBatch);
+        }
     }
 }
