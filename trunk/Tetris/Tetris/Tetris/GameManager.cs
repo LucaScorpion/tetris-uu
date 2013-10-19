@@ -20,6 +20,11 @@ namespace Tetris
         static Menu mainMenu, pausedMenu, gameOverMenu, mpGameOverMenu, achievementsMenu;
         public static SpriteBatch BGParticleSB, FGParticleSB;
         static Emitter menuEmitter;
+        //Levels
+        static int levelTime = 60; //Seconds per level
+        static int level = 1;
+        static int maxLevel = 10;
+        static int lastLevelUp;
         //Achievements
         public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2, combo, allInOne, doubleTetris, love, achievementWh0re;
         static List<Achievement> achievementList = new List<Achievement>();
@@ -58,7 +63,7 @@ namespace Tetris
             combo = new Achievement("Combobreaker", "Get a multiplier", "of 3.", Assets.Textures.ComboBreaker, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             allInOne = new Achievement("All in one", "Clear a single,", "double, triple and", "tetris in 1 game.", Assets.Textures.CountVonCount, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             doubleTetris = new Achievement("Back-to-back", "Clear 2 tetrises", "back to back.", Assets.Textures.AwwYea, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
-            love = new Achievement("I love this game!", "Play singleplayer", "for more then", "10 minutes total.", Assets.Textures.Heart, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            love = new Achievement("I love this game!", "Play singleplayer", "for more then 10", "minutes in 1 session.", Assets.Textures.Heart, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             achievementWh0re = new Achievement("Chievies!", "Unlock all", "achievements.", Assets.Textures.AchievementWh0re, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
             achievementList.Add(single);
@@ -93,7 +98,7 @@ namespace Tetris
                     if (currentGameMode == GameMode.Singleplayer)
                     {
                         //Add time
-                        if (secondsPlayed < 600 && prevTime != newGameTime.TotalGameTime.Seconds)
+                        if (prevTime != newGameTime.TotalGameTime.Seconds)
                         {
                             secondsPlayed++;
                             prevTime = newGameTime.TotalGameTime.Seconds;
@@ -101,6 +106,12 @@ namespace Tetris
                         //Get achievement
                         if (secondsPlayed == 600)
                             love.GetAchievement();
+                        //Set level
+                        if (secondsPlayed % levelTime == 0 && level <= maxLevel && lastLevelUp != secondsPlayed)
+                        {
+                            lastLevelUp = secondsPlayed;
+                            level++;
+                        }
                     }
                     break;
                 case GameState.Menu:
@@ -443,6 +454,7 @@ namespace Tetris
         public static Menu MainMenu { get { return mainMenu; } }
         public static GameState CurrentGameState { get { return currentGameState; } }
         public static GameMode CurrentGameMode { get { return currentGameMode; } }
+        public static int Level { get { return level; } }
         #endregion
     }
     public enum GameState

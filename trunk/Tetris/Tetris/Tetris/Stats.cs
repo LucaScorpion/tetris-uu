@@ -113,10 +113,12 @@ namespace Tetris
                 s.DrawString(font, "Lines cleared:", new Vector2(worldRect.Right + 30, worldRect.Y), textColor);
                 s.DrawString(font, "Multiplier:", new Vector2(worldRect.Right + 30, worldRect.Y + Assets.Fonts.BasicFont.MeasureString("Lines cleared:").Y * 2), textColor);
                 s.DrawString(font, "Total score:", new Vector2(worldRect.Right + 30, worldRect.Y + Assets.Fonts.BasicFont.MeasureString("Lines cleared:").Y * 4), textColor);
+                s.DrawString(font, "Level:", new Vector2(worldRect.Right + 30, worldRect.Y + Assets.Fonts.BasicFont.MeasureString("Lines cleared:").Y * 6), textColor);
                 //Draw the numbers
                 s.DrawString(font, linesCleared.ToString(), new Vector2(worldRect.Right + 230, worldRect.Y), textColor);
                 s.DrawString(font, multiplier.ToString(), new Vector2(worldRect.Right + 230, worldRect.Y + Assets.Fonts.BasicFont.MeasureString("Lines cleared:").Y * 2), textColor);
                 s.DrawString(font, score.ToString(), new Vector2(worldRect.Right + 230, worldRect.Y + Assets.Fonts.BasicFont.MeasureString("Lines cleared:").Y * 4), textColor);
+                s.DrawString(font, GameManager.Level.ToString(), new Vector2(worldRect.Right + 230, worldRect.Y + Assets.Fonts.BasicFont.MeasureString("Lines cleared:").Y * 6), textColor);
             }
             if (GameManager.CurrentGameMode == GameMode.Multiplayer)
             {

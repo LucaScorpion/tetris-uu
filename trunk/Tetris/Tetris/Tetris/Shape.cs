@@ -15,7 +15,8 @@ namespace Tetris
         protected Point location;
         protected Vector2 gridCenter;
         int timeSinceMove = 0;
-        int moveSpeedDown = 4; //In blocks per sec
+        double startMoveSpeedDown = 4; //In blocks per sec
+        double moveSpeedDown;
         int moveSpeedBoost = 7; //Factor of speed boost when boosting down
         ControlMode controlMode = ControlMode.AI;
         Tuple<int, int> moves;
@@ -41,6 +42,9 @@ namespace Tetris
         {
             //Add time
             timeSinceMove += GameManager.GameTime.ElapsedGameTime.Milliseconds;
+
+            //Set moveSpeedDown based on level
+            moveSpeedDown = startMoveSpeedDown + 0.5 * GameManager.Level;
 
             //Controlled by player
             if (controlMode == ControlMode.Player)
