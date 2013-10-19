@@ -39,6 +39,7 @@ namespace Tetris
             public static Texture2D Heart;
             public static Texture2D AchievementWh0re;
             public static Texture2D CountVonCount;
+            public static Texture2D MaxLevel;
         }
         public struct Fonts
         {

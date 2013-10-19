@@ -75,6 +75,7 @@ namespace Tetris
             Assets.Textures.Heart = Content.Load<Texture2D>("Textures/Heart");
             Assets.Textures.AchievementWh0re = Content.Load<Texture2D>("Textures/AchievementWh0re");
             Assets.Textures.CountVonCount = Content.Load<Texture2D>("Textures/CountVonCount");
+            Assets.Textures.MaxLevel = Content.Load<Texture2D>("Textures/MaxLevel");
 
             Assets.Audio.LockSound = Content.Load<SoundEffect>("Audio/LockSound");
             Assets.Audio.Single = Content.Load<SoundEffect>("Audio/Single");

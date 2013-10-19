@@ -26,7 +26,7 @@ namespace Tetris
         static int maxLevel = 10;
         static int lastLevelUp;
         //Achievements
-        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2, combo, allInOne, doubleTetris, love, achievementWh0re;
+        public static Achievement tetris, triple, doublec, single, roflcopter, slow, mpWon, cleared1, cleared2, combo, allInOne, doubleTetris, love, achievementWh0re, maxLevelReached;
         static List<Achievement> achievementList = new List<Achievement>();
         static int gotAchievements, lockedAchievements;
         static int scroll = 0;
@@ -65,6 +65,7 @@ namespace Tetris
             doubleTetris = new Achievement("Back-to-back", "Clear 2 tetrises", "back to back.", Assets.Textures.AwwYea, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             love = new Achievement("I love this game!", "Play singleplayer", "for more then 10", "minutes in 1 session.", Assets.Textures.Heart, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             achievementWh0re = new Achievement("Chievies!", "Unlock all", "achievements.", Assets.Textures.AchievementWh0re, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
+            maxLevelReached = new Achievement("Hell yeah", "Reach the max", "level in singleplayer.", Assets.Textures.MaxLevel, Color.Gray, Color.White, Assets.Fonts.BasicFont, Assets.Fonts.SmallerFont);
             //Add ALL of the achievements to achievementList
             achievementList.Add(single);
             achievementList.Add(doublec);
@@ -78,6 +79,7 @@ namespace Tetris
             achievementList.Add(cleared2);
             achievementList.Add(allInOne);
             achievementList.Add(doubleTetris);
+            achievementList.Add(maxLevelReached);
             achievementList.Add(love);
             achievementList.Add(achievementWh0re);
 
@@ -111,6 +113,8 @@ namespace Tetris
                         {
                             lastLevelUp = secondsPlayed;
                             level++;
+                            if (level == maxLevel)
+                                maxLevelReached.GetAchievement();
                         }
                     }
                     break;
